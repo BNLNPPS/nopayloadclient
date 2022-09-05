@@ -4,8 +4,7 @@
 
 int main()
 {
-  auto globalTags = nopayloadclient::getGlobalTags();
-  std::cout<<"globalTags = "<<globalTags<<std::endl;
+  nopayloadclient::insertPayload("LinosGT", "LinosType", "data/prompt/data.dat", 0);
   std::vector<std::string> globalTagNames = nopayloadclient::getGlobalTagNames();
   std::cout<<"globalTagNames =";
   for (auto i: globalTagNames){std::cout<<" "<<i;}

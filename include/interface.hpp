@@ -3,7 +3,11 @@
 #include <nlohmann/json.hpp>
 
 namespace nopayloadclient {
-    nlohmann::json getGlobalTags();
+    // Reading
     std::vector<std::string> getGlobalTagNames();
-    nlohmann::json getJson();
+
+    // Writing
+    void insertPayload(std::string gtName, std::string gtType, std::string fileUrl, int iovStart);
+
+
 }
