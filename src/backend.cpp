@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <curl/curl.h>
+#include <nlohmann/json.hpp>
 
 namespace backend {
 
@@ -10,7 +11,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-std::string getResponse(std::string url){
+nlohmann::json getResponse(std::string url){
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -22,9 +23,8 @@ std::string getResponse(std::string url){
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         std::cout << readBuffer << std::endl;
-        std::cout << "res = "<< res << std::endl;
     }
-    return readBuffer;
+    return nlohmann::json::parse(readBuffer);
 }
 
 

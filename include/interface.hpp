@@ -3,7 +3,7 @@
 #include <nlohmann/json.hpp>
 
 namespace nopayloadclient {
-    std::string getGlobalTags();
+    nlohmann::json getGlobalTags();
     std::vector<std::string> getGlobalTagNames();
     nlohmann::json getJson();
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 namespace backend {
-    std::string getResponse(std::string url);
+    nlohmann::json getResponse(std::string url);
 }

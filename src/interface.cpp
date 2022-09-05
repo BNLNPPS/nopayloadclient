@@ -1,28 +1,21 @@
 #include <iostream>
 #include <vector>
+#include <nlohmann/json.hpp>
 
-#include "nlohmann/json.hpp"
-#include "backend.hpp"
+#include <backend.hpp>
 
-
-//using json = nlohmann::json;
 
 namespace nopayloadclient {
 
-std::string getGlobalTags() {
+nlohmann::json getGlobalTags() {
     return backend::getResponse("http://localhost:8000/api/cdb_rest/globalTags");
 }
 
-
 std::vector<std::string> getGlobalTagNames() {
-    std::string raw_string = getGlobalTags();
-    std::cout<<"raw_string = "<<raw_string<<std::endl;
-    for (auto i: raw_string){std::cout<<" "<<i;}
-    nlohmann::json jsonski = nlohmann::json::parse(raw_string);
-    std::cout<<"jsonski = "<<jsonski<<std::endl;
     std::vector<std::string> name_list;
-    name_list.push_back("NIHAO");
-    name_list.push_back("CHIGGA");
+    for (const auto& obj: getGlobalTags()){
+        name_list.push_back(obj["name"]);
+    }
     return name_list;
 }
 
