@@ -20,6 +20,7 @@ std::vector<std::string> getGlobalTagNames() {
 // Writing
 
 void insertPayload(std::string gtName, std::string gtType, std::string fileUrl, int iovStart){
+    backend::createGlobalTagObject(gtName, "locked", gtType);
     std::cout<<"insertPayload()"<<std::endl;
 }
 

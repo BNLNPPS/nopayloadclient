@@ -28,5 +28,24 @@ nlohmann::json getResponse(std::string url){
     return nlohmann::json::parse(readBuffer);
 }
 
+void post(std::string url, nlohmann::json jsonData){
+    std::cout<<"curlwrapper::post()"<<std::endl;
+    std::cout<<"jsonData.dump().c_str() = "<<jsonData.dump().c_str()<<std::endl;
+    CURL *curl;
+    CURLcode res;
+    curl = curl_easy_init();
+    if(curl) {
+        struct curl_slist *slist1;
+        slist1 = NULL;
+        slist1 = curl_slist_append(slist1, "Content-Type: application/json");
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.dump().c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
+        //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+    }
+}
+
 
 }
