@@ -28,20 +28,20 @@ nlohmann::json getResponse(std::string url){
     return nlohmann::json::parse(readBuffer);
 }
 
-void post(std::string url, nlohmann::json jsonData){
+//void post(std::string url, nlohmann::json jsonData){
+void post(std::string url, const char* jsonCstr){
     std::cout<<"curlwrapper::post()"<<std::endl;
-    std::cout<<"jsonData.dump().c_str() = "<<jsonData.dump().c_str()<<std::endl;
+    std::cout<<"jsonCstr = "<<jsonCstr<<std::endl;
     CURL *curl;
     CURLcode res;
     curl = curl_easy_init();
     if(curl) {
-        struct curl_slist *slist1;
-        slist1 = NULL;
+        struct curl_slist *slist1 = NULL;
         slist1 = curl_slist_append(slist1, "Content-Type: application/json");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.dump().c_str());
+        //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.dump(-1, ' ', true, nlohmann::json::error_handler_t::replace).c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonCstr);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
-        //curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
     }

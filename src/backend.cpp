@@ -16,11 +16,17 @@ nlohmann::json getGlobalTags() {
 
 // Writing
 void createGlobalTagObject(std::string name, std::string status, std::string type) {
-    //std::string data = '\{"name": "'+name+'", "status": "locked", "type": "testtype"\}';
-    std::string data = "\{'name': 'LinosGT2', 'status': 'locked', 'type': 'testtype'\}";
+    /*
     nlohmann::json j;
-    j["status"] = "locked";
-    curlwrapper::post(base_url + "gt", j);
+    j["status"] = status;
+    j["name"] = name;
+    j["type"] = type;
+    */
+    std::string jsonstr;
+    jsonstr = "{\"name\":\"" + name + "\"";
+    jsonstr += ",\"status\":\"" + status + "\"";
+    jsonstr += ",\"type\":\"" + type + "\"}";
+    curlwrapper::post(base_url + "gt", jsonstr.c_str());
 }
 
 
