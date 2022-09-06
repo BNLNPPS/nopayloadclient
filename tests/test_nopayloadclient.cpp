@@ -4,7 +4,7 @@
 
 int main()
 {
-  nopayloadclient::insertPayload("LinosGT2", "LinosType", "data/prompt/data.dat", 0);
+  nopayloadclient::insertPayload("LinosGT4", "testtype", "data/prompt/data.dat", 0);
   std::vector<std::string> globalTagNames = nopayloadclient::getGlobalTagNames();
   std::cout<<"globalTagNames =";
   for (auto i: globalTagNames){std::cout<<" "<<i;}

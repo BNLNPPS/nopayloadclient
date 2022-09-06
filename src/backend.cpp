@@ -15,19 +15,26 @@ nlohmann::json getGlobalTags() {
 }
 
 // Writing
+void createGlobalTagType(std::string type){
+    nlohmann::json j;
+    j["type"] = type;
+    curlwrapper::post(base_url + "gttype", j);
+}
+
+void createGlobalTagStatus(std::string status){
+    nlohmann::json j;
+    j["name"] = status;
+    curlwrapper::post(base_url + "gtstatus", j);
+}
+
 void createGlobalTagObject(std::string name, std::string status, std::string type) {
-    /*
     nlohmann::json j;
     j["status"] = status;
     j["name"] = name;
     j["type"] = type;
-    */
-    std::string jsonstr;
-    jsonstr = "{\"name\":\"" + name + "\"";
-    jsonstr += ",\"status\":\"" + status + "\"";
-    jsonstr += ",\"type\":\"" + type + "\"}";
-    curlwrapper::post(base_url + "gt", jsonstr.c_str());
+    curlwrapper::post(base_url + "gt", j);
 }
+
 
 
 }
