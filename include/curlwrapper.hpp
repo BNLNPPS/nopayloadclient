@@ -8,6 +8,6 @@ namespace curlwrapper {
 nlohmann::json getResponse(std::string url);
 
 // Writing
-void post(std::string url, nlohmann::json jsonData);\
+nlohmann::json post(std::string url, nlohmann::json jsonData);\
 
 }

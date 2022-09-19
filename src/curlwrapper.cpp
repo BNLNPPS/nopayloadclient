@@ -28,7 +28,7 @@ nlohmann::json getResponse(std::string url){
     return nlohmann::json::parse(readBuffer);
 }
 
-void post(std::string url, nlohmann::json jsonData){
+nlohmann::json post(std::string url, nlohmann::json jsonData){
     CURL *curl;
     CURLcode res;
     std::string readBuffer;
@@ -51,6 +51,7 @@ void post(std::string url, nlohmann::json jsonData){
         std::cout<<"http_code = "<<http_code<<std::endl;
         curl_easy_cleanup(curl);
     }
+    return nlohmann::json::parse(readBuffer);
 }
 
 
