@@ -77,6 +77,7 @@ for pl_type, pll_name in pll_names.items(): #pl_type not used in attach json, bu
         'global_tag' : GT_NAME,
         'payload_list' : pll_name
     }
+    print(f'pl_attach = {pl_attach}')
     # IF Global tag is locked then this should fail
     # check GT_NAME and pll_name exist
     # get payload_type of payload_list and if pl_type exists then this is a replace (update) operation

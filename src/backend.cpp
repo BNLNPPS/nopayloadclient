@@ -11,7 +11,7 @@ namespace backend {
 
 // Reading
 nlohmann::json getGlobalTags() {
-    return curlwrapper::getResponse(base_url + "globalTags");
+    return curlwrapper::get(base_url + "globalTags");
 }
 
 // Writing
@@ -48,15 +48,42 @@ std::string createPayloadList(std::string type){
     return res["name"];
 }
 
-void attachPayloadList(std::string plName, std::string gtName){
+void attachPayloadList(std::string gtName, std::string plName){
     nlohmann::json j;
     j["payload_list"] = plName;
     j["global_tag"] = gtName;
-    curlwrapper::post(base_url + "pl_attach", j);
+    curlwrapper::put(base_url + "pl_attach", j);
 }
 
 void lockGlobalTag(std::string name){
     curlwrapper::put(base_url + "gt_change_status/" + name + "/locked");
+}
+
+int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){
+    nlohmann::json j;
+    j["payload_url"] = plUrl;
+    j["major_iov"] = majorIov;
+    j["minor_iov"] = minorIov;
+    nlohmann::json res = curlwrapper::post(base_url + "piov", j);
+    return res["id"];
+}
+
+int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd){
+    nlohmann::json j;
+    j["payload_url"] = plUrl;
+    j["major_iov"] = majorIov;
+    j["minor_iov"] = minorIov;
+    j["major_iov_end"] = majorIovEnd;
+    j["minor_iov_end"] = minorIovEnd;
+    nlohmann::json res = curlwrapper::post(base_url + "piov", j);
+    return res["id"];
+}
+
+void attachPayloadIOV(std::string plListName, int plIovId){
+    nlohmann::json j;
+    j["payload_list"] = plListName;
+    j["piov_id"] = plIovId;
+    nlohmann::json res = curlwrapper::put(base_url + "piov_attach", j);
 }
 
 }

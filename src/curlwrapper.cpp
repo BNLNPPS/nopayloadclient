@@ -12,74 +12,79 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-nlohmann::json getResponse(std::string url){
-    std::cout<<"backend::getResponse(url="<<url<<")"<<std::endl;
-    CURL *curl;
-    CURLcode res;
-    std::string readBuffer;
-    curl = curl_easy_init();
-    if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        std::cout << readBuffer << std::endl;
-    }
-    return nlohmann::json::parse(readBuffer);
+class CurlMession{
+    private:
+        CURLcode res;
+        std::string readBuffer;
+        CURL *curl;
+        long http_code = 0;
+        std::string url;
+        struct curl_slist *slist1 = NULL;
+        std::string jsonStr;
+    public:
+        CurlMession(std::string _url){
+            url = _url;
+            curl = curl_easy_init();
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        }
+        void printResults(){
+            std::cout<<"res = "<<res<<std::endl;
+            std::cout<<"readBuffer = "<<readBuffer<<std::endl;
+            std::cout<<"http_code = "<<http_code<<std::endl;
+        }
+        nlohmann::json execute(){
+            res = curl_easy_perform(curl);
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+            curl_easy_cleanup(curl);
+            printResults();
+            return nlohmann::json::parse(readBuffer);
+        }
+        void prepareGet(){
+        }
+        void preparePut(){
+            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
+        }
+        void preparePost(nlohmann::json jsonData){
+            slist1 = curl_slist_append(slist1, "Content-Type: application/json");
+            jsonStr = jsonData.dump();
+            std::cout<<"jsonStr = "<<jsonStr<<std::endl;
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
+        }
+        void preparePut(nlohmann::json jsonData){
+            preparePut();
+            preparePost(jsonData);
+        }
+};
+
+nlohmann::json get(std::string url){
+    std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    CurlMession cm = CurlMession(url);
+    cm.prepareGet();
+    return cm.execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
-    CURL *curl;
-    CURLcode res;
-    std::string readBuffer;
-    long http_code = 0;
-    curl = curl_easy_init();
-    if(curl) {
-        struct curl_slist *slist1 = NULL;
-        slist1 = curl_slist_append(slist1, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        std::string jsonStr = jsonData.dump();
-        std::cout<<"jsonStr = "<<jsonStr<<std::endl;
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        res = curl_easy_perform(curl);
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
-        std::cout<<"res = "<<res<<std::endl;
-        std::cout<<"readBuffer = "<<readBuffer<<std::endl;
-        std::cout<<"http_code = "<<http_code<<std::endl;
-        curl_easy_cleanup(curl);
-    }
-    return nlohmann::json::parse(readBuffer);
+    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    CurlMession cm = CurlMession(url);
+    cm.preparePost(jsonData);
+    return cm.execute();
 }
-
 
 nlohmann::json put(std::string url){
     std::cout<<"backend::put(url="<<url<<")"<<std::endl;
-    CURL *curl;
-    CURLcode res;
-    std::string readBuffer;
-    long http_code = 0;
-    curl = curl_easy_init();
-    if(curl) {
-        struct curl_slist *slist1 = NULL;
-        //slist1 = curl_slist_append(slist1, "Content-Type: application/json");
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-        //curl_easy_setopt(curl, CURLOPT_READDATA, NULL);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        std::cout<<"performing curl..."<<std::endl;
-        res = curl_easy_perform(curl);
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
-        std::cout<<"res = "<<res<<std::endl;
-        std::cout<<"readBuffer = "<<readBuffer<<std::endl;
-        std::cout<<"http_code = "<<http_code<<std::endl;
-        curl_easy_cleanup(curl);
-    }
-    return nlohmann::json::parse(readBuffer);
+    CurlMession cm = CurlMession(url);
+    cm.preparePut();
+    return cm.execute();
+}
+
+nlohmann::json put(std::string url, nlohmann::json jsonData){
+    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    CurlMession cm = CurlMession(url);
+    cm.preparePut(jsonData);
+    return cm.execute();
 }
 
 }
