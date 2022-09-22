@@ -15,7 +15,7 @@ namespace backend {
     std::string createPayloadList(std::string type);
     void attachPayloadList(std::string plName, std::string gtName);
     void lockGlobalTag(std::string name);
-    void createPayloadIOV(std::string plUrl, int majorIov, int minorIov);
-    void createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
+    std::string createPayloadIOV(std::string plUrl, int majorIov, int minorIov);
+    std::string createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
     void attachPayloadIOV(std::string plListName, int plIovId);
 }

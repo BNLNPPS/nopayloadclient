@@ -55,5 +55,8 @@ void attachPayloadList(std::string plName, std::string gtName){
     curlwrapper::post(base_url + "pl_attach", j);
 }
 
+void lockGlobalTag(std::string name){
+    curlwrapper::put(base_url + "gt_change_status/" + name + "/locked");
+}
 
 }
