@@ -14,6 +14,22 @@ nlohmann::json getGlobalTags() {
     return curlwrapper::get(base_url + "globalTags");
 }
 
+nlohmann::json getGlobalTagStatuses() {
+    return curlwrapper::get(base_url + "gtstatus");
+}
+
+nlohmann::json getGlobalTagTypes() {
+    return curlwrapper::get(base_url + "gttype");
+}
+
+nlohmann::json getPayloadTypes() {
+    return curlwrapper::get(base_url + "pt");
+}
+
+nlohmann::json getPayloadLists() {
+    return curlwrapper::get(base_url + "pl");
+}
+
 // Writing
 void createGlobalTagType(std::string type){
     nlohmann::json j;
@@ -57,6 +73,10 @@ void attachPayloadList(std::string gtName, std::string plName){
 
 void lockGlobalTag(std::string name){
     curlwrapper::put(base_url + "gt_change_status/" + name + "/locked");
+}
+
+void unlockGlobalTag(std::string name){
+    curlwrapper::put(base_url + "gt_change_status/" + name + "/unlocked");
 }
 
 int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){

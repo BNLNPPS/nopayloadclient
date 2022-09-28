@@ -1,9 +1,19 @@
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
 #include <curlwrapper.hpp>
+
+/*
+struct MyException : public std::exception {
+   const char * what () const throw () {
+      return "C++ Exception";
+   }
+};
+*/
+
 
 namespace curlwrapper{
 
@@ -21,6 +31,7 @@ class CurlMession{
         std::string url;
         struct curl_slist *slist1 = NULL;
         std::string jsonStr;
+        int n_retries = 10;
     public:
         CurlMession(std::string _url){
             url = _url;
@@ -29,23 +40,46 @@ class CurlMession{
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         }
+
         void printResults(){
             std::cout<<"res = "<<res<<std::endl;
             std::cout<<"readBuffer = "<<readBuffer<<std::endl;
             std::cout<<"http_code = "<<http_code<<std::endl;
         }
+
+        nlohmann::json try_execute(){
+            nlohmann::json answer;
+            for(int i = 0; i<n_retries; i++){
+                std::cout<<"i = "<<i<<std::endl;
+                try{return execute();}
+                catch (std::runtime_error& e){
+                    std::cout<<e.what()<<std::endl;
+                }
+            }
+            std::string const msg = "Failed after n_retries = " + std::to_string(n_retries);
+            throw std::runtime_error(msg);
+            return answer;
+        }
+
         nlohmann::json execute(){
             res = curl_easy_perform(curl);
+            if ( res!=0 ){
+                std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(res);
+                throw std::runtime_error(msg);
+            }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
             curl_easy_cleanup(curl);
             printResults();
             return nlohmann::json::parse(readBuffer);
         }
+
         void prepareGet(){
         }
+
         void preparePut(){
             curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
         }
+
         void preparePost(nlohmann::json jsonData){
             slist1 = curl_slist_append(slist1, "Content-Type: application/json");
             jsonStr = jsonData.dump();
@@ -53,6 +87,7 @@ class CurlMession{
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
         }
+
         void preparePut(nlohmann::json jsonData){
             preparePut();
             preparePost(jsonData);
@@ -63,28 +98,29 @@ nlohmann::json get(std::string url){
     std::cout<<"backend::get(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.prepareGet();
-    return cm.execute();
+    return cm.try_execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
     std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
+    std::cout<<"created CurlMession cm"<<std::endl;
     cm.preparePost(jsonData);
-    return cm.execute();
+    return cm.try_execute();
 }
 
 nlohmann::json put(std::string url){
     std::cout<<"backend::put(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut();
-    return cm.execute();
+    return cm.try_execute();
 }
 
 nlohmann::json put(std::string url, nlohmann::json jsonData){
     std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut(jsonData);
-    return cm.execute();
+    return cm.try_execute();
 }
 
 }
