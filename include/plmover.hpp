@@ -11,5 +11,3 @@ namespace plmover {
     void prepareDirectories(std::string globalTag, std::string payloadType);
     void prepareDirectory(std::string dirName);
 }
-
-

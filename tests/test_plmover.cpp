@@ -1,6 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <cstdio>
 #include <vector>
 #include "plmover.hpp"
 
