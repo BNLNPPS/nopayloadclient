@@ -9,5 +9,4 @@ namespace nopayloadclient {
     // Writing
     void insertPayload(std::string gtName, std::string gtType, std::string fileUrl, int iovStart);
 
-
 }

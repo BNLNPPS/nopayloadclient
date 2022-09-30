@@ -5,6 +5,7 @@ set(source_files
     interface.cpp
     backend.cpp
     curlwrapper.cpp
+    plmover.cpp
 )
 
 add_library(nopayloadclient ${source_files})

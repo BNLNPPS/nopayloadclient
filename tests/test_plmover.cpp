@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
-#include "nopayloadclient.hpp"
+#include "plmover.hpp"
 
 int main()
 {
-  nopayloadclient::insertPayload("my_gt", "testtype", "data/prompt/data.dat", 0);
+  plmover::fileExists("data/prompt/data.dat");
   //std::vector<std::string> globalTagNames = nopayloadclient::getGlobalTagNames();
   //std::cout<<"globalTagNames =";
   //for (auto i: globalTagNames){std::cout<<" "<<i;}

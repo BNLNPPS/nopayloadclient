@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
@@ -8,6 +9,14 @@
 std::string base_url = "http://localhost:8000/api/cdb_rest/";
 
 namespace backend {
+
+std::vector<std::string> _getItemNames(nlohmann::json j) {
+    std::vector<std::string> name_list;
+    for (const auto& obj: j){
+        name_list.push_back(obj["name"]);
+    }
+    return name_list;
+}
 
 // Reading
 nlohmann::json getGlobalTags() {
@@ -28,6 +37,16 @@ nlohmann::json getPayloadTypes() {
 
 nlohmann::json getPayloadLists() {
     return curlwrapper::get(base_url + "pl");
+}
+
+bool gtExists(std::string gtName){
+    std::vector<std::string> gtns = _getItemNames(getGlobalTags());
+    return std::find(gtns.begin(), gtns.end(), gtName) != gtns.end();
+}
+
+bool plTypeExists(std::string plTypeName){
+    std::vector<std::string> ptns = _getItemNames(getPayloadTypes());
+    return std::find(ptns.begin(), ptns.end(), plTypeName) != ptns.end();
 }
 
 // Writing

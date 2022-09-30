@@ -10,6 +10,9 @@ namespace backend {
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists();
+    bool gtExists(std::string gtName);
+    bool plTypeExists(std::string plTypeName);
+    std::vector<std::string> _getItemNames(nlohmann::json j);
 
 
     // Writing

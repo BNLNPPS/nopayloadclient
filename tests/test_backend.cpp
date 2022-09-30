@@ -20,7 +20,8 @@ bool hasItemWithName(nlohmann::json j, std::string name){
 
 int main()
 {
-  /*
+  //system("sh ../../scripts/reset_db.sh");
+
   backend::createGlobalTagStatus("locked");
   if (!hasItemWithName(backend::getGlobalTagStatuses(), "locked")){
     return 1;
@@ -42,7 +43,7 @@ int main()
   if (!hasItemWithName(backend::getPayloadTypes(), "my_pl_type")){
     return 1;
   }
-  */
+
   std::string pll_name = backend::createPayloadList("my_pl_type");
   if (!hasItemWithName(backend::getPayloadLists(), pll_name)){
     return 1;
