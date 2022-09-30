@@ -1,12 +1,62 @@
 #include <iostream>
 #include <sys/stat.h>
+#include <string>
+#include <filesystem>
+#include <unistd.h>
 
+//std::string basePath = "/cvmfs/conditions/payloads/";
+std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/plstorage/";
+
+namespace fs = std::filesystem;
 namespace plmover {
-bool fileExists(const std::string fileUrl){
-    std::cout<<"plmover::fileExists(fileUrl="<<fileUrl<<")"<<std::endl;
+
+bool fileExists(std::string fileUrl){
     struct stat buffer;
-    bool exists = (stat (fileUrl.c_str(), &buffer) ==0);
-    std::cout<<"exists = "<<exists<<std::endl;
-    return false;
+    return (stat (fileUrl.c_str(), &buffer) ==0);
 }
+
+void checkLocalFile(std::string localUrl){
+    if (!fileExists(localUrl)){
+        std::cout<<"Local payload file does not exist. Exiting..."<<std::endl;
+        exit(1);
+    }
+}
+
+void checkRemoteFile(std::string remoteUrl){
+    if (fileExists(remoteUrl)){
+        std::cout<<"Remote payload file already exists. Exiting..."<<std::endl;
+        exit(1);
+    }
+}
+
+std::string getRemoteUrl(std::string globalTag, std::string payloadType, int iovStart){
+    std::string newPath = basePath;
+    newPath += globalTag + "/";
+    newPath += payloadType + "/";
+    newPath += std::to_string(iovStart);
+    newPath += ".dat";
+    return newPath;
+}
+
+void prepareDirectory(std::string dirName){
+    if (!fs::is_directory(dirName) || !fs::exists(dirName)) {
+        fs::create_directory(dirName);
+    }
+}
+
+void prepareDirectories(std::string globalTag, std::string payloadType){
+    prepareDirectory(basePath + "/" + globalTag);
+    prepareDirectory(basePath + "/" + globalTag + "/" + payloadType);
+}
+
+void uploadFile(std::string localUrl, std::string globalTag,
+                std::string payloadType, int iovStart){
+    std::cout<<"uploadFile(localUrl="<<localUrl<<")"<<std::endl;
+    std::string remoteUrl = getRemoteUrl(globalTag, payloadType, iovStart);
+    checkLocalFile(localUrl);
+    checkRemoteFile(remoteUrl);
+    prepareDirectories(globalTag, payloadType);
+    std::filesystem::copy_file(localUrl, remoteUrl);
+}
+
 }
