@@ -13,6 +13,6 @@ target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/incl
 target_include_directories(test_backend PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(test_plmover PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-#add_test(NAME test_nopayloadclient COMMAND ./test_nopayloadclient)
+add_test(NAME test_nopayloadclient COMMAND ./test_nopayloadclient)
 #add_test(NAME test_backend COMMAND ./test_backend)
-add_test(NAME test_plmover COMMAND ./test_plmover)
+#add_test(NAME test_plmover COMMAND ./test_plmover)

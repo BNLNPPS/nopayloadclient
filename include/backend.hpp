@@ -10,10 +10,16 @@ namespace backend {
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists();
+    nlohmann::json getPayloadLists(std::string gtName);
+    nlohmann::json getGlobalTagMap(std::string gtName);
+    nlohmann::json getPayloadIOVs(std::string gtName, int majorIov);
+    nlohmann::json getPayloadIOVs(std::string gtName, int minorIov, int majorIov);
+    std::string getPayloadListName(std::string gtName, std::string plType);
     bool gtExists(std::string gtName);
-    bool plTypeExists(std::string plTypeName);
+    bool plTypeExists(std::string plType);
+    void checkGtExists(std::string gtName);
+    void checkPlTypeExists(std::string plType);
     std::vector<std::string> _getItemNames(nlohmann::json j);
-
 
     // Writing
     void createGlobalTagType(std::string type);

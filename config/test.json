@@ -1,14 +1,6 @@
 {
-  "host":    "npdb-test-test.apps.rcf.bnl.gov",
-  "port":    "80",
+  "host":    "localhost",
+  "port":    "8000",
   "apiroot": "/api/cdb_rest",
-  "apiver":  "",
-  "path": [
-    "/cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core/calibrations/DBTest/"
-  ],
-  "use_cache": true,
-  "dry_run": false,
-  "verbosity": 1,
-  "retry_times": 5,
-  "retry_max_delay": 60
+  "payload_path": "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/plstorage/",
 }

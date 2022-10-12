@@ -16,6 +16,7 @@ bool fileExists(std::string fileUrl){
 }
 
 void checkLocalFile(std::string localUrl){
+    std::cout<<"checkLocalFile(localUrl="<<localUrl<<")"<<std::endl;
     if (!fileExists(localUrl)){
         std::cout<<"Local payload file does not exist. Exiting..."<<std::endl;
         exit(1);

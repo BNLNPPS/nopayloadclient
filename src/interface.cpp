@@ -10,35 +10,26 @@
 namespace nopayloadclient {
 
 // Reading
-
-
-
-// Writing
-void insertPayload(std::string gtName, std::string gtType, std::string fileUrl, int iovStart){
-    std::cout<<"insertPayload()"<<std::endl;
-    if (!backend::gtExists(gtName)){
-        std::cout<<"No global tag with name "<<gtName<<" exists."<<std::endl;
-        return;
+std::string get(std::string gtName, std::string plType, int runNumber){
+    nlohmann::json j = backend::getGlobalTagMap(gtName);
+    nlohmann::json payloadLists = j["payload_lists"];
+    for (auto pll : payloadLists){
+        std::cout<<"pll = "<<pll.dump(4)<<std::endl;
     }
-    if (!backend::plTypeExists(gtType)){
-        std::cout<<"No payload type "<<gtType<<" exists."<<std::endl;
-        return;
-    }
-    if (!plmover::fileExists(fileUrl)){
-        std::cout<<"File "<<fileUrl<<" does not exist."<<std::endl;
-        return;
-    }
-
-    /*
-    std::vector<std::string> globalTagNames = getGlobalTagNames();
-    for (auto i: globalTagNames){
-        std::cout<<"i = "<<i<<std::endl;
-    }
-    bool found = (std::find(globalTagNames.begin(), globalTagNames.end(), gtName) != globalTagNames.end());
-    std::cout<<"found = "<<found<<std::endl;
-    */
-//    backend::createGlobalTagObject(gtName, "locked", gtType);
+    std::cout<<"j = "<<j.dump(4)<<std::endl;
+    std::cout<<"payLoadLists = "<<payloadLists.dump(4)<<std::endl;
+    return "hello fren";
 }
 
+// Writing
+void insertPayload(std::string gtName, std::string plType, std::string fileUrl, int iovStart){
+    std::cout<<"insertPayload()"<<std::endl;
+    backend::checkGtExists(gtName);
+    backend::checkPlTypeExists(plType);
+    int piovId = backend::createPayloadIOV(fileUrl, 1, iovStart);// set major iov to 1 for now
+    std::string pllName = backend::getPayloadListName(gtName, plType);
+    backend::attachPayloadIOV(pllName, piovId);
+    plmover::uploadFile(fileUrl, gtName, plType, iovStart);
+}
 
 }

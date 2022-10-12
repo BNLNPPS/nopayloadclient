@@ -39,15 +39,57 @@ nlohmann::json getPayloadLists() {
     return curlwrapper::get(base_url + "pl");
 }
 
+nlohmann::json getPayloadLists(std::string gtName) {
+    return curlwrapper::get(base_url + "gtPayloadLists/" + gtName);
+}
+
+nlohmann::json getGlobalTagMap(std::string gtName){
+    return curlwrapper::get(base_url + "globalTag/" + gtName);
+}
+
+nlohmann::json getPayloadIOVs(std::string gtName, int minorIov, int majorIov){
+    return curlwrapper::get(base_url + "payloadiovs/?gtName=" + gtName + "&majorIOV=" + std::to_string(majorIov) + "&minorIOV=" + std::to_string(minorIov));
+    //return curlwrapper::get(base_url + "payloadiovs/?gtName=" + gtName);
+}
+
+nlohmann::json getPayloadIOVs(std::string gtName, int minorIov){
+    return curlwrapper::get(base_url + "payloadiovs/?gtName=" + gtName + "&majorIOV=0&minorIOV=" + std::to_string(minorIov));
+}
+
 bool gtExists(std::string gtName){
     std::vector<std::string> gtns = _getItemNames(getGlobalTags());
     return std::find(gtns.begin(), gtns.end(), gtName) != gtns.end();
 }
 
-bool plTypeExists(std::string plTypeName){
+bool plTypeExists(std::string plType){
     std::vector<std::string> ptns = _getItemNames(getPayloadTypes());
-    return std::find(ptns.begin(), ptns.end(), plTypeName) != ptns.end();
+    return std::find(ptns.begin(), ptns.end(), plType) != ptns.end();
 }
+
+void checkGtExists(std::string gtName){
+    if (!gtExists(gtName)){
+        std::cout<<"No global tag with name '"<<gtName<<"' exists. Exiting ..."<<std::endl;
+        exit(1);
+    }
+}
+
+void checkPlTypeExists(std::string plType){
+    if (!plTypeExists(plType)){
+        std::cout<<"No payload type '"<<plType<<"' exists. Exiting..."<<std::endl;
+        exit(1);
+    }
+}
+
+std::string getPayloadListName(std::string gtName, std::string plType){
+    nlohmann::json j = getPayloadLists(gtName);
+    if (!j.contains(plType)){
+        std::cout<<"global tag '"<<gtName<<"' does not have payload type '"<<plType<<"'. Exiting..."<<std::endl;
+        exit(1);
+    }
+    return j[plType];
+}
+
+
 
 // Writing
 void createGlobalTagType(std::string type){
