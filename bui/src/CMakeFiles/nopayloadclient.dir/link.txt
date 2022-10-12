@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libnopayloadclient.a CMakeFiles/nopayloadclient.dir/interface.cpp.o CMakeFiles/nopayloadclient.dir/backend.cpp.o CMakeFiles/nopayloadclient.dir/curlwrapper.cpp.o CMakeFiles/nopayloadclient.dir/plmover.cpp.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libnopayloadclient.a
