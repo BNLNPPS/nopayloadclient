@@ -6,7 +6,8 @@
 
 #include <curlwrapper.hpp>
 
-std::string base_url = "http://localhost:8000/api/cdb_rest/";
+//std::string base_url = "http://localhost:8000/api/cdb_rest/";
+std::string base_url = "http://linostest.apps.usatlas.bnl.gov/api/cdb_rest/";
 
 namespace backend {
 
@@ -107,6 +108,7 @@ void createGlobalTagStatus(std::string status){
 void createGlobalTagObject(std::string name, std::string status, std::string type) {
     nlohmann::json j;
     j["status"] = status;
+    //j["GlobalTagStatus"] = status;
     j["name"] = name;
     j["type"] = type;
     curlwrapper::post(base_url + "gt", j);

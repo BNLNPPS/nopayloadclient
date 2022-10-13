@@ -1,9 +1,9 @@
 #include <iostream>
+#include "../include/nopayloadclient.hpp"
 
-#include <nopayloadclient/<nopayloadclient.h>
-
-int main(int argc, char **argv)
+int main()
 {
-  nopayloadclient::sayHello();
+  std::cout<<"Hello, world!"<<std::endl;
+  //  nopayloadclient::get("my_gt", "my_pl_type", 1);
   return 0;
 }
