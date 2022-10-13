@@ -11,14 +11,14 @@ namespace nopayloadclient {
 
 // Reading
 std::string get(std::string gtName, std::string plType, int runNumber){
-    nlohmann::json j = backend::getGlobalTagMap(gtName);
-    nlohmann::json payloadLists = j["payload_lists"];
-    for (auto pll : payloadLists){
-        std::cout<<"pll = "<<pll.dump(4)<<std::endl;
+    nlohmann::json j = backend::getPayloadIOVs(gtName, 0, runNumber);
+    for (nlohmann::json piov : j){
+        if (std::string(piov["payload_type"]) == plType){
+            return std::string(piov["payload_iov"][0]["payload_url"]);
+        }
     }
-    std::cout<<"j = "<<j.dump(4)<<std::endl;
-    std::cout<<"payLoadLists = "<<payloadLists.dump(4)<<std::endl;
-    return "hello fren";
+    std::cout<<"Could not find payload for type "<<plType<<std::endl;
+    return "";
 }
 
 // Writing
