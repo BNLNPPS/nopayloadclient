@@ -18,8 +18,8 @@ nlohmann::json fromFile(std::string filePath){
 nlohmann::json fromFile(){
     char* confPath = std::getenv("NOPAYLOADCLIENT_CONF");
     if (confPath==NULL){
-        std::cout<<"variable NOPAYLOADCLIENT_CONF not set. Using default..."<<std::endl;
-        return fromFile("../../config/test.json");
+        std::cout<<"variable NOPAYLOADCLIENT_CONF not set. Using default.json..."<<std::endl;
+        return fromFile("../../config/default.json");
     }
     return fromFile(confPath);
 }
