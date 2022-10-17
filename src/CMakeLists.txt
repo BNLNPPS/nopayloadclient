@@ -1,11 +1,9 @@
-configure_file(config.h.in config.h @ONLY)
-configure_file(version.h.in version.h @ONLY)
-
 set(source_files
     interface.cpp
     backend.cpp
     curlwrapper.cpp
     plmover.cpp
+    config.cpp
 )
 
 add_library(nopayloadclient ${source_files})

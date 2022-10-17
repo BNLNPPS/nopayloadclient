@@ -4,10 +4,12 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
+#include <config.hpp>
 #include <curlwrapper.hpp>
 
-//std::string base_url = "http://localhost:8000/api/cdb_rest/";
-std::string base_url = "http://linostest.apps.usatlas.bnl.gov/api/cdb_rest/";
+std::string base_url = "http://localhost:8000/api/cdb_rest/";
+//std::string base_url = "http://linostest.apps.usatlas.bnl.gov/api/cdb_rest/";
+
 
 namespace backend {
 
