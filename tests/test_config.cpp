@@ -2,6 +2,7 @@
 #include <vector>
 #include "config.hpp"
 #include "backend.hpp"
+#include "plmover.hpp"
 #include <nlohmann/json.hpp>
 
 int main()

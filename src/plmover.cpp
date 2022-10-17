@@ -4,8 +4,9 @@
 #include <filesystem>
 #include <unistd.h>
 
-//std::string basePath = "/cvmfs/conditions/payloads/";
-std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/plstorage/";
+#include <config.hpp>
+
+std::string basePath = config::rawDict()["pl_path"];
 
 namespace fs = std::filesystem;
 namespace plmover {
