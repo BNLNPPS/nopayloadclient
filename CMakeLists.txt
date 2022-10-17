@@ -28,7 +28,7 @@ set(NOPAYLOADCLIENT_CMAKE_PROJECT_CONFIG_FILE  "${NOPAYLOADCLIENT_CMAKE_CONFIG_D
 find_package(CURL REQUIRED)
 
 add_subdirectory(src)
-#add_subdirectory(examples)
+add_subdirectory(examples)
 
 # Install files and export configs
 include(CMakePackageConfigHelpers)
@@ -54,7 +54,6 @@ install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/config"
     DESTINATION ${NOPAYLOADCLIENT_DATA_INSTALL_DIR}
 )
-
 
 # Set up tests
 include(CTest)

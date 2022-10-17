@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/nopayloadclient.hpp"
+#include "nopayloadclient.hpp"
 
 int main()
 {
