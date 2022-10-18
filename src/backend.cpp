@@ -92,24 +92,10 @@ std::string getPayloadListName(std::string gtName, std::string plType){
 
 
 // Writing
-void createGlobalTagType(std::string type){
-    nlohmann::json j;
-    j["name"] = type;
-    curlwrapper::post(config::apiUrl() + "gttype", j);
-}
-
 void createGlobalTagStatus(std::string status){
     nlohmann::json j;
     j["name"] = status;
     curlwrapper::post(config::apiUrl() + "gtstatus", j);
-}
-
-void createGlobalTagObject(std::string name, std::string status, std::string type) {
-    nlohmann::json j;
-    j["status"] = status;
-    j["name"] = name;
-    j["type"] = type;
-    curlwrapper::post(config::apiUrl() + "gt", j);
 }
 
 void createGlobalTagObject(std::string name, std::string status) {

@@ -22,10 +22,8 @@ namespace backend {
     std::vector<std::string> _getItemNames(nlohmann::json j);
 
     // Writing
-    void createGlobalTagType(std::string type);
     void createGlobalTagStatus(std::string status);
     void createGlobalTagObject(std::string name, std::string status);
-    void createGlobalTagObject(std::string name, std::string status, std::string type);
     void createPayloadType(std::string type);
     std::string createPayloadList(std::string type);
     void attachPayloadList(std::string plName, std::string gtName);
