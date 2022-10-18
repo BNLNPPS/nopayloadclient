@@ -1,3 +1,5 @@
+configure_file(config.h.in config.h @ONLY)
+
 set(source_files
     interface.cpp
     backend.cpp
