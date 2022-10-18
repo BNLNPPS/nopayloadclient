@@ -24,6 +24,7 @@ namespace backend {
     // Writing
     void createGlobalTagType(std::string type);
     void createGlobalTagStatus(std::string status);
+    void createGlobalTagObject(std::string name, std::string status);
     void createGlobalTagObject(std::string name, std::string status, std::string type);
     void createPayloadType(std::string type);
     std::string createPayloadList(std::string type);

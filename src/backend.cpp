@@ -107,9 +107,15 @@ void createGlobalTagStatus(std::string status){
 void createGlobalTagObject(std::string name, std::string status, std::string type) {
     nlohmann::json j;
     j["status"] = status;
-    //j["GlobalTagStatus"] = status;
     j["name"] = name;
     j["type"] = type;
+    curlwrapper::post(config::apiUrl() + "gt", j);
+}
+
+void createGlobalTagObject(std::string name, std::string status) {
+    nlohmann::json j;
+    j["status"] = status;
+    j["name"] = name;
     curlwrapper::post(config::apiUrl() + "gt", j);
 }
 

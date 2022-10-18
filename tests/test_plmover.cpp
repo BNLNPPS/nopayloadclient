@@ -4,7 +4,7 @@
 
 int main()
 {
-  std::string localUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/prompt/data.dat";
+  std::string localUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat";
   std::string remoteUrl = plmover::getRemoteUrl("my_gt", "my_pl_type", 1);
   if (!plmover::fileExists(localUrl)) return 1;
   if (plmover::fileExists("nonexistingfile")) return 1;
