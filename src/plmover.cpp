@@ -6,7 +6,7 @@
 
 #include <config.hpp>
 
-std::string basePath = config::rawDict()["pl_path"];
+std::string basePath = config::rawDict()["remote_pl_dir"];
 
 namespace fs = std::filesystem;
 namespace plmover {

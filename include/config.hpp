@@ -10,4 +10,6 @@ nlohmann::json fromFile();
 nlohmann::json rawDict();
 std::string apiUrl();
 
+void _checkKeys(nlohmann::json j);
+
 }

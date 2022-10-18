@@ -1,6 +1,6 @@
 {
   "base_url": "localhost:8000",
   "api_res":  "/api/cdb_rest/",
-  "pl_path":  "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/plstorage/",
-  "n_retries": 7
+  "remote_pl_dir": "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/remote/",
+  "n_retries": 5
 }
