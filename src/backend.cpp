@@ -90,7 +90,6 @@ std::string getPayloadListName(std::string gtName, std::string plType){
 }
 
 
-
 // Writing
 void createGlobalTagStatus(std::string status){
     nlohmann::json j;

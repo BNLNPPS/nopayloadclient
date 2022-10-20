@@ -4,10 +4,9 @@
 
 namespace nopayloadclient {
     // Reading
-    std::string get(std::string gtName, std::string plType, int runNumber);
-    std::vector<std::string> getGlobalTagNames();
+    nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov);
 
     // Writing
-    void insertPayload(std::string gtName, std::string plType, std::string fileUrl, int iovStart);
-
+    nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
+                                 int majorIovStart, int minorIovStart);
 }

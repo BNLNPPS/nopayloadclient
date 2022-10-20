@@ -10,26 +10,26 @@
 namespace nopayloadclient {
 
 // Reading
-std::string get(std::string gtName, std::string plType, int runNumber){
-    nlohmann::json j = backend::getPayloadIOVs(gtName, 0, runNumber);
+nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov){
+    nlohmann::json j = backend::getPayloadIOVs(gtName, majorIov, minorIov);
     for (nlohmann::json piov : j){
         if (std::string(piov["payload_type"]) == plType){
-            return std::string(piov["payload_iov"][0]["payload_url"]);
+            std::string remoteUrl = piov["payload_iov"][0]["payload_url"];
+            return nlohmann::json::object({{"code", 200}, {"msg", remoteUrl}});
         }
     }
-    std::cout<<"Could not find payload for type "<<plType<<std::endl;
-    return "";
+    return nlohmann::json::object({{"code", 404}, {"msg", "Could not find payload for type "+plType}});
 }
 
 // Writing
-void insertPayload(std::string gtName, std::string plType, std::string fileUrl, int iovStart){
-    std::cout<<"insertPayload()"<<std::endl;
+nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
+                             int majorIovStart, int minorIovStart){
     backend::checkGtExists(gtName);
     backend::checkPlTypeExists(plType);
-    int piovId = backend::createPayloadIOV(fileUrl, 1, iovStart);// set major iov to 1 for now
+    int piovId = backend::createPayloadIOV(fileUrl, majorIovStart, minorIovStart);
     std::string pllName = backend::getPayloadListName(gtName, plType);
     backend::attachPayloadIOV(pllName, piovId);
-    plmover::uploadFile(fileUrl, gtName, plType, iovStart);
+    plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
 }
 
 }

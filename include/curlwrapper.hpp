@@ -8,7 +8,7 @@ namespace curlwrapper {
 struct Answer {
   CURLcode res;
   std::string readBuffer;
-  long http_code = 0;
+  long httpCode = 0;
 };
 
 // Reading

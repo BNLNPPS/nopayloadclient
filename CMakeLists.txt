@@ -27,6 +27,7 @@ set(NOPAYLOADCLIENT_SOURCE_DIR                 "${CMAKE_SOURCE_DIR}")
 
 # Set up external dependencies
 find_package(CURL REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(examples)

@@ -22,7 +22,7 @@ int main()
 {
   //system("sh ../../scripts/reset_db.sh");
 
-
+  /*
   backend::createGlobalTagStatus("locked");
   if (!hasItemWithName(backend::getGlobalTagStatuses(), "locked")){
     return 1;
@@ -31,14 +31,15 @@ int main()
   if (!hasItemWithName(backend::getGlobalTagStatuses(), "unlocked")){
     return 1;
   }
+  */
 
   nlohmann::json j = backend::getGlobalTagStatuses();
-  std::cout<<"j = "<<j<<std::endl;
   backend::createGlobalTagObject("my_gt", "unlocked");
   if (!hasItemWithName(backend::getGlobalTags(), "my_gt")){
     return 1;
   }
 
+  /*
   backend::createPayloadType("my_pl_type");
   if (!hasItemWithName(backend::getPayloadTypes(), "my_pl_type")){
     return 1;
@@ -73,5 +74,6 @@ int main()
   my_gt = getItemWithName(backend::getGlobalTags(), "my_gt");
   std::cout<<backend::getGlobalTags()<<std::endl;
   return 0;
+  */
 }
 

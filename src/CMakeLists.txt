@@ -8,8 +8,10 @@ set(source_files
     config.cpp
 )
 
+
 add_library(nopayloadclient ${source_files})
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
+#target_link_libraries(nopayloadclient PUBLIC OpenSSL)
 
 target_include_directories(nopayloadclient
     INTERFACE

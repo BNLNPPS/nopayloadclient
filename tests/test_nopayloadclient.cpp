@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <nlohmann/json.hpp>
 #include "nopayloadclient.hpp"
 
 int main()
@@ -12,9 +13,10 @@ int main()
   //nopayloadclient::insertPayload("my_gt", "my_pl_type", "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/prompt/data.dat", 1);
 
   // Reading
-  std::string remoteUrl = nopayloadclient::get("my_gt", "my_pl_type", 1);
-  std::string remoteUrl2 = nopayloadclient::get("my_gt", "your_pl_type", 1);
-  std::cout<<"remoteUrl = "<<remoteUrl<<std::endl;
+  nlohmann::json ans1 = nopayloadclient::get("my_gt", "my_pl_type", 1, 1);
+  //std::string remoteUrl = nopayloadclient::get("my_gt", "my_pl_type", 1, 1);
+  //std::string remoteUrl2 = nopayloadclient::get("my_gt", "your_pl_type", 1, 1);
+  std::cout<<"ans1 = "<<ans1<<std::endl;
 
   return EXIT_SUCCESS;
 }

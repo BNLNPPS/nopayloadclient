@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
+#include <chrono>
 
 #include <curlwrapper.hpp>
 
@@ -24,10 +25,8 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 
 class CurlMession{
     private:
-        CURLcode res;
-        std::string readBuffer;
+        Answer ans;
         CURL *curl;
-        long http_code = 0;
         std::string url;
         struct curl_slist *slist1 = NULL;
         std::string jsonStr;
@@ -38,21 +37,21 @@ class CurlMession{
             curl = curl_easy_init();
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ans.readBuffer);
         }
 
         void printResults(){
-            std::cout<<"res = "<<res<<std::endl;
-            std::cout<<"readBuffer = "<<readBuffer<<std::endl;
-            std::cout<<"http_code = "<<http_code<<std::endl;
+            std::cout<<"res = "<<ans.res<<std::endl;
+            std::cout<<"readBuffer = "<<ans.readBuffer<<std::endl;
+            std::cout<<"httpCode = "<<ans.httpCode<<std::endl;
         }
 
         nlohmann::json try_execute(){
             nlohmann::json answer;
             for(int i = 0; i<n_retries; i++){
-                std::cout<<"i = "<<i<<std::endl;
                 try{return execute();}
                 catch (std::runtime_error& e){
+                    std::chrono::seconds(1);
                     std::cout<<e.what()<<std::endl;
                 }
             }
@@ -62,15 +61,15 @@ class CurlMession{
         }
 
         nlohmann::json execute(){
-            res = curl_easy_perform(curl);
-            if ( res!=0 ){
-                std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(res);
+            ans.res = curl_easy_perform(curl);
+            if ( ans.res!=0 ){
+                std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(ans.res);
                 throw std::runtime_error(msg);
             }
-            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
             curl_easy_cleanup(curl);
             printResults();
-            return nlohmann::json::parse(readBuffer);
+            return nlohmann::json::parse(ans.readBuffer);
         }
 
         void prepareGet(){
