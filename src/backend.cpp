@@ -6,6 +6,7 @@
 
 #include <config.hpp>
 #include <curlwrapper.hpp>
+#include <exception.hpp>
 
 
 namespace backend {
@@ -49,11 +50,10 @@ nlohmann::json getGlobalTagMap(std::string gtName){
 
 nlohmann::json getPayloadIOVs(std::string gtName, int minorIov, int majorIov){
     return curlwrapper::get(config::apiUrl() + "payloadiovs/?gtName=" + gtName + "&majorIOV=" + std::to_string(majorIov) + "&minorIOV=" + std::to_string(minorIov));
-    //return curlwrapper::get(config::apiUrl() + "payloadiovs/?gtName=" + gtName);
 }
 
 nlohmann::json getPayloadIOVs(std::string gtName, int minorIov){
-    return curlwrapper::get(config::apiUrl() + "payloadiovs/?gtName=" + gtName + "&majorIOV=0&minorIOV=" + std::to_string(minorIov));
+    return getPayloadIOVs(gtName, minorIov, 0);
 }
 
 bool gtExists(std::string gtName){
@@ -68,23 +68,23 @@ bool plTypeExists(std::string plType){
 
 void checkGtExists(std::string gtName){
     if (!gtExists(gtName)){
-        std::cout<<"No global tag with name '"<<gtName<<"' exists. Exiting ..."<<std::endl;
-        exit(1);
+        std::string msg = "no global tag with name '"+gtName+"' exists";
+        throw NoPayloadException(msg);
     }
 }
 
 void checkPlTypeExists(std::string plType){
     if (!plTypeExists(plType)){
-        std::cout<<"No payload type '"<<plType<<"' exists. Exiting..."<<std::endl;
-        exit(1);
+        std::string msg = "no payload type with name '"+plType+"' exists";
+        throw NoPayloadException(msg);
     }
 }
 
 std::string getPayloadListName(std::string gtName, std::string plType){
     nlohmann::json j = getPayloadLists(gtName);
     if (!j.contains(plType)){
-        std::cout<<"global tag '"<<gtName<<"' does not have payload type '"<<plType<<"'. Exiting..."<<std::endl;
-        exit(1);
+        std::string msg = "global tag '"+gtName+"' does not have payload type '"+plType;
+        throw NoPayloadException(msg);
     }
     return j[plType];
 }

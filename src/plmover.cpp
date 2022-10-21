@@ -77,6 +77,9 @@ void prepareDirectory(std::string dirName){
 }
 
 void prepareDirectories(std::string globalTag, std::string payloadType){
+    if (!fs::exists(basePath)){
+        throw NoPayloadException("remote payload directory "+basePath+" does not exist");
+    }
     prepareDirectory(basePath + "/" + globalTag);
     prepareDirectory(basePath + "/" + globalTag + "/" + payloadType);
 }
@@ -87,8 +90,11 @@ void uploadFile(std::string localUrl, std::string globalTag, std::string payload
     std::string remoteUrl = getRemoteUrl(globalTag, payloadType, majorIovStart, minorIovStart);
     checkLocalFile(localUrl);
     checkRemoteFile(remoteUrl);
+    std::cout<<"preparing directories..."<<std::endl;
     prepareDirectories(globalTag, payloadType);
+    std::cout<<"copying file..."<<std::endl;
     std::filesystem::copy_file(localUrl, remoteUrl);
+    std::cout<<"comparing check sums..."<<std::endl;
     compareCheckSums(localUrl, remoteUrl);
 }
 

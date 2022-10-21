@@ -62,7 +62,7 @@ class CurlMession{
             }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
             curl_easy_cleanup(curl);
-            printResults();
+            //printResults();
             return nlohmann::json::parse(ans.readBuffer);
         }
 
@@ -76,7 +76,7 @@ class CurlMession{
         void preparePost(nlohmann::json jsonData){
             slist1 = curl_slist_append(slist1, "Content-Type: application/json");
             jsonStr = jsonData.dump();
-            std::cout<<"jsonStr = "<<jsonStr<<std::endl;
+            //std::cout<<"jsonStr = "<<jsonStr<<std::endl;
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
         }
@@ -88,29 +88,29 @@ class CurlMession{
 };
 
 nlohmann::json get(std::string url){
-    std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
-    std::cout<<"created CurlMession cm"<<std::endl;
+    //std::cout<<"created CurlMession cm"<<std::endl;
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url){
-    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
+    //std::cout<<"backend::put(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut();
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut(jsonData);
     return cm.try_execute();

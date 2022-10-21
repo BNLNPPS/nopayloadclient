@@ -13,3 +13,15 @@ Change config file (default is config/default.json):
 ```
  export NOPAYLOADCLIENT_CONF="/absolute/path/to/config.json"
 ```
+
+Every method returns a nlohmann::json object with a response code and a message body in the
+following format:
+```
+{'code': <code>, 'msg': <message>}
+```
+Currently, the following response codes are implemented:
+```
+0: ok
+1: error
+```
+Examples on how to use this tool in a c++ program can be found in the ```examples/``` folder.
