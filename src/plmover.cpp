@@ -84,17 +84,18 @@ void prepareDirectories(std::string globalTag, std::string payloadType){
     prepareDirectory(basePath + "/" + globalTag + "/" + payloadType);
 }
 
-void uploadFile(std::string localUrl, std::string globalTag, std::string payloadType,
-                int majorIovStart, int minorIovStart){
-    std::cout<<"uploadFile(localUrl="<<localUrl<<")"<<std::endl;
+void prepareUpload(std::string localUrl, std::string globalTag, std::string payloadType,
+                   int majorIovStart, int minorIovStart){
     std::string remoteUrl = getRemoteUrl(globalTag, payloadType, majorIovStart, minorIovStart);
     checkLocalFile(localUrl);
     checkRemoteFile(remoteUrl);
-    std::cout<<"preparing directories..."<<std::endl;
     prepareDirectories(globalTag, payloadType);
-    std::cout<<"copying file..."<<std::endl;
+}
+
+void uploadFile(std::string localUrl, std::string globalTag, std::string payloadType,
+                int majorIovStart, int minorIovStart){
+    std::string remoteUrl = getRemoteUrl(globalTag, payloadType, majorIovStart, minorIovStart);
     std::filesystem::copy_file(localUrl, remoteUrl);
-    std::cout<<"comparing check sums..."<<std::endl;
     compareCheckSums(localUrl, remoteUrl);
 }
 

@@ -11,17 +11,11 @@ namespace nopayloadclient {
 
 void _insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                     int majorIovStart, int minorIovStart){
-    std::cout<<"checking if gt exists..."<<std::endl;
+    plmover::prepareUpload(fileUrl, gtName, plType, majorIovStart, minorIovStart);
     backend::checkGtExists(gtName);
-    std::cout<<"checking pl type exists..."<<std::endl;
-    backend::checkPlTypeExists(plType);
-    std::cout<<"creating payload IOV..."<<std::endl;
-    int piovId = backend::createPayloadIOV(fileUrl, majorIovStart, minorIovStart);
-    std::cout<<"getting pll name..."<<std::endl;
     std::string pllName = backend::getPayloadListName(gtName, plType);
-    std::cout<<"attaching payload IOV..."<<std::endl;
+    int piovId = backend::createPayloadIOV(fileUrl, majorIovStart, minorIovStart);
     backend::attachPayloadIOV(pllName, piovId);
-    std::cout<<"uploading file..."<<std::endl;
     plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
 }
 

@@ -19,20 +19,18 @@ int main()
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
-  // same for payload type that does not exist...
+  // ... same for payload type that does not exist...
   resp = nopayloadclient::insertPayload(myGt, "non_existing_type", myUrl, 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
-  // ... and if the payload file does not exist locally
+  // ... and if the payload file does not exist locally ...
   resp = nopayloadclient::insertPayload(myGt, myPt, "non_existing_file", 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
 
   resp = nopayloadclient::insertPayload("my_gt", "my_pl_type", "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat", 0, 1);
-  std::cout<<resp<<std::endl;
-  resp = nopayloadclient::insertPayload("my_gt", "my_pl_type", "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/prompt/data.dat", 1, 1);
   std::cout<<resp<<std::endl;
 
   // Reading

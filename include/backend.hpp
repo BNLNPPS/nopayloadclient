@@ -18,8 +18,6 @@ namespace backend {
     bool gtExists(std::string gtName);
     bool plTypeExists(std::string plType);
     void checkGtExists(std::string gtName);
-    void checkPlTypeExists(std::string plType);
-    std::vector<std::string> _getItemNames(nlohmann::json j);
 
     // Writing
     void createGlobalTagStatus(std::string status);

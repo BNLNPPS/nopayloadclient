@@ -8,6 +8,8 @@ namespace plmover {
     void checkRemoteFile(std::string remoteUrl);
     std::string getRemoteUrl(std::string globalTag, std::string payloadType,
                              int majorIovStart, int minorIovStart);
+    void prepareUpload(std::string localUrl, std::string globalTag,
+                       std::string payloadType, int majorIovStart, int minorIovStart);
     void uploadFile(std::string localUrl, std::string globalTag,
                     std::string payloadType, int majorIovStart, int minorIovStart);
     void prepareDirectories(std::string globalTag, std::string payloadType);

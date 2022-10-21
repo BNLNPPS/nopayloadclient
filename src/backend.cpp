@@ -73,13 +73,6 @@ void checkGtExists(std::string gtName){
     }
 }
 
-void checkPlTypeExists(std::string plType){
-    if (!plTypeExists(plType)){
-        std::string msg = "no payload type with name '"+plType+"' exists";
-        throw NoPayloadException(msg);
-    }
-}
-
 std::string getPayloadListName(std::string gtName, std::string plType){
     nlohmann::json j = getPayloadLists(gtName);
     if (!j.contains(plType)){
