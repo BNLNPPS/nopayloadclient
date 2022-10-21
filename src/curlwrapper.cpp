@@ -5,15 +5,8 @@
 #include <nlohmann/json.hpp>
 #include <chrono>
 
+#include <exception.hpp>
 #include <curlwrapper.hpp>
-
-/*
-struct MyException : public std::exception {
-   const char * what () const throw () {
-      return "C++ Exception";
-   }
-};
-*/
 
 
 namespace curlwrapper{
@@ -51,12 +44,13 @@ class CurlMession{
             for(int i = 0; i<n_retries; i++){
                 try{return execute();}
                 catch (std::runtime_error& e){
-                    std::chrono::seconds(1);
                     std::cout<<e.what()<<std::endl;
+                    std::chrono::seconds(i*i);
                 }
             }
-            std::string const msg = "Failed after n_retries = " + std::to_string(n_retries);
-            throw std::runtime_error(msg);
+            std::string msg = "curl failed after n=" + std::to_string(n_retries);
+            msg += " tries (url: " + url + ")";
+            throw NoPayloadException(msg);
             return answer;
         }
 

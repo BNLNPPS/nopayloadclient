@@ -29,7 +29,12 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
     int piovId = backend::createPayloadIOV(fileUrl, majorIovStart, minorIovStart);
     std::string pllName = backend::getPayloadListName(gtName, plType);
     backend::attachPayloadIOV(pllName, piovId);
-    plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
+    try {
+        plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
+    }
+    catch (const char* msg) {
+        std::cout<< msg <<std::endl;
+    }
 }
 
 }

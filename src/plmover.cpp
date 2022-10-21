@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <md5.hpp>
 
+#include <plmover.hpp>
+#include <exception.hpp>
 #include <config.hpp>
 
 std::string basePath = config::rawDict()["remote_pl_dir"];
@@ -21,58 +23,39 @@ bool fileExists(std::string fileUrl){
 std::string getCheckSum(std::string fileUrl){
     std::ifstream inFile;
     inFile.open(fileUrl, std::ifstream::binary);
-
     inFile.seekg(0, std::ios::end);
     long length = inFile.tellg();
     inFile.seekg(0, std::ios::beg);
-
     char* inFileData = new char[length];
     inFile.read(inFileData, length);
-
-    std::string Temp = md5(inFileData);
-
-    return Temp.c_str();
+    return md5(inFileData).c_str();
 }
 
-/*
-int mains(int argc, char *argv[])
-{
-    //Start opening your file
-    ifstream inBigArrayfile;
-    inBigArrayfile.open ("Data.dat", std::ios::binary | std::ios::in);
-
-    //Find length of file
-    inBigArrayfile.seekg (0, std::ios::end);
-    long Length = inBigArrayfile.tellg();
-    inBigArrayfile.seekg (0, std::ios::beg);
-
-    //read in the data from your file
-    char * InFileData = new char[Length];
-    inBigArrayfile.read(InFileData,Length);
-
-    //Calculate MD5 hash
-    std::string Temp =  md5(InFileData,Length);
-    cout << Temp.c_str() << endl;
-
-    //Clean up
-    delete [] InFileData;
-
-    return 0;
+void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
+    std::string firstCheckSum = getCheckSum(firstFileUrl);
+    std::string secondCheckSum = getCheckSum(secondFileUrl);
+    if (firstCheckSum != secondCheckSum){
+        std::string msg = "checksums of the following two files differ: ";
+        msg += firstFileUrl + ", ";
+        msg += secondFileUrl;
+        throw NoPayloadException(msg);
+    }
 }
-*/
 
 void checkLocalFile(std::string localUrl){
     std::cout<<"checkLocalFile(localUrl="<<localUrl<<")"<<std::endl;
     if (!fileExists(localUrl)){
-        std::cout<<"Local payload file does not exist. Exiting..."<<std::endl;
-        exit(1);
+        std::string msg = "local payload file does not exist (";
+        msg += localUrl + ")";
+        throw NoPayloadException(msg);
     }
 }
 
 void checkRemoteFile(std::string remoteUrl){
     if (fileExists(remoteUrl)){
-        std::cout<<"Remote payload file already exists. Exiting..."<<std::endl;
-        exit(1);
+        std::string msg = "remote payload file already exists (";
+        msg += remoteUrl + ")";
+        throw NoPayloadException(msg);
     }
 }
 
@@ -106,6 +89,7 @@ void uploadFile(std::string localUrl, std::string globalTag, std::string payload
     checkRemoteFile(remoteUrl);
     prepareDirectories(globalTag, payloadType);
     std::filesystem::copy_file(localUrl, remoteUrl);
+    compareCheckSums(localUrl, remoteUrl);
 }
 
 }

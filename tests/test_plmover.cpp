@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "plmover.hpp"
+#include "exception.hpp"
 
 int main()
 {
@@ -14,6 +15,12 @@ int main()
     std::remove(remoteUrl.c_str());
   }
   plmover::uploadFile(localUrl, "my_gt", "my_pl_type", 1, 1);
+  try {
+    plmover::compareCheckSums(localUrl, "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/towerMap_ZDC.txt");
+  }
+  catch (NoPayloadException &e){
+    std::cout<<e.what()<<std::endl;
+  }
   if (!plmover::fileExists(remoteUrl)) return 1;
   return EXIT_SUCCESS;
 }
