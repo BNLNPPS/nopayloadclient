@@ -9,15 +9,25 @@
 
 namespace nopayloadclient {
 
+/*
 void _insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                     int majorIovStart, int minorIovStart){
-    plmover::prepareUpload(fileUrl, gtName, plType, majorIovStart, minorIovStart);
+    std::string remoteUrl = plmover::getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+    plmover::checkPLStores(fileUrl, remoteUrl);
     backend::checkGtExists(gtName);
-    std::string pllName = backend::getPayloadListName(gtName, plType);
-    int piovId = backend::createPayloadIOV(fileUrl, majorIovStart, minorIovStart);
+    std::string pllName;
+    if (backend::gtHasPlType(gtName, plType)) {
+        pllName = backend::getPayloadListName(gtName, plType);
+    }
+    else {
+        pllName = backend::createPayloadList(plType);
+        backend::attachPayloadList(gtName, pllName);
+    }
+    int piovId = backend::createPayloadIOV(remoteUrl, majorIovStart, minorIovStart);
     backend::attachPayloadIOV(pllName, piovId);
     plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
 }
+*/
 
 std::string _getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov){
     nlohmann::json j = backend::getPayloadIOVs(gtName, majorIov, minorIov);
@@ -41,17 +51,45 @@ nlohmann::json get(std::string gtName, std::string plType, int majorIov, int min
     }
 }
 
+
 // Writing
-nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
-                             int majorIovStart, int minorIovStart){
+nlohmann::json createGlobalTag(std::string gtName) {
     try {
-        _insertPayload(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
+        backend::createGlobalTagStatus("unlocked");
+    }
+    catch (NoPayloadException &e) {}
+    try {
+        backend::createGlobalTagObject(gtName, "unlocked");
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully created global tag"}});
     }
     catch (NoPayloadException &e) {
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
     }
 }
 
+nlohmann::json createPayloadType(std::string plType) {
+    try {
+        backend::createPayloadType(plType);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully created payload type"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
+                             int majorIovStart, int minorIovStart){
+    try {
+        plmover::prepareUploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        backend::prepareInsertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        //_insertPayload(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
 
 }

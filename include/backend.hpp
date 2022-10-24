@@ -6,17 +6,16 @@
 namespace backend {
     // Reading
     nlohmann::json getGlobalTags();
-    nlohmann::json getGlobalTagTypes();
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists();
     nlohmann::json getPayloadLists(std::string gtName);
     nlohmann::json getGlobalTagMap(std::string gtName);
-    nlohmann::json getPayloadIOVs(std::string gtName, int majorIov);
-    nlohmann::json getPayloadIOVs(std::string gtName, int minorIov, int majorIov);
+    nlohmann::json getPayloadIOVs(std::string gtName, int majorIov, int minorIov);
     std::string getPayloadListName(std::string gtName, std::string plType);
     bool gtExists(std::string gtName);
     bool plTypeExists(std::string plType);
+    bool gtHasPlType(std::string gtName, std::string plType);
     void checkGtExists(std::string gtName);
 
     // Writing
@@ -30,4 +29,10 @@ namespace backend {
     int createPayloadIOV(std::string plUrl, int majorIov, int minorIov);
     int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
     void attachPayloadIOV(std::string plListName, int plIovId);
+
+    void prepareInsertIov(std::string gtName, std::string plType, std::string fileUrl,
+                           int majorIovStart, int minorIovStart);
+    void insertIov(std::string gtName, std::string plType, std::string fileUrl,
+                    int majorIovStart, int minorIovStart);
+
 }

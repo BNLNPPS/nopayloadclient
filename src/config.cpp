@@ -31,7 +31,7 @@ nlohmann::json fromFile(){
 void _checkKeys(nlohmann::json j){
   for(auto key : keys){
     if (!j.contains(key)){
-        std::cout<<"config does not contain key <"<<key<<">"<<std::endl;
+        std::cerr<<"config does not contain key <"<<key<<">"<<std::endl;
         exit(1);
     }
   }

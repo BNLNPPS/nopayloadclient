@@ -70,33 +70,37 @@ std::string getRemoteUrl(std::string globalTag, std::string payloadType,
     return newPath;
 }
 
-void prepareDirectory(std::string dirName){
+void createDirectory(std::string dirName){
     if (!fs::is_directory(dirName) || !fs::exists(dirName)) {
         fs::create_directory(dirName);
     }
 }
 
-void prepareDirectories(std::string globalTag, std::string payloadType){
+void createDirectories(std::string globalTag, std::string payloadType) {
+    createDirectory(basePath + "/" + globalTag);
+    createDirectory(basePath + "/" + globalTag + "/" + payloadType);
+}
+
+void checkPLStores(std::string localUrl, std::string remoteUrl) {
+    checkLocalFile(localUrl);
+    checkRemoteFile(remoteUrl);
     if (!fs::exists(basePath)){
         throw NoPayloadException("remote payload directory "+basePath+" does not exist");
     }
-    prepareDirectory(basePath + "/" + globalTag);
-    prepareDirectory(basePath + "/" + globalTag + "/" + payloadType);
 }
 
-void prepareUpload(std::string localUrl, std::string globalTag, std::string payloadType,
-                   int majorIovStart, int minorIovStart){
-    std::string remoteUrl = getRemoteUrl(globalTag, payloadType, majorIovStart, minorIovStart);
-    checkLocalFile(localUrl);
-    checkRemoteFile(remoteUrl);
-    prepareDirectories(globalTag, payloadType);
+void prepareUploadFile(std::string gtName, std::string plType, std::string fileUrl,
+                       int majorIovStart, int minorIovStart) {
+    std::string remoteUrl = getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+    checkPLStores(fileUrl, remoteUrl);
 }
 
-void uploadFile(std::string localUrl, std::string globalTag, std::string payloadType,
+void uploadFile(std::string gtName, std::string plType, std::string fileUrl,
                 int majorIovStart, int minorIovStart){
-    std::string remoteUrl = getRemoteUrl(globalTag, payloadType, majorIovStart, minorIovStart);
-    std::filesystem::copy_file(localUrl, remoteUrl);
-    compareCheckSums(localUrl, remoteUrl);
+    createDirectories(gtName, plType);
+    std::string remoteUrl = getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+    std::filesystem::copy_file(fileUrl, remoteUrl);
+    compareCheckSums(fileUrl, remoteUrl);
 }
 
 }

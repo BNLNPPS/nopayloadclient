@@ -61,6 +61,9 @@ class CurlMession{
                 throw std::runtime_error(msg);
             }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
+            if (ans.httpCode!=200){
+                throw NoPayloadException(ans.readBuffer);
+            }
             curl_easy_cleanup(curl);
             printResults();
             return nlohmann::json::parse(ans.readBuffer);
