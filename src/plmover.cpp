@@ -21,19 +21,37 @@ bool fileExists(std::string fileUrl){
 }
 
 std::string getCheckSum(std::string fileUrl){
-    std::ifstream inFile;
-    inFile.open(fileUrl, std::ifstream::binary);
-    inFile.seekg(0, std::ios::end);
+    std::ifstream inFile(fileUrl);
+    std::string tempData;
+    std::string inFileData;
+    while (inFile.good()){
+        std::getline(inFile, tempData);
+        inFileData.append(tempData+"\n");
+    }
+    inFile.close();
+    return md5(inFileData).c_str();
+}
+
+std::string getCheckSumOld(std::string fileUrl){
+    // Weird bug: reading in a file with no newlines SOMETIMES
+    // appends the file name or the its path to the buffer.
+    // as it is randomly decided at runtime if this happens,
+    // this method is not suited for check sum comparison
+    std::ifstream inFile(fileUrl, std::ifstream::binary);
+    inFile.seekg(0, inFile.end);
     long length = inFile.tellg();
-    inFile.seekg(0, std::ios::beg);
+    inFile.seekg(0, inFile.beg);
     char* inFileData = new char[length];
     inFile.read(inFileData, length);
+    inFile.close();
     return md5(inFileData).c_str();
 }
 
 void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
     std::string firstCheckSum = getCheckSum(firstFileUrl);
     std::string secondCheckSum = getCheckSum(secondFileUrl);
+    std::cout<<"firstCheckSum = "<<firstCheckSum<<std::endl;
+    std::cout<<"secondCheckSum = "<<secondCheckSum<<std::endl;
     if (firstCheckSum != secondCheckSum){
         std::string msg = "checksums of the following two files differ: ";
         msg += firstFileUrl + ", ";

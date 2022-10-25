@@ -9,25 +9,6 @@
 
 namespace nopayloadclient {
 
-/*
-void _insertPayload(std::string gtName, std::string plType, std::string fileUrl,
-                    int majorIovStart, int minorIovStart){
-    std::string remoteUrl = plmover::getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
-    plmover::checkPLStores(fileUrl, remoteUrl);
-    backend::checkGtExists(gtName);
-    std::string pllName;
-    if (backend::gtHasPlType(gtName, plType)) {
-        pllName = backend::getPayloadListName(gtName, plType);
-    }
-    else {
-        pllName = backend::createPayloadList(plType);
-        backend::attachPayloadList(gtName, pllName);
-    }
-    int piovId = backend::createPayloadIOV(remoteUrl, majorIovStart, minorIovStart);
-    backend::attachPayloadIOV(pllName, piovId);
-    plmover::uploadFile(fileUrl, gtName, plType, majorIovStart, minorIovStart);
-}
-*/
 
 std::string _getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov){
     nlohmann::json j = backend::getPayloadIOVs(gtName, majorIov, minorIov);
@@ -43,7 +24,8 @@ std::string _getPayloadUrl(std::string gtName, std::string plType, int majorIov,
 // Reading
 nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov){
     try {
-        std::string payloadUrl = _getPayloadUrl(gtName, plType, majorIov, minorIov);
+        //std::string payloadUrl = _getPayloadUrl(gtName, plType, majorIov, minorIov);
+        std::string payloadUrl = backend::getPayloadUrl(gtName, plType, majorIov, minorIov);
         return nlohmann::json::object({{"code", 0}, {"msg", payloadUrl}});
     }
     catch (NoPayloadException &e) {
@@ -84,7 +66,6 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
         backend::prepareInsertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        //_insertPayload(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
     }
     catch (NoPayloadException &e) {

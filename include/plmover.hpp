@@ -5,6 +5,7 @@ namespace plmover {
 
     void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl);
     std::string getCheckSum(std::string fileUrl);
+    std::string getCheckSumOld(std::string fileUrl);
 
     std::string getRemoteUrl(std::string globalTag, std::string payloadType,
                              int majorIovStart, int minorIovStart);

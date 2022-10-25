@@ -5,8 +5,13 @@
 
 int main()
 {
-  std::string cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat");
+  std::string cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat");
   std::cout<<"cs = "<<cs<<std::endl;
+  cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat");
+  std::cout<<"cs = "<<cs<<std::endl;
+
+
+  return 0;
   std::string localUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat";
   std::string remoteUrl = plmover::getRemoteUrl("my_gt", "my_pl_type", 1, 1);
 //  if (!plmover::fileExists(localUrl)) return 1;

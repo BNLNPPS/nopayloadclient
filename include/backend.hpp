@@ -13,6 +13,7 @@ namespace backend {
     nlohmann::json getGlobalTagMap(std::string gtName);
     nlohmann::json getPayloadIOVs(std::string gtName, int majorIov, int minorIov);
     std::string getPayloadListName(std::string gtName, std::string plType);
+    std::string getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov);
     bool gtExists(std::string gtName);
     bool plTypeExists(std::string plType);
     bool gtHasPlType(std::string gtName, std::string plType);

@@ -73,6 +73,15 @@ void checkPlTypeExists(std::string plType){
     }
 }
 
+std::string getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov){
+    nlohmann::json j = getPayloadIOVs(gtName, majorIov, minorIov);
+    for (nlohmann::json piov : j){
+        if (std::string(piov["payload_type"]) == plType){
+            return piov["payload_iov"][0]["payload_url"];
+        }
+    }
+    throw NoPayloadException("Could not find payload for type "+plType);
+}
 
 std::string getPayloadListName(std::string gtName, std::string plType){
     nlohmann::json j = getPayloadLists(gtName);

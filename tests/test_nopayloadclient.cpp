@@ -1,47 +1,49 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <time.h>
 #include <stdlib.h>
 
 #include "nopayloadclient.hpp"
+#include "config.hpp"
 
 
 int main()
 {
-
-  // prepare tests by removing payloads from plstorage
-  std::filesystem::remove_all("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/remote/");
-  std::filesystem::create_directories("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/remote/");
-
   // define some parameters for the rest of this test
-  std::string myUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat";
+  std::string myUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat";
   nlohmann::json resp;
   srandom(time(NULL));
   int randIov = random();
 
-
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
-  std::cout<<resp<<std::endl;
-
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
-  std::cout<<resp<<std::endl;
-
+  // create random payload file
   /*
+  std::filesystem::remove(myUrl);
+  std::ofstream payloadFile(myUrl);
+  for (int i=0; i<10; i++) {
+    payloadFile << random();
+  }
+  payloadFile.close();
+  */
 
   // create the global tag if it does not exist
-  resp = nopayloadclient::createGlobalTag("my_gt");
-  std::cout<<resp<<std::endl;
+  //resp = nopayloadclient::createGlobalTag("my_gt");
+  //std::cout<<resp<<std::endl;
 
   // create the payload type if it does not exist
-  resp = nopayloadclient::createPayloadType("my_pt");
-  std::cout<<resp<<std::endl;
+  //resp = nopayloadclient::createPayloadType("my_pt");
+  //std::cout<<resp<<std::endl;
 
   // insert should work
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==1) return 1;
 
+  // getting the inserted file:
+  resp = nopayloadclient::get("my_gt", "my_pt", randIov, 0);
+  std::cout<<resp<<std::endl;
+  return 0;
 
   // ++++++++++++++++++++++++++++++
   //    THINGS THAT SHOULD FAIL
@@ -66,7 +68,7 @@ int main()
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
-  */
+
 
   return EXIT_SUCCESS;
 }
