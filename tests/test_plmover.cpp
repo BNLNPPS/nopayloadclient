@@ -5,11 +5,9 @@
 
 int main()
 {
+
   std::string cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat");
   std::cout<<"cs = "<<cs<<std::endl;
-  cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat");
-  std::cout<<"cs = "<<cs<<std::endl;
-
 
   return 0;
   std::string localUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat";

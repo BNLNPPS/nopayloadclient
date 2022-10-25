@@ -20,7 +20,7 @@ bool fileExists(std::string fileUrl){
     return (stat (fileUrl.c_str(), &buffer) ==0);
 }
 
-std::string getCheckSum(std::string fileUrl){
+std::string getCheckSumAlt(std::string fileUrl){
     std::ifstream inFile(fileUrl);
     std::string tempData;
     std::string inFileData;
@@ -32,16 +32,12 @@ std::string getCheckSum(std::string fileUrl){
     return md5(inFileData).c_str();
 }
 
-std::string getCheckSumOld(std::string fileUrl){
-    // Weird bug: reading in a file with no newlines SOMETIMES
-    // appends the file name or the its path to the buffer.
-    // as it is randomly decided at runtime if this happens,
-    // this method is not suited for check sum comparison
+std::string getCheckSum(std::string fileUrl){
     std::ifstream inFile(fileUrl, std::ifstream::binary);
     inFile.seekg(0, inFile.end);
     long length = inFile.tellg();
     inFile.seekg(0, inFile.beg);
-    char* inFileData = new char[length];
+    char inFileData[length+1];
     inFile.read(inFileData, length);
     inFile.close();
     return md5(inFileData).c_str();
