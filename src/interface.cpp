@@ -10,21 +10,9 @@
 namespace nopayloadclient {
 
 
-std::string _getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov){
-    nlohmann::json j = backend::getPayloadIOVs(gtName, majorIov, minorIov);
-    for (nlohmann::json piov : j){
-        if (std::string(piov["payload_type"]) == plType){
-            return piov["payload_iov"][0]["payload_url"];
-        }
-    }
-    throw NoPayloadException("Could not find payload for type "+plType);
-}
-
-
 // Reading
 nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov){
     try {
-        //std::string payloadUrl = _getPayloadUrl(gtName, plType, majorIov, minorIov);
         std::string payloadUrl = backend::getPayloadUrl(gtName, plType, majorIov, minorIov);
         return nlohmann::json::object({{"code", 0}, {"msg", payloadUrl}});
     }

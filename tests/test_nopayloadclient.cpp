@@ -18,32 +18,29 @@ int main()
   int randIov = random();
 
   // create random payload file
-  /*
   std::filesystem::remove(myUrl);
   std::ofstream payloadFile(myUrl);
   for (int i=0; i<10; i++) {
     payloadFile << random();
   }
   payloadFile.close();
-  */
 
   // create the global tag if it does not exist
-  //resp = nopayloadclient::createGlobalTag("my_gt");
-  //std::cout<<resp<<std::endl;
+  resp = nopayloadclient::createGlobalTag("my_gt");
+  std::cout<<resp<<std::endl;
 
   // create the payload type if it does not exist
-  //resp = nopayloadclient::createPayloadType("my_pt");
-  //std::cout<<resp<<std::endl;
+  resp = nopayloadclient::createPayloadType("my_pt");
+  std::cout<<resp<<std::endl;
 
   // insert should work
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
   std::cout<<resp<<std::endl;
-  if (resp["code"]==1) return 1;
+  if (resp["code"]!=0) return 1;
 
   // getting the inserted file:
   resp = nopayloadclient::get("my_gt", "my_pt", randIov, 0);
   std::cout<<resp<<std::endl;
-  return 0;
 
   // ++++++++++++++++++++++++++++++
   //    THINGS THAT SHOULD FAIL
@@ -55,7 +52,7 @@ int main()
   if (resp["code"]==0) return 1;
 
   // ... same for payload type that does not exist...
-  resp = nopayloadclient::insertPayload("my_gt", "non_existing_type2", myUrl, 0, 0);
+  resp = nopayloadclient::insertPayload("my_gt", "non_existing_type", myUrl, 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
@@ -68,7 +65,6 @@ int main()
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", myUrl, randIov, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
-
 
   return EXIT_SUCCESS;
 }

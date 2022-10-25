@@ -5,11 +5,6 @@
 #include "backend.hpp"
 
 
-void prepareGlobalTag(std::string gtName){
-  backend::createGlobalTagStatus("unlocked");
-  backend::createGlobalTagObject(gtName, "unlocked");
-}
-
 std::vector<std::string> extractPlTypes(nlohmann::json plDict){
   std::vector<std::string> plTypes;
   for (auto& el : plDict.items()){
@@ -18,16 +13,6 @@ std::vector<std::string> extractPlTypes(nlohmann::json plDict){
   }
   return plTypes;
 }
-
-void preparePlTypes(nlohmann::json plDict, std:: string gtName){
-  std::vector<std::string> plTypes = extractPlTypes(plDict);
-  for (auto& plType : plTypes){
-    backend::createPayloadType(plType);
-    std::string pllName = backend::createPayloadList(plType);
-    backend::attachPayloadList(gtName, pllName);
-  }
-}
-
 
 
 int main()
@@ -41,8 +26,11 @@ int main()
   payloadDict["ZDC"] =         basePath + "towerMap_ZDC.txt";
   payloadDict["CEMC_Geo"] =    basePath + "cemc_geoparams-0-0-4294967295-1536789215.xml";
 
-  prepareGlobalTag(gtName);
-  preparePlTypes(payloadDict, gtName);
+  nlohmann::json resp;
+  resp = nopayloadclient::createGlobalTag(gtName);
+  for (auto plType : extractPlTypes(payloadDict)) {
+    resp = nopayloadclient::createPayloadType(plType);
+  }
 
   for (auto& el : payloadDict.items()){
     nopayloadclient::insertPayload(gtName, el.key(), el.value(), 0, 0);

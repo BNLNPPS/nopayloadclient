@@ -46,8 +46,6 @@ std::string getCheckSum(std::string fileUrl){
 void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
     std::string firstCheckSum = getCheckSum(firstFileUrl);
     std::string secondCheckSum = getCheckSum(secondFileUrl);
-    std::cout<<"firstCheckSum = "<<firstCheckSum<<std::endl;
-    std::cout<<"secondCheckSum = "<<secondCheckSum<<std::endl;
     if (firstCheckSum != secondCheckSum){
         std::string msg = "checksums of the following two files differ: ";
         msg += firstFileUrl + ", ";
@@ -57,7 +55,6 @@ void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
 }
 
 void checkLocalFile(std::string localUrl){
-    std::cout<<"checkLocalFile(localUrl="<<localUrl<<")"<<std::endl;
     if (!fileExists(localUrl)){
         std::string msg = "local payload file does not exist (";
         msg += localUrl + ")";
