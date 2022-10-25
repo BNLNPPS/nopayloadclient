@@ -4,12 +4,9 @@
 
 namespace config {
 
-nlohmann::json fromFile(std::string filePath);
-nlohmann::json fromFile();
-
-nlohmann::json rawDict();
-std::string apiUrl();
-
-void _checkKeys(nlohmann::json j);
+    extern std::string api_url;
+    extern std::string remote_pl_dir;
+    extern int n_retries;
 
 }
+

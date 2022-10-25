@@ -1,21 +1,25 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <config.hpp>
 #include <nlohmann/json.hpp>
 
 #include "config.h"
 
-
 namespace config {
 
-nlohmann::json _rawDict;
 std::vector keys = {"base_url", "api_res", "remote_pl_dir", "n_retries"};
 
 nlohmann::json fromFile(std::string fileName){
+    std::cout<<"config::fromFile(fileName="<<fileName<<")"<<std::endl;
     std::string fullPath = PROJECT_CONFIG_SEARCH_PATHS + fileName;
     std::ifstream conf_file(fullPath, std::ifstream::binary);
     nlohmann::json j;
     conf_file >> j;
+    std::string api_url = "http://";
+    api_url += j["base_url"];
+    api_url += j["api_res"];
+    j["api_url"] = api_url;
     return j;
 }
 
@@ -37,19 +41,9 @@ void _checkKeys(nlohmann::json j){
   }
 }
 
-nlohmann::json rawDict(){
-    if (_rawDict.is_null()){
-        _rawDict = fromFile();
-    }
-    _checkKeys(_rawDict);
-    return _rawDict;
-}
-
-std::string apiUrl(){
-    std::string apiUrl = "http://";
-    apiUrl += rawDict()["base_url"];
-    apiUrl += rawDict()["api_res"];
-    return apiUrl;
-}
+nlohmann::json dict = fromFile();
+std::string api_url = (std::string) dict["api_url"];
+std::string remote_pl_dir = (std::string) dict["remote_pl_dir"];
+int n_retries = dict["n_retries"];
 
 }

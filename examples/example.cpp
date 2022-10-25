@@ -2,7 +2,6 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include "nopayloadclient.hpp"
-#include "backend.hpp"
 
 
 std::vector<std::string> extractPlTypes(nlohmann::json plDict){
@@ -18,6 +17,7 @@ std::vector<std::string> extractPlTypes(nlohmann::json plDict){
 int main()
 {
   std::string gtName = "sPHENIX_ExampleGT_1";
+  int nIovs = 1;
   std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
   nlohmann::json payloadDict;
   payloadDict["Beam"] =        basePath + "D0DXMagnets.dat";
@@ -33,7 +33,9 @@ int main()
   }
 
   for (auto& el : payloadDict.items()){
-    nopayloadclient::insertPayload(gtName, el.key(), el.value(), 0, 0);
+    for (int i=0; i<nIovs; i++){
+      resp = nopayloadclient::insertPayload(gtName, el.key(), el.value(), i, 0);
+    }
   }
 
   return 0;

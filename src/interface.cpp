@@ -12,6 +12,7 @@ namespace nopayloadclient {
 
 // Reading
 nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov){
+    std::cout<<"interface::get()"<<std::endl;
     try {
         std::string payloadUrl = backend::getPayloadUrl(gtName, plType, majorIov, minorIov);
         return nlohmann::json::object({{"code", 0}, {"msg", payloadUrl}});
@@ -20,7 +21,6 @@ nlohmann::json get(std::string gtName, std::string plType, int majorIov, int min
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
     }
 }
-
 
 // Writing
 nlohmann::json createGlobalTag(std::string gtName) {

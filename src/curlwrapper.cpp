@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 #include <chrono>
+#include <config.hpp>
 
 #include <exception.hpp>
 #include <curlwrapper.hpp>
@@ -23,7 +24,7 @@ class CurlMession{
         std::string url;
         struct curl_slist *slist1 = NULL;
         std::string jsonStr;
-        int n_retries = 10;
+        int n_retries = config::n_retries;
     public:
         CurlMession(std::string _url){
             url = _url;

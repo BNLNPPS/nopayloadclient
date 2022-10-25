@@ -10,7 +10,7 @@
 #include <exception.hpp>
 #include <config.hpp>
 
-std::string basePath = config::rawDict()["remote_pl_dir"];
+//std::string basePath = config::dict["remote_pl_dir"];
 
 namespace fs = std::filesystem;
 namespace plmover {
@@ -72,7 +72,7 @@ void checkRemoteFile(std::string remoteUrl){
 
 std::string getRemoteUrl(std::string globalTag, std::string payloadType,
                          int majorIovStart, int minorIovStart){
-    std::string newPath = basePath;
+    std::string newPath = config::remote_pl_dir;
     newPath += globalTag + "/";
     newPath += payloadType + "/";
     newPath += std::to_string(majorIovStart) + "_";
@@ -88,15 +88,15 @@ void createDirectory(std::string dirName){
 }
 
 void createDirectories(std::string globalTag, std::string payloadType) {
-    createDirectory(basePath + "/" + globalTag);
-    createDirectory(basePath + "/" + globalTag + "/" + payloadType);
+    createDirectory(config::remote_pl_dir + "/" + globalTag);
+    createDirectory(config::remote_pl_dir + "/" + globalTag + "/" + payloadType);
 }
 
 void checkPLStores(std::string localUrl, std::string remoteUrl) {
     checkLocalFile(localUrl);
     checkRemoteFile(remoteUrl);
-    if (!fs::exists(basePath)){
-        throw NoPayloadException("remote payload directory "+basePath+" does not exist");
+    if (!fs::exists(config::remote_pl_dir)){
+        throw NoPayloadException("remote payload directory "+config::remote_pl_dir+" does not exist");
     }
 }
 

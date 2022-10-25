@@ -12,6 +12,11 @@
 
 namespace backend {
 
+//std::string api_url = (std::string) config::dict["api_url"];
+
+//std::cout<<"api_url = "<<api_url<<std::endl;
+//std::cout<<"HEEELLLO FREWN "<<std::endl;
+
 std::vector<std::string> _getItemNames(nlohmann::json j) {
     std::vector<std::string> name_list;
     for (const auto& obj: j){
@@ -22,31 +27,32 @@ std::vector<std::string> _getItemNames(nlohmann::json j) {
 
 // Reading
 nlohmann::json getGlobalTags() {
-    return curlwrapper::get(config::apiUrl() + "globalTags");
+    return curlwrapper::get(config::api_url + "globalTags");
 }
 
 nlohmann::json getGlobalTagStatuses() {
-    return curlwrapper::get(config::apiUrl() + "gtstatus");
+    return curlwrapper::get(config::api_url + "gtstatus");
 }
 
 nlohmann::json getPayloadTypes() {
-    return curlwrapper::get(config::apiUrl() + "pt");
+    return curlwrapper::get(config::api_url + "pt");
 }
 
 nlohmann::json getPayloadLists() {
-    return curlwrapper::get(config::apiUrl() + "pl");
+    return curlwrapper::get(config::api_url + "pl");
 }
 
 nlohmann::json getPayloadLists(std::string gtName) {
-    return curlwrapper::get(config::apiUrl() + "gtPayloadLists/" + gtName);
+    return curlwrapper::get(config::api_url + "gtPayloadLists/" + gtName);
 }
 
 nlohmann::json getGlobalTagMap(std::string gtName){
-    return curlwrapper::get(config::apiUrl() + "globalTag/" + gtName);
+    return curlwrapper::get(config::api_url + "globalTag/" + gtName);
 }
 
 nlohmann::json getPayloadIOVs(std::string gtName, int majorIov, int minorIov){
-    return curlwrapper::get(config::apiUrl() + "payloadiovs/?gtName=" + gtName + "&majorIOV=" + std::to_string(majorIov) + "&minorIOV=" + std::to_string(minorIov));
+    return curlwrapper::get(config::api_url + "payloadiovs/?gtName=" + gtName + "&majorIOV=" +
+                            std::to_string(majorIov) + "&minorIOV=" + std::to_string(minorIov));
 }
 
 bool gtExists(std::string gtName){
@@ -109,31 +115,30 @@ bool gtHasPlType(std::string gtName, std::string plType){
 }
 
 
-
 // Writing
 void createGlobalTagStatus(std::string status){
     nlohmann::json j;
     j["name"] = status;
-    curlwrapper::post(config::apiUrl() + "gtstatus", j);
+    curlwrapper::post(config::api_url + "gtstatus", j);
 }
 
 void createGlobalTagObject(std::string name, std::string status) {
     nlohmann::json j;
     j["status"] = status;
     j["name"] = name;
-    curlwrapper::post(config::apiUrl() + "gt", j);
+    curlwrapper::post(config::api_url + "gt", j);
 }
 
 void createPayloadType(std::string type){
     nlohmann::json j;
     j["name"] = type;
-    curlwrapper::post(config::apiUrl() + "pt", j);
+    curlwrapper::post(config::api_url + "pt", j);
 }
 
 std::string createPayloadList(std::string type){
     nlohmann::json j;
     j["payload_type"] = type;
-    nlohmann::json res = curlwrapper::post(config::apiUrl() + "pl", j);
+    nlohmann::json res = curlwrapper::post(config::api_url + "pl", j);
     return res["name"];
 }
 
@@ -141,15 +146,15 @@ void attachPayloadList(std::string gtName, std::string plName){
     nlohmann::json j;
     j["payload_list"] = plName;
     j["global_tag"] = gtName;
-    curlwrapper::put(config::apiUrl() + "pl_attach", j);
+    curlwrapper::put(config::api_url + "pl_attach", j);
 }
 
 void lockGlobalTag(std::string name){
-    curlwrapper::put(config::apiUrl() + "gt_change_status/" + name + "/locked");
+    curlwrapper::put(config::api_url + "gt_change_status/" + name + "/locked");
 }
 
 void unlockGlobalTag(std::string name){
-    curlwrapper::put(config::apiUrl() + "gt_change_status/" + name + "/unlocked");
+    curlwrapper::put(config::api_url + "gt_change_status/" + name + "/unlocked");
 }
 
 int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){
@@ -157,7 +162,7 @@ int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){
     j["payload_url"] = plUrl;
     j["major_iov"] = majorIov;
     j["minor_iov"] = minorIov;
-    nlohmann::json res = curlwrapper::post(config::apiUrl() + "piov", j);
+    nlohmann::json res = curlwrapper::post(config::api_url + "piov", j);
     return res["id"];
 }
 
@@ -168,7 +173,7 @@ int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIov
     j["minor_iov"] = minorIov;
     j["major_iov_end"] = majorIovEnd;
     j["minor_iov_end"] = minorIovEnd;
-    nlohmann::json res = curlwrapper::post(config::apiUrl() + "piov", j);
+    nlohmann::json res = curlwrapper::post(config::api_url + "piov", j);
     return res["id"];
 }
 
@@ -176,7 +181,7 @@ void attachPayloadIOV(std::string plListName, int plIovId){
     nlohmann::json j;
     j["payload_list"] = plListName;
     j["piov_id"] = plIovId;
-    nlohmann::json res = curlwrapper::put(config::apiUrl() + "piov_attach", j);
+    nlohmann::json res = curlwrapper::put(config::api_url + "piov_attach", j);
 }
 
 void createNewPllForGt(std::string gtName, std::string plType){
