@@ -12,10 +12,6 @@
 
 namespace backend {
 
-//std::string api_url = (std::string) config::dict["api_url"];
-
-//std::cout<<"api_url = "<<api_url<<std::endl;
-//std::cout<<"HEEELLLO FREWN "<<std::endl;
 
 std::vector<std::string> _getItemNames(nlohmann::json j) {
     std::vector<std::string> name_list;
@@ -107,7 +103,6 @@ int getPayloadListId(std::string gtName, std::string plType){
     return j[plType];
 }
 
-
 bool gtHasPlType(std::string gtName, std::string plType){
     nlohmann::json j = getPayloadLists(gtName);
     if (!j.contains(plType)) return false;
@@ -195,6 +190,8 @@ nlohmann::json extractPllWithName(nlohmann::json plLists, std::string pllName){
             return pll["payload_iov"];
         }
     }
+    std::string msg = "no pll with name '" + pllName + "' exists";
+    throw NoPayloadException(msg);
 }
 
 void checkIovIsFree(std::string gtName, std::string plType, int majorIovStart, int minorIovStart){

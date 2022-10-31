@@ -66,7 +66,7 @@ class CurlMession{
                 throw NoPayloadException(ans.readBuffer);
             }
             curl_easy_cleanup(curl);
-            printResults();
+            //printResults();
             return nlohmann::json::parse(ans.readBuffer);
         }
 
@@ -92,28 +92,28 @@ class CurlMession{
 };
 
 nlohmann::json get(std::string url){
-    std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+//    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url){
-    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
+//    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut();
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+//    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut(jsonData);
     return cm.try_execute();

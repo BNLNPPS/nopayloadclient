@@ -17,7 +17,7 @@ std::vector<std::string> extractPlTypes(nlohmann::json plDict){
 int main()
 {
   std::string gtName = "sPHENIX_ExampleGT_1";
-  int nIovs = 1;
+  int nIovs = 10;
   std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
   nlohmann::json payloadDict;
   payloadDict["Beam"] =        basePath + "D0DXMagnets.dat";
@@ -28,13 +28,16 @@ int main()
 
   nlohmann::json resp;
   resp = nopayloadclient::createGlobalTag(gtName);
+  std::cout<<"resp = "<<resp<<std::endl;
   for (auto plType : extractPlTypes(payloadDict)) {
     resp = nopayloadclient::createPayloadType(plType);
+    std::cout<<"resp = "<<resp<<std::endl;
   }
 
   for (auto& el : payloadDict.items()){
     for (int i=0; i<nIovs; i++){
       resp = nopayloadclient::insertPayload(gtName, el.key(), el.value(), i, 0);
+      std::cout<<"resp = "<<resp<<std::endl;
     }
   }
 
