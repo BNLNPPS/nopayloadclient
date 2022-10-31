@@ -1,82 +1,48 @@
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include "backend.hpp"
+#include "nopayloadclient.hpp"
 
 
-nlohmann::json getItemWithName(nlohmann::json j, std::string name){
-  for (auto gts : j){
-    if (gts["name"] == name) return gts;
+std::vector<std::string> extractPlTypes(nlohmann::json plDict){
+  std::vector<std::string> plTypes;
+  for (auto& el : plDict.items()){
+    std::cout<<"el.key() = "<<el.key()<<std::endl;
+    plTypes.push_back(el.key());
   }
-  return false;
-}
-
-bool hasItemWithName(nlohmann::json j, std::string name){
-  nlohmann::json item = getItemWithName(j, name);
-  if (item["name"] == name) return true;
-  return false;
+  return plTypes;
 }
 
 
 int main()
 {
-  //system("sh ../../scripts/reset_db.sh");
+  std::string gtName = "sPHENIX_ExampleGT_1";
+  int nIovs = 10;
+  //  std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
+  std::string basePath = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/";
 
-  /*
-  backend::createGlobalTagStatus("locked");
-  if (!hasItemWithName(backend::getGlobalTagStatuses(), "locked")){
-    return 1;
-  }
-  backend::createGlobalTagStatus("unlocked");
-  if (!hasItemWithName(backend::getGlobalTagStatuses(), "unlocked")){
-    return 1;
-  }
-  */
-  //  backend::createGlobalTagType("my_gt_type");
-  //  if (!hasItemWithName(backend::getGlobalTagTypes(), "my_gt_type")){
-  //    return 1;
-  //  }
+  nlohmann::json payloadDict;
+  payloadDict["Beam"] =        basePath + "D0DXMagnets.dat";
+  payloadDict["FieldMap"] =    basePath + "sphenix3dbigmapxyz.root";
+  payloadDict["CEMC_Thresh"] = basePath + "CEMCprof_Thresh30MeV.root";
+  payloadDict["ZDC"] =         basePath + "towerMap_ZDC.txt";
+  payloadDict["CEMC_Geo"] =    basePath + "cemc_geoparams-0-0-4294967295-1536789215.xml";
 
-  nlohmann::json j = backend::getGlobalTagStatuses();
-  std::cout<<"j = "<<j<<std::endl;
-  backend::createGlobalTagObject("my_gt", "unlocked", "my_gt_type");
-  if (!hasItemWithName(backend::getGlobalTags(), "my_gt")){
-    return 1;
+  nlohmann::json resp;
+  resp = nopayloadclient::createGlobalTag(gtName);
+  std::cout<<"resp = "<<resp<<std::endl;
+  for (auto plType : extractPlTypes(payloadDict)) {
+    resp = nopayloadclient::createPayloadType(plType);
+    std::cout<<"resp = "<<resp<<std::endl;
   }
 
-  backend::createPayloadType("my_pl_type");
-  if (!hasItemWithName(backend::getPayloadTypes(), "my_pl_type")){
-    return 1;
+  for (auto& el : payloadDict.items()){
+    for (int i=0; i<nIovs; i++){
+      resp = nopayloadclient::insertPayload(gtName, el.key(), el.value(), i, 0);
+      std::cout<<"resp = "<<resp<<std::endl;
+    }
   }
 
-  std::string pll_name = backend::createPayloadList("my_pl_type");
-  if (!hasItemWithName(backend::getPayloadLists(), pll_name)){
-    return 1;
-  }
-
-  backend::unlockGlobalTag("my_gt");
-  nlohmann::json my_gt = getItemWithName(backend::getGlobalTags(), "my_gt");
-  if (my_gt["status"]!="unlocked"){
-    return 1;
-  }
-
-  backend::attachPayloadList("my_gt", pll_name);
-  nlohmann::json my_pl = getItemWithName(backend::getPayloadLists(), pll_name);
-  if (my_pl["global_tag"]!="my_gt"){
-    return 1;
-  }
-
-  backend::lockGlobalTag("my_gt");
-  my_gt = getItemWithName(backend::getGlobalTags(), "my_gt");
-  if (my_gt["status"]!="locked"){
-    return 1;
-  }
-
-  int pll_id = backend::createPayloadIOV("data/prompt/data.dat", 1, 1);
-  int pll_id_2 = backend::createPayloadIOV("data/prompt/file.dat", 1, 1, 2, 2);
-  backend::attachPayloadIOV(pll_name, pll_id);
-  my_gt = getItemWithName(backend::getGlobalTags(), "my_gt");
-  std::cout<<backend::getGlobalTags()<<std::endl;
   return 0;
 }
 
