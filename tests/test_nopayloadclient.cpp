@@ -11,11 +11,14 @@
 
 int main()
 {
+  std::cout<<"test_nopayloadclient()"<<std::endl;
   // define some parameters for the rest of this test
-  std::string myUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat";
+  //  std::string myUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat";
+  std::string myUrl = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/test.dat";
   nlohmann::json resp;
   srandom(time(NULL));
   int randIov = random();
+  std::cout<<"set parameters for test"<<std::endl;
 
   // create random payload file
   std::filesystem::remove(myUrl);

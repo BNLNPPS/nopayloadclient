@@ -10,12 +10,22 @@ namespace config {
 
 std::vector keys = {"base_url", "api_res", "remote_pl_dir", "n_retries"};
 
+void _checkKeys(nlohmann::json j){
+  for(auto key : keys){
+    if (!j.contains(key)){
+        std::cerr<<"config does not contain key <"<<key<<">"<<std::endl;
+        exit(1);
+    }
+  }
+}
+
 nlohmann::json fromFile(std::string fileName){
-    std::cout<<"config::fromFile(fileName="<<fileName<<")"<<std::endl;
     std::string fullPath = PROJECT_CONFIG_SEARCH_PATHS + fileName;
+    std::cout<<"fromFile(), fullPath = "<<fullPath<<std::endl;
     std::ifstream conf_file(fullPath, std::ifstream::binary);
     nlohmann::json j;
     conf_file >> j;
+    _checkKeys(j);
     std::string api_url = "http://";
     api_url += j["base_url"];
     api_url += j["api_res"];
@@ -32,14 +42,6 @@ nlohmann::json fromFile(){
     return fromFile(confPath);
 }
 
-void _checkKeys(nlohmann::json j){
-  for(auto key : keys){
-    if (!j.contains(key)){
-        std::cerr<<"config does not contain key <"<<key<<">"<<std::endl;
-        exit(1);
-    }
-  }
-}
 
 nlohmann::json dict = fromFile();
 std::string api_url = (std::string) dict["api_url"];
