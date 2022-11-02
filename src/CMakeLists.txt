@@ -1,7 +1,7 @@
 configure_file(config.h.in config.h @ONLY)
 
 set(source_files
-    interface.cpp
+    nopayloadclient.cpp
     backend.cpp
     curlwrapper.cpp
     plmover.cpp
@@ -11,7 +11,7 @@ set(source_files
 
 add_library(nopayloadclient ${source_files})
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
-target_link_libraries(nopayloadclient PUBLIC stdc++fs)
+# target_link_libraries(nopayloadclient PUBLIC stdc++fs)
 
 target_include_directories(nopayloadclient
     INTERFACE
