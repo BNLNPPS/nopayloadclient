@@ -18,7 +18,9 @@ int main()
 {
   std::string gtName = "sPHENIX_ExampleGT_1";
   int nIovs = 10;
-  std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
+  //  std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
+  std::string basePath = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/";
+
   nlohmann::json payloadDict;
   payloadDict["Beam"] =        basePath + "D0DXMagnets.dat";
   payloadDict["FieldMap"] =    basePath + "sphenix3dbigmapxyz.root";

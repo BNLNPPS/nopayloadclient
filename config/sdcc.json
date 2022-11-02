@@ -1,0 +1,6 @@
+{
+  "base_url": "test111.apps.usatlas.bnl.gov",
+  "api_res":  "/api/cdb_rest/",
+  "remote_pl_dir": "/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/",
+  "n_retries": 5
+}
