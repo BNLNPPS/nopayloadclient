@@ -214,7 +214,7 @@ void prepareInsertIov(std::string gtName, std::string plType, std::string fileUr
         createNewPllForGt(gtName, plType);
     }
     else {
-        checkIovIsFree(gtName, plType, majorIovStart, minorIovStart);
+        //checkIovIsFree(gtName, plType, majorIovStart, minorIovStart);
     }
 }
 

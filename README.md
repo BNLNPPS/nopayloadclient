@@ -65,5 +65,5 @@ Currently, the following response codes are implemented:
 Examples on how to use this tool in a c++ program can be found in the ```examples/```
 folder. The following command compiles and runs them:
 ```
-cmake -S . -B build && cmake --build build/ && build/examples/example && cd ..
+cmake -S . -B build && cmake --build build/ && build/examples/example_insert_short && cd ..
 ```

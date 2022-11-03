@@ -16,3 +16,6 @@ print(json.dumps(pl_attach))
 #print(r.json())
 
 #curl -X PUT http://localhost:8000/api/cdb_rest/pl_attach -d "{'global_tag':'linos_gt', 'payload_list':'linos_pl_type_22'}"
+
+
+#curl -X PUT http://localhost:8000/api/cdb_rest/gt_change_status/linos_object/locked --libcurl code.c
