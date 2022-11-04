@@ -6,6 +6,7 @@
 namespace backend {
     // Reading
     nlohmann::json getGlobalTags();
+    nlohmann::json getSize();
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists();

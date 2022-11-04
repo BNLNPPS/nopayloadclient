@@ -21,6 +21,18 @@ nlohmann::json get(std::string gtName, std::string plType, int majorIov, int min
     }
 }
 
+nlohmann::json getSize(){
+    try {
+        //nlohmann::json j = nlohmann::json::object({{"code", 0}, {"msg", "DINGELING"}});
+        nlohmann::json j = backend::getSize();
+        return nlohmann::json::object({{"code", 0}, {"msg", j}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+
 // Writing
 nlohmann::json createGlobalTag(std::string gtName) {
     try {

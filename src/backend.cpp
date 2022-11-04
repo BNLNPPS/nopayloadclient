@@ -38,6 +38,10 @@ nlohmann::json getPayloadLists() {
     return curlwrapper::get(config::api_url + "pl");
 }
 
+nlohmann::json getPayloadIOVs() {
+    return curlwrapper::get(config::api_url + "piov");
+}
+
 nlohmann::json getPayloadLists(std::string gtName) {
     return curlwrapper::get(config::api_url + "gtPayloadLists/" + gtName);
 }
@@ -109,6 +113,17 @@ bool gtHasPlType(std::string gtName, std::string plType){
     return true;
 }
 
+nlohmann::json getSize(){
+    int n_iov_attached = 0;
+    int n_gt = 0;
+    nlohmann::json global_tags = getGlobalTags();
+    for (auto gt : global_tags){
+        n_iov_attached += int(gt["payload_iov_count"]);
+        n_gt += 1;
+    }
+    return nlohmann::json::object({{"n_global_tag", n_gt}, {"n_iov_attached", n_iov_attached},
+                                   {"n_iov_tot", getPayloadIOVs().size()}});
+}
 
 // Writing
 void createGlobalTagStatus(std::string status){
