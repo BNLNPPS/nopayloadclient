@@ -21,7 +21,6 @@ void _checkKeys(nlohmann::json j){
 
 nlohmann::json fromFile(std::string fileName){
     std::string fullPath = PROJECT_CONFIG_SEARCH_PATHS + fileName;
-    std::cout<<"fromFile(), fullPath = "<<fullPath<<std::endl;
     std::ifstream conf_file(fullPath, std::ifstream::binary);
     nlohmann::json j;
     conf_file >> j;
