@@ -35,12 +35,12 @@ nlohmann::json getSize(){
 
 // Writing
 nlohmann::json createGlobalTag(std::string gtName) {
+//    try {
+//        backend::createGlobalTagStatus("unlocked");
+//    }
+//    catch (NoPayloadException &e) {}
     try {
-        backend::createGlobalTagStatus("unlocked");
-    }
-    catch (NoPayloadException &e) {}
-    try {
-        backend::createGlobalTagObject(gtName, "unlocked");
+        backend::createGlobalTag(gtName);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully created global tag"}});
     }
     catch (NoPayloadException &e) {

@@ -8,10 +8,24 @@
 #include <curlwrapper.hpp>
 #include <plmover.hpp>
 #include <exception.hpp>
+#include <backend.hpp>
 
 
 namespace backend {
 
+class Cache{
+    public:
+        bool is_valid = false;
+        std::vector<std::string> content;
+        void update(std::vector<std::string> new_content){
+          content = new_content;
+          is_valid = true;
+        }
+};
+
+Cache cached_gt_status_names = Cache();
+Cache cached_gt_names = Cache();
+Cache cached_pt_names = Cache();
 
 std::vector<std::string> _getItemNames(nlohmann::json j) {
     std::vector<std::string> name_list;
@@ -55,14 +69,47 @@ nlohmann::json getPayloadIOVs(std::string gtName, int majorIov, int minorIov){
                             std::to_string(majorIov) + "&minorIOV=" + std::to_string(minorIov));
 }
 
+std::vector<std::string> getGtStatusNames(){
+    if (!cached_gt_status_names.is_valid){
+        cached_gt_status_names.update(_getItemNames(getGlobalTagStatuses()));
+    }
+    return cached_gt_status_names.content;
+}
+
+std::vector<std::string> getGtNames(){
+    if (!cached_gt_names.is_valid){
+        cached_gt_names.update(_getItemNames(getGlobalTags()));
+    }
+    return cached_gt_names.content;
+}
+
+std::vector<std::string> getPtNames(){
+    if (!cached_pt_names.is_valid){
+        cached_pt_names.update(_getItemNames(getPayloadTypes()));
+    }
+    return cached_pt_names.content;
+}
+
+bool gtStatusExists(std::string gtStatusName){
+    std::vector<std::string> gtsns = getGtStatusNames();
+    return std::find(gtsns.begin(), gtsns.end(), gtStatusName) != gtsns.end();
+}
+
 bool gtExists(std::string gtName){
-    std::vector<std::string> gtns = _getItemNames(getGlobalTags());
+    std::vector<std::string> gtns = getGtNames();
     return std::find(gtns.begin(), gtns.end(), gtName) != gtns.end();
 }
 
 bool plTypeExists(std::string plType){
-    std::vector<std::string> ptns = _getItemNames(getPayloadTypes());
+    std::vector<std::string> ptns = getPtNames();
     return std::find(ptns.begin(), ptns.end(), plType) != ptns.end();
+}
+
+void checkGtStatusExists(std::string gtStatusName){
+    if (!gtStatusExists(gtStatusName)){
+        std::string msg = "no global tag status with name '"+gtStatusName+"' exists";
+        throw NoPayloadException(msg);
+    }
 }
 
 void checkGtExists(std::string gtName){
@@ -130,6 +177,7 @@ void createGlobalTagStatus(std::string status){
     nlohmann::json j;
     j["name"] = status;
     curlwrapper::post(config::api_url + "gtstatus", j);
+    cached_gt_status_names.is_valid = false;
 }
 
 void createGlobalTagObject(std::string name, std::string status) {
@@ -137,12 +185,14 @@ void createGlobalTagObject(std::string name, std::string status) {
     j["status"] = status;
     j["name"] = name;
     curlwrapper::post(config::api_url + "gt", j);
+    cached_gt_names.is_valid = false;
 }
 
 void createPayloadType(std::string type){
     nlohmann::json j;
     j["name"] = type;
     curlwrapper::post(config::api_url + "pt", j);
+    cached_pt_names.is_valid = false;
 }
 
 std::string createPayloadList(std::string type){
@@ -194,6 +244,13 @@ void attachPayloadIOV(std::string plListName, int plIovId){
     nlohmann::json res = curlwrapper::put(config::api_url + "piov_attach", j);
 }
 
+void createGlobalTag(std::string name) {
+    if (!gtStatusExists("unlocked")){
+        createGlobalTagStatus("unlocked");
+    }
+    createGlobalTagObject(name, "unlocked");
+}
+
 void createNewPllForGt(std::string gtName, std::string plType){
     std::string pllName = createPayloadList(plType);
     attachPayloadList(gtName, pllName);
@@ -230,6 +287,14 @@ void prepareInsertIov(std::string gtName, std::string plType, std::string fileUr
     }
     else {
         //checkIovIsFree(gtName, plType, majorIovStart, minorIovStart);
+    }
+}
+
+void prepareInsertIov(std::string gtName, std::string plType){
+    checkGtExists(gtName);
+    checkPlTypeExists(plType);
+    if (!gtHasPlType(gtName, plType)) {
+        createNewPllForGt(gtName, plType);
     }
 }
 

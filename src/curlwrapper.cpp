@@ -66,7 +66,7 @@ class CurlMession{
                 throw NoPayloadException(ans.readBuffer);
             }
             curl_easy_cleanup(curl);
-            //printResults();
+            printResults();
             return nlohmann::json::parse(ans.readBuffer);
         }
 

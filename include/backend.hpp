@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 
 #include <nlohmann/json.hpp>
 #include <curlwrapper.hpp>
 
 namespace backend {
+
     // Reading
     nlohmann::json getGlobalTags();
     nlohmann::json getSize();
@@ -23,15 +25,18 @@ namespace backend {
     // Writing
     void createGlobalTagStatus(std::string status);
     void createGlobalTagObject(std::string name, std::string status);
+    void createGlobalTag(std::string name);
     void createPayloadType(std::string type);
     std::string createPayloadList(std::string type);
     void attachPayloadList(std::string plName, std::string gtName);
     void unlockGlobalTag(std::string name);
     void lockGlobalTag(std::string name);
+    void createNewPllForGt(std::string gtName, std::string plType);
     int createPayloadIOV(std::string plUrl, int majorIov, int minorIov);
     int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
     void attachPayloadIOV(std::string plListName, int plIovId);
 
+    void prepareInsertIov(std::string gtName, std::string plType);
     void prepareInsertIov(std::string gtName, std::string plType, std::string fileUrl,
                            int majorIovStart, int minorIovStart);
     void insertIov(std::string gtName, std::string plType, std::string fileUrl,
