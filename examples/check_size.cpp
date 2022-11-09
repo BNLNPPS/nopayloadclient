@@ -7,7 +7,7 @@
 int main()
 {
   nlohmann::json resp;
-  resp = nopayloadclient::get("sPHENIX_ExampleGT_1", "Beam", 0, 0);
+  resp = nopayloadclient::getSize();
   std::cout<<resp<<std::endl;
 
   return 0;
