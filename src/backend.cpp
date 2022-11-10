@@ -168,8 +168,10 @@ nlohmann::json getSize(){
         n_iov_attached += int(gt["payload_iov_count"]);
         n_gt += 1;
     }
-    return nlohmann::json::object({{"n_global_tag", n_gt}, {"n_iov_attached", n_iov_attached},
-                                   {"n_iov_tot", getPayloadIOVs().size()}});
+    return nlohmann::json::object({{"n_global_tag", n_gt},
+	                           {"n_iov_attached", n_iov_attached},
+    			           {"n_iov_tot", getPayloadIOVs().size()},
+     			           {"n_pt", getPtNames().size()}});
 }
 
 // Writing
