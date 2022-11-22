@@ -3,9 +3,8 @@
 #include <stdexcept>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
-#include <chrono>
-#include <config.hpp>
 
+#include <config.hpp>
 #include <exception.hpp>
 #include <curlwrapper.hpp>
 
@@ -56,21 +55,20 @@ class CurlMession{
         }
 
         nlohmann::json execute(){
-            std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+	    using namespace std::chrono;
+	    std::cout << "begin curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
             ans.res = curl_easy_perform(curl);
-            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-            int n_mu_s = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
-            std::cout << "Time difference = " <<double(n_mu_s)/1000000 << "[s]" << std::endl;
+	    std::cout << "end curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
             if ( ans.res!=0 ){
                 std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(ans.res);
                 throw std::runtime_error(msg);
             }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
+	    //            printResults();
             if (ans.httpCode!=200){
                 throw NoPayloadException(ans.readBuffer);
             }
             curl_easy_cleanup(curl);
-            //printResults();
             return nlohmann::json::parse(ans.readBuffer);
         }
 
@@ -84,7 +82,7 @@ class CurlMession{
         void preparePost(nlohmann::json jsonData){
             slist1 = curl_slist_append(slist1, "Content-Type: application/json");
             jsonStr = jsonData.dump();
-            //std::cout<<"jsonStr = "<<jsonStr<<std::endl;
+	    //            std::cout<<"jsonStr = "<<jsonStr<<std::endl;
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
         }
@@ -96,28 +94,28 @@ class CurlMession{
 };
 
 nlohmann::json get(std::string url){
-    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    std::cout<<"backend::get(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
-//    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url){
-//    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
+    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut();
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url, nlohmann::json jsonData){
-//    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut(jsonData);
     return cm.try_execute();

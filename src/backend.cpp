@@ -13,19 +13,20 @@
 
 namespace backend {
 
-class Cache{
+template <typename T> class Cache {
     public:
         bool is_valid = false;
-        std::vector<std::string> content;
-        void update(std::vector<std::string> new_content){
+        T content;
+        void update(T new_content){
           content = new_content;
           is_valid = true;
         }
 };
 
-Cache cached_gt_status_names = Cache();
-Cache cached_gt_names = Cache();
-Cache cached_pt_names = Cache();
+Cache<std::vector<std::string>> cached_gt_status_names;
+Cache<std::vector<std::string>> cached_gt_names;
+Cache<std::vector<std::string>> cached_pt_names;
+Cache<nlohmann::json> cached_pt_dict;// {gt_0: {pl_type_0: pl_type_0_3, pl_type_1: pl_type_1_6, ...}} ONLY ONE GT!
 
 std::vector<std::string> _getItemNames(nlohmann::json j) {
     std::vector<std::string> name_list;
@@ -56,7 +57,7 @@ nlohmann::json getPayloadIOVs() {
     return curlwrapper::get(config::api_url + "piov");
 }
 
-nlohmann::json getPayloadLists(std::string gtName) {
+nlohmann::json _getPayloadLists(std::string gtName) {
     return curlwrapper::get(config::api_url + "gtPayloadLists/" + gtName);
 }
 
@@ -88,6 +89,13 @@ std::vector<std::string> getPtNames(){
         cached_pt_names.update(_getItemNames(getPayloadTypes()));
     }
     return cached_pt_names.content;
+}
+
+nlohmann::json getPayloadLists(std::string gtName){
+    if (!cached_pt_dict.is_valid || !cached_pt_dict.content.contains(gtName)) {
+        cached_pt_dict.update(nlohmann::json::object({{gtName, _getPayloadLists(gtName)}}));
+    }
+    return cached_pt_dict.content[gtName];
 }
 
 bool gtStatusExists(std::string gtStatusName){
@@ -170,7 +178,7 @@ nlohmann::json getSize(){
     }
     return nlohmann::json::object({{"n_global_tag", n_gt},
 	                           {"n_iov_attached", n_iov_attached},
-    			           {"n_iov_tot", getPayloadIOVs().size()},
+	          	           {"n_iov_tot", getPayloadIOVs().size()},
      			           {"n_pt", getPtNames().size()}});
 }
 
@@ -209,6 +217,7 @@ void attachPayloadList(std::string gtName, std::string plName){
     j["payload_list"] = plName;
     j["global_tag"] = gtName;
     curlwrapper::put(config::api_url + "pl_attach", j);
+    cached_pt_dict.is_valid = false;
 }
 
 void lockGlobalTag(std::string name){
@@ -249,6 +258,9 @@ void attachPayloadIOV(std::string plListName, int plIovId){
 void createGlobalTag(std::string name) {
     if (!gtStatusExists("unlocked")){
         createGlobalTagStatus("unlocked");
+    }
+    if (!gtStatusExists("locked")){
+        createGlobalTagStatus("locked");
     }
     createGlobalTagObject(name, "unlocked");
 }
