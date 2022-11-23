@@ -224,6 +224,7 @@ int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){
     j["payload_url"] = plUrl;
     j["major_iov"] = majorIov;
     j["minor_iov"] = minorIov;
+    j["checksum"] = "checksum";
     nlohmann::json res = curlwrapper::post(config::api_url + "piov", j);
     return res["id"];
 }
