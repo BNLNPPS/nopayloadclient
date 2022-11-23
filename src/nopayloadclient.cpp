@@ -34,10 +34,6 @@ nlohmann::json getSize(){
 
 // Writing
 nlohmann::json createGlobalTag(std::string gtName) {
-//    try {
-//        backend::createGlobalTagStatus("unlocked");
-//    }
-//    catch (NoPayloadException &e) {}
     try {
         backend::createGlobalTag(gtName);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully created global tag"}});
@@ -61,6 +57,22 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
                              int majorIovStart, int minorIovStart){
     try {
         plmover::prepareUploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        backend::prepareInsertIov(gtName, plType);
+        plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+/*
+nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
+                             int majorIovStart, int minorIovStart,
+                             int majorIovEnd, int minorIovEnd){
+    try {
+        plmover::prepareUploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         backend::prepareInsertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
         backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
@@ -70,5 +82,6 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
     }
 }
+*/
 
 }

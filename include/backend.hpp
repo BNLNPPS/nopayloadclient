@@ -37,8 +37,6 @@ namespace backend {
     void attachPayloadIOV(std::string plListName, int plIovId);
 
     void prepareInsertIov(std::string gtName, std::string plType);
-    void prepareInsertIov(std::string gtName, std::string plType, std::string fileUrl,
-                           int majorIovStart, int minorIovStart);
     void insertIov(std::string gtName, std::string plType, std::string fileUrl,
                     int majorIovStart, int minorIovStart);
 

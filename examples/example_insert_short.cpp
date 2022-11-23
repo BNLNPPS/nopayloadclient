@@ -5,9 +5,13 @@
 
 int main()
 {
-  // local payload files are specified by absolute path. this variable is just for convenience
+  // local payload folder. this variable is just for convenience
   std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
   //std::string basePath = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/";
+
+  // make sure global tag & payload type exist
+  nopayloadclient::createGlobalTag("sPHENIX_ExampleGT_1");
+  nopayloadclient::createPayloadType("Beam");
 
   // create json object to which the response is written
   nlohmann::json resp;
@@ -20,7 +24,7 @@ int main()
     std::cout<<"something went wrong. error message: "<<resp["msg"]<<std::endl;
   }
   else {
-    std::cout<<"all good in da hood. details: "<<resp["msg"]<<std::endl;
+    std::cout<<"all good. details: "<<resp["msg"]<<std::endl;
   }
 
   // w/o error handling, inserting a payload is a one-liner:

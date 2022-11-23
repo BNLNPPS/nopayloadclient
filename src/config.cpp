@@ -46,5 +46,6 @@ nlohmann::json dict = fromFile();
 std::string api_url = (std::string) dict["api_url"];
 std::string remote_pl_dir = (std::string) dict["remote_pl_dir"];
 int n_retries = dict["n_retries"];
+bool print_time_stamps = dict["print_time_stamps"];
 
 }

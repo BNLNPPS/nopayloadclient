@@ -55,10 +55,15 @@ class CurlMession{
         }
 
         nlohmann::json execute(){
-	    using namespace std::chrono;
-	    std::cout << "begin curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
-            ans.res = curl_easy_perform(curl);
-	    std::cout << "end curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
+	        using namespace std::chrono;
+            if (config::print_time_stamps) {
+                std::cout << "begin curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
+                ans.res = curl_easy_perform(curl);
+    	        std::cout << "end curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
+            }
+            else {
+                ans.res = curl_easy_perform(curl);
+            }
             if ( ans.res!=0 ){
                 std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(ans.res);
                 throw std::runtime_error(msg);
@@ -94,28 +99,28 @@ class CurlMession{
 };
 
 nlohmann::json get(std::string url){
-    std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 nlohmann::json post(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url){
-    std::cout<<"backend::put(url="<<url<<")"<<std::endl;
+    //std::cout<<"backend::put(url="<<url<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut();
     return cm.try_execute();
 }
 
 nlohmann::json put(std::string url, nlohmann::json jsonData){
-    std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlMession cm = CurlMession(url);
     cm.preparePut(jsonData);
     return cm.try_execute();

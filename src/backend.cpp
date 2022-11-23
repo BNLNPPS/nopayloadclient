@@ -281,30 +281,6 @@ nlohmann::json extractPllWithName(nlohmann::json plLists, std::string pllName){
     throw NoPayloadException(msg);
 }
 
-void checkIovIsFree(std::string gtName, std::string plType, int majorIovStart, int minorIovStart){
-    std::string pllName = getPayloadListName(gtName, plType);
-    nlohmann::json plLists = getPayloadLists();
-    nlohmann::json plList = extractPllWithName(plLists, pllName);
-    for (auto pIov : plList){
-        if (pIov["major_iov"]==majorIovStart && pIov["minor_iov"]==minorIovStart) {
-            std::string msg = "piov with same major- and minor_iov already exists";
-            throw NoPayloadException(msg);
-        }
-    }
-}
-
-void prepareInsertIov(std::string gtName, std::string plType, std::string fileUrl,
-                          int majorIovStart, int minorIovStart){
-    checkGtExists(gtName);
-    checkPlTypeExists(plType);
-    if (!gtHasPlType(gtName, plType)) {
-        createNewPllForGt(gtName, plType);
-    }
-    else {
-        //checkIovIsFree(gtName, plType, majorIovStart, minorIovStart);
-    }
-}
-
 void prepareInsertIov(std::string gtName, std::string plType){
     checkGtExists(gtName);
     checkPlTypeExists(plType);
@@ -320,5 +296,14 @@ void insertIov(std::string gtName, std::string plType, std::string fileUrl,
     int piovId = createPayloadIOV(remoteUrl, majorIovStart, minorIovStart);
     attachPayloadIOV(pllName, piovId);
 }
-
+/*
+void insertIov(std::string gtName, std::string plType, std::string fileUrl,
+                          int majorIovStart, int minorIovStart,
+                          int majorIovEnd, int minorIovEnd){
+    std::string remoteUrl = plmover::getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+    std::string pllName = getPayloadListName(gtName, plType);
+    int piovId = createPayloadIOV(remoteUrl, majorIovStart, minorIovStart, majorIovEnd, minorIovEnd);
+    attachPayloadIOV(pllName, piovId);
+}
+*/
 }

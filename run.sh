@@ -21,3 +21,6 @@ curl -X PUT http://localhost:8000/api/cdb_rest/piov_attach -H 'Content-Type: app
 
 curl -X POST http://localhost:8000/api/cdb_rest/gtstatus -H 'Content-Type: application/json' -d '{"name": "locked"}'
 curl -X PUT http://localhost:8000/api/cdb_rest/gt_change_status/LinosGT/locked
+
+curl http://localhost:8000/api/cdb_rest/gt
+

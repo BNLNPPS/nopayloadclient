@@ -4,22 +4,12 @@
 #include "nopayloadclient.hpp"
 
 
-std::vector<std::string> extractPlTypes(nlohmann::json plDict){
-  std::vector<std::string> plTypes;
-  for (auto& el : plDict.items()){
-    std::cout<<"el.key() = "<<el.key()<<std::endl;
-    plTypes.push_back(el.key());
-  }
-  return plTypes;
-}
-
-
 int main()
 {
   std::string gtName = "sPHENIX_ExampleGT_1";
   int nIovs = 10;
-  //  std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
-  std::string basePath = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/";
+  std::string basePath = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/";
+  //std::string basePath = "/lbne/u/lgerlach1/Projects/nopayloadclient/data/local/";
 
   nlohmann::json payloadDict;
   payloadDict["Beam"] =        basePath + "D0DXMagnets.dat";
@@ -29,14 +19,13 @@ int main()
   payloadDict["CEMC_Geo"] =    basePath + "cemc_geoparams-0-0-4294967295-1536789215.xml";
 
   nlohmann::json resp;
+
   resp = nopayloadclient::createGlobalTag(gtName);
   std::cout<<"resp = "<<resp<<std::endl;
-  for (auto plType : extractPlTypes(payloadDict)) {
-    resp = nopayloadclient::createPayloadType(plType);
-    std::cout<<"resp = "<<resp<<std::endl;
-  }
 
-  for (auto& el : payloadDict.items()){
+  for (const auto& el : payloadDict.items()){
+    resp = nopayloadclient::createPayloadType(el.key());
+    std::cout<<"resp = "<<resp<<std::endl;
     for (int i=0; i<nIovs; i++){
       resp = nopayloadclient::insertPayload(gtName, el.key(), el.value(), i, 0);
       std::cout<<"resp = "<<resp<<std::endl;
