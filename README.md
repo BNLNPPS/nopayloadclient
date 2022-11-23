@@ -17,7 +17,7 @@ cmake -S . -B build && cmake --build build/
 Configure the client by specifying the config file in
 an env variable
 ```
-export NOPAYLOADCLIENT_CONF="example_config.json"
+export NOPAYLOADCLIENT_CONF=example_config.json
 ```
 where only files in the ```config/``` directory are considered.
 If this is not done, the parameters in ```default.json``` will
