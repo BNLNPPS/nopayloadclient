@@ -11,7 +11,9 @@ set(source_files
 
 add_library(nopayloadclient ${source_files})
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
-target_link_libraries(nopayloadclient PUBLIC stdc++fs)
+if (UNIX AND NOT APPLE)
+    target_link_libraries(nopayloadclient PUBLIC stdc++fs)
+endif (UNIX AND NOT APPLE)
 
 target_include_directories(nopayloadclient
     INTERFACE
