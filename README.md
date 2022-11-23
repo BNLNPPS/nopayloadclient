@@ -15,11 +15,12 @@ In the project folder, configure cmake and compile
 cmake -S . -B build && cmake --build build/
 ```
 Configure the client by specifying the config file in
-an env variable:
+an env variable
 ```
-export NOPAYLOADCLIENT_CONF="/absolute/path/to/config.json"
+export NOPAYLOADCLIENT_CONF="example_config.json"
 ```
-If this is not done, the parameters in config/default.json will
+where only files in the ```config/``` directory are considered.
+If this is not done, the parameters in ```default.json``` will
 be assumed.
 
 ### Testing
