@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 
 #include <backend.hpp>
+#include <payload.hpp>
 #include <plmover.hpp>
 #include <exception.hpp>
 
@@ -56,10 +57,11 @@ nlohmann::json createPayloadType(std::string plType) {
 nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                              int majorIovStart, int minorIovStart){
     try {
-        plmover::prepareUploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        payload::Payload pl = payload::Payload(fileUrl, plType);
+        plmover::prepareUploadFile(plType, fileUrl);
         backend::prepareInsertIov(gtName, plType);
-        plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        plmover::uploadFile(plType, fileUrl);
+        backend::insertIov(gtName, plType, pl, majorIovStart, minorIovStart);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
     }
     catch (NoPayloadException &e) {

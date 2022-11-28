@@ -6,8 +6,14 @@
 int main()
 {
 
+  return 0;
+
+
+  /*
   std::string cs = plmover::getCheckSum("/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat");
-  std::cout<<"cs = "<<cs<<std::endl;
+  std::cout << "cs = " << cs << std::endl;
+  std::string remote_dir = plmover::getRemoteDir(cs);
+  std::cout << "remote_dir = " << remote_dir << std::endl;
 
   return 0;
   std::string localUrl = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/data.dat";
@@ -26,4 +32,5 @@ int main()
   }
   //if (!plmover::fileExists(remoteUrl)) return 1;
   return EXIT_SUCCESS;
+  */
 }

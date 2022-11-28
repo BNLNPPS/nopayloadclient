@@ -6,7 +6,7 @@
 
 #include <config.hpp>
 #include <curlwrapper.hpp>
-#include <plmover.hpp>
+#include <payload.hpp>
 #include <exception.hpp>
 #include <backend.hpp>
 
@@ -289,9 +289,9 @@ void prepareInsertIov(std::string gtName, std::string plType){
     }
 }
 
-void insertIov(std::string gtName, std::string plType, std::string fileUrl,
-                          int majorIovStart, int minorIovStart){
-    std::string remoteUrl = plmover::getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+void insertIov(std::string gtName, std::string plType, payload::Payload& pl,
+               int majorIovStart, int minorIovStart){
+    std::string remoteUrl = pl.remote_url;
     std::string pllName = getPayloadListName(gtName, plType);
     int piovId = createPayloadIOV(remoteUrl, majorIovStart, minorIovStart);
     attachPayloadIOV(pllName, piovId);

@@ -1,7 +1,9 @@
 #pragma once
-#include <vector>
 
+#include <vector>
 #include <nlohmann/json.hpp>
+
+#include <payload.hpp>
 #include <curlwrapper.hpp>
 
 namespace backend {
@@ -37,7 +39,7 @@ namespace backend {
     void attachPayloadIOV(std::string plListName, int plIovId);
 
     void prepareInsertIov(std::string gtName, std::string plType);
-    void insertIov(std::string gtName, std::string plType, std::string fileUrl,
+    void insertIov(std::string gtName, std::string plType, payload::Payload &pl,
                     int majorIovStart, int minorIovStart);
 
 }

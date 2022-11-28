@@ -4,13 +4,13 @@
 #include <filesystem>
 #include <fstream>
 #include <unistd.h>
-#include <md5.hpp>
+
 
 #include <plmover.hpp>
+#include <payload.hpp>
 #include <exception.hpp>
 #include <config.hpp>
 
-//std::string basePath = config::dict["remote_pl_dir"];
 
 namespace fs = std::filesystem;
 namespace plmover {
@@ -20,30 +20,9 @@ bool fileExists(std::string fileUrl){
     return (stat (fileUrl.c_str(), &buffer) ==0);
 }
 
-std::string getCheckSumAlt(std::string fileUrl){
-    std::ifstream inFile(fileUrl);
-    std::string tempData;
-    std::string inFileData;
-    while (inFile.good()){
-        std::getline(inFile, tempData);
-        inFileData.append(tempData+"\n");
-    }
-    inFile.close();
-    return md5(inFileData).c_str();
-}
-
-std::string getCheckSum(std::string fileUrl){
-    std::ifstream inFile(fileUrl, std::ifstream::binary);
-    inFile.seekg(0, inFile.end);
-    long length = inFile.tellg();
-    inFile.seekg(0, inFile.beg);
-    char inFileData[length+1];
-    inFile.read(inFileData, length);
-    inFile.close();
-    return md5(inFileData).c_str();
-}
 
 void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
+    /*
     std::string firstCheckSum = getCheckSum(firstFileUrl);
     std::string secondCheckSum = getCheckSum(secondFileUrl);
     if (firstCheckSum != secondCheckSum){
@@ -52,6 +31,7 @@ void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
         msg += secondFileUrl;
         throw NoPayloadException(msg);
     }
+    */
 }
 
 void checkLocalFile(std::string localUrl){
@@ -70,15 +50,17 @@ void checkRemoteFile(std::string remoteUrl){
     }
 }
 
-std::string getRemoteUrl(std::string globalTag, std::string payloadType,
-                         int majorIovStart, int minorIovStart){
-    std::string newPath = config::remote_pl_dir;
-    newPath += globalTag + "/";
-    newPath += payloadType + "/";
-    newPath += std::to_string(majorIovStart) + "_";
-    newPath += std::to_string(minorIovStart);
-    newPath += ".dat";
-    return newPath;
+std::string getRemoteUrl(std::string payloadType, std::string check_sum){
+    std::string remote_url = config::remote_pl_dir;
+    remote_url += getDirsFromCheckSum(check_sum);
+    return remote_url;
+}
+
+std::string getDirsFromCheckSum(std::string check_sum){
+    std::string first_dir = {check_sum[0], check_sum[1]};
+    std::string second_dir = {check_sum[2], check_sum[3]};
+    std::string dirs = first_dir + "/" + second_dir;
+    return dirs;
 }
 
 void createDirectory(std::string dirName){
@@ -92,6 +74,11 @@ void createDirectories(std::string globalTag, std::string payloadType) {
     createDirectory(config::remote_pl_dir + "/" + globalTag + "/" + payloadType);
 }
 
+void createRemoteDir(std::string check_sum) {
+    std::string remote_dir = getDirsFromCheckSum(check_sum);
+    createDirectory(remote_dir);
+}
+
 void checkPLStores(std::string localUrl, std::string remoteUrl) {
     checkLocalFile(localUrl);
     checkRemoteFile(remoteUrl);
@@ -100,16 +87,19 @@ void checkPLStores(std::string localUrl, std::string remoteUrl) {
     }
 }
 
-void prepareUploadFile(std::string gtName, std::string plType, std::string fileUrl,
-                       int majorIovStart, int minorIovStart) {
-    std::string remoteUrl = getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+void prepareUploadFile(std::string plType, std::string fileUrl) {
+    //std::string check_sum = getCheckSum(fileUrl);
+    std::string check_sum = "checksum";
+    std::string remoteUrl = getRemoteUrl(plType, check_sum);
     checkPLStores(fileUrl, remoteUrl);
 }
 
-void uploadFile(std::string gtName, std::string plType, std::string fileUrl,
-                int majorIovStart, int minorIovStart){
-    createDirectories(gtName, plType);
-    std::string remoteUrl = getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
+//void uploadFile(std::string gtName, std::string plType, std::string fileUrl,
+//                int majorIovStart, int minorIovStart){
+void uploadFile(std::string plType, std::string fileUrl){
+    createRemoteDir("checksum");
+    std::string check_sum = "";
+    std::string remoteUrl = getRemoteUrl(plType, check_sum);
     std::filesystem::copy_file(fileUrl, remoteUrl);
     compareCheckSums(fileUrl, remoteUrl);
 }

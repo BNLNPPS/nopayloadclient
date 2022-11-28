@@ -4,6 +4,7 @@ set(source_files
     nopayloadclient.cpp
     backend.cpp
     curlwrapper.cpp
+    payload.cpp
     plmover.cpp
     config.cpp
 )
