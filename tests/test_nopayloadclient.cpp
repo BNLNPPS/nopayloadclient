@@ -9,20 +9,8 @@
 #include <unistd.h>
 
 #include <config.hpp>
-
 #include "nopayloadclient.hpp"
 
-
-std::vector<std::string> split_string(std::string path, char splitter) {
-  std::vector<std::string> vec;
-  std::stringstream ss(path);
-  std::string part;
-  while (!ss.eof()) {
-      getline(ss, part, splitter);
-      vec.push_back(part);
-  }
-  return vec;
-}
 
 int getPayloadNumber() {
   const std::filesystem::path pl_path{config::remote_pl_dir};
@@ -78,22 +66,6 @@ int main()
   resp = nopayloadclient::get("my_gt", "my_pt", rand_iov, 0);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
-
-  // the remote url should be of the format /path/to/pl/storage/<pltype>/<checksum>_<barefilename>
-  std::vector<std::string> path_parts = split_string(resp["msg"], '/');
-  std::string remote_file_name = path_parts[path_parts.size()-1];
-  std::vector<std::string> file_name_parts = split_string(remote_file_name, '_');
-  std::string check_sum = file_name_parts[0];
-  std::string bare_file_name = file_name_parts[1];
-
-  std::cout << "check_sum = " << check_sum << std::endl;
-  std::cout << "bare_file_name = " << bare_file_name << std::endl;
-
-
-  std::vector<std::string> my_file_name_parts = split_string(my_local_url, '/');
-  std::string my_file_name = my_file_name_parts[my_file_name_parts.size() - 1];
-
-  std::cout << "my_file_name = " << my_file_name << std::endl;
 
   // inserting another iov with the same payload should not change number of payloads
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
