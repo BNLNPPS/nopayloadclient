@@ -34,12 +34,12 @@ namespace backend {
     void unlockGlobalTag(std::string name);
     void lockGlobalTag(std::string name);
     void createNewPllForGt(std::string gtName, std::string plType);
-    int createPayloadIOV(std::string plUrl, int majorIov, int minorIov);
-    int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
+    int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov);
+    int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
     void attachPayloadIOV(std::string plListName, int plIovId);
 
-    void prepareInsertIov(std::string gtName, std::string plType);
-    void insertIov(std::string gtName, std::string plType, payload::Payload &pl,
+    void prepareInsertIov(std::string gtName, payload::Payload& pl);
+    void insertIov(std::string gtName, payload::Payload &pl,
                     int majorIovStart, int minorIovStart);
 
 }

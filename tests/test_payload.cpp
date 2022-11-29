@@ -7,7 +7,6 @@
 int main()
 {
 
-
   std::string local_url = "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/local/test.dat";
   payload::Payload pl = payload::Payload(local_url, "my_type");
 

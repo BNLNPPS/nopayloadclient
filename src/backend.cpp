@@ -228,19 +228,19 @@ void unlockGlobalTag(std::string name){
     curlwrapper::put(config::api_url + "gt_change_status/" + name + "/unlocked");
 }
 
-int createPayloadIOV(std::string plUrl, int majorIov, int minorIov){
+int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov){
     nlohmann::json j;
-    j["payload_url"] = plUrl;
+    j["payload_url"] = pl.remote_url;
     j["major_iov"] = majorIov;
     j["minor_iov"] = minorIov;
-    j["checksum"] = "checksum";
+    j["checksum"] = pl.check_sum;
     nlohmann::json res = curlwrapper::post(config::api_url + "piov", j);
     return res["id"];
 }
 
-int createPayloadIOV(std::string plUrl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd){
+int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd){
     nlohmann::json j;
-    j["payload_url"] = plUrl;
+    j["payload_url"] = pl.remote_url;
     j["major_iov"] = majorIov;
     j["minor_iov"] = minorIov;
     j["major_iov_end"] = majorIovEnd;
@@ -281,19 +281,19 @@ nlohmann::json extractPllWithName(nlohmann::json plLists, std::string pllName){
     throw NoPayloadException(msg);
 }
 
-void prepareInsertIov(std::string gtName, std::string plType){
+void prepareInsertIov(std::string gtName, payload::Payload& pl){
     checkGtExists(gtName);
-    checkPlTypeExists(plType);
-    if (!gtHasPlType(gtName, plType)) {
-        createNewPllForGt(gtName, plType);
+    checkPlTypeExists(pl.type);
+    if (!gtHasPlType(gtName, pl.type)) {
+        createNewPllForGt(gtName, pl.type);
     }
 }
 
-void insertIov(std::string gtName, std::string plType, payload::Payload& pl,
+void insertIov(std::string gtName, payload::Payload& pl,
                int majorIovStart, int minorIovStart){
     std::string remoteUrl = pl.remote_url;
-    std::string pllName = getPayloadListName(gtName, plType);
-    int piovId = createPayloadIOV(remoteUrl, majorIovStart, minorIovStart);
+    std::string pllName = getPayloadListName(gtName, pl.type);
+    int piovId = createPayloadIOV(pl, majorIovStart, minorIovStart);
     attachPayloadIOV(pllName, piovId);
 }
 /*
