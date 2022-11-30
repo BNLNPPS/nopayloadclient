@@ -89,21 +89,20 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
     }
 }
 
-/*
 nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                              int majorIovStart, int minorIovStart,
                              int majorIovEnd, int minorIovEnd){
     try {
-        plmover::prepareUploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        backend::prepareInsertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        plmover::uploadFile(gtName, plType, fileUrl, majorIovStart, minorIovStart);
-        backend::insertIov(gtName, plType, fileUrl, majorIovStart, minorIovStart);
+        payload::Payload pl = payload::Payload(fileUrl, plType);
+        plmover::prepareUploadFile(pl);
+        backend::prepareInsertIov(gtName, pl);
+        plmover::uploadFile(pl);
+        backend::insertIov(gtName, pl, majorIovStart, minorIovStart, majorIovEnd, minorIovEnd);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
     }
     catch (NoPayloadException &e) {
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
     }
 }
-*/
 
 }

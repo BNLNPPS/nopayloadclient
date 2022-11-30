@@ -246,6 +246,7 @@ int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov, int major
     j["minor_iov"] = minorIov;
     j["major_iov_end"] = majorIovEnd;
     j["minor_iov_end"] = minorIovEnd;
+    j["checksum"] = pl.check_sum;
     nlohmann::json res = curlwrapper::post(config::api_url + "piov", j);
     return res["id"];
 }
@@ -297,14 +298,14 @@ void insertIov(std::string gtName, payload::Payload& pl,
     int piovId = createPayloadIOV(pl, majorIovStart, minorIovStart);
     attachPayloadIOV(pllName, piovId);
 }
-/*
-void insertIov(std::string gtName, std::string plType, std::string fileUrl,
-                          int majorIovStart, int minorIovStart,
-                          int majorIovEnd, int minorIovEnd){
-    std::string remoteUrl = plmover::getRemoteUrl(gtName, plType, majorIovStart, minorIovStart);
-    std::string pllName = getPayloadListName(gtName, plType);
-    int piovId = createPayloadIOV(remoteUrl, majorIovStart, minorIovStart, majorIovEnd, minorIovEnd);
+
+void insertIov(std::string gtName, payload::Payload& pl,
+               int majorIovStart, int minorIovStart,
+               int majorIovEnd, int minorIovEnd){
+    std::string remoteUrl = pl.remote_url;
+    std::string pllName = getPayloadListName(gtName, pl.type);
+    int piovId = createPayloadIOV(pl, majorIovStart, minorIovStart, majorIovEnd, minorIovEnd);
     attachPayloadIOV(pllName, piovId);
 }
-*/
+
 }

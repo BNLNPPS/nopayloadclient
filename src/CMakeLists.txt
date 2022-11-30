@@ -2,13 +2,13 @@ configure_file(config.h.in config.h @ONLY)
 
 set(source_files
     nopayloadclient.cpp
+    sphenixclient.cpp
     backend.cpp
     curlwrapper.cpp
     payload.cpp
     plmover.cpp
     config.cpp
 )
-
 
 add_library(nopayloadclient ${source_files})
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)

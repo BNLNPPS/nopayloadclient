@@ -41,5 +41,8 @@ namespace backend {
     void prepareInsertIov(std::string gtName, payload::Payload& pl);
     void insertIov(std::string gtName, payload::Payload &pl,
                     int majorIovStart, int minorIovStart);
+    void insertIov(std::string gtName, payload::Payload &pl,
+                    int majorIovStart, int minorIovStart,
+                    int majorIovEnd, int minorIovEnd);
 
 }
