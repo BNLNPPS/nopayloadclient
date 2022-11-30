@@ -74,6 +74,24 @@ int main()
   int n_pl_2 = getPayloadNumber();
   if (n_pl_2 != n_pl_1) return 1;
 
+  // should not be able to write to a locked gt
+  resp = nopayloadclient::lockGlobalTag("my_gt");
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  std::cout << resp << std::endl;
+  if (resp["code"] == 0) return 1;
+
+  // insertion should work again after unlocking
+  resp = nopayloadclient::unlockGlobalTag("my_gt");
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
 
   // ++++++++++++++++++++++++++++++
   //    THINGS THAT SHOULD FAIL

@@ -44,6 +44,26 @@ nlohmann::json createGlobalTag(std::string gtName) {
     }
 }
 
+nlohmann::json lockGlobalTag(std::string gtName) {
+    try {
+        backend::lockGlobalTag(gtName);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully locked global tag"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+nlohmann::json unlockGlobalTag(std::string gtName) {
+    try {
+        backend::unlockGlobalTag(gtName);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully unlocked global tag"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
 nlohmann::json createPayloadType(std::string plType) {
     try {
         backend::createPayloadType(plType);

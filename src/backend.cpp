@@ -194,6 +194,7 @@ void createGlobalTagObject(std::string name, std::string status) {
     nlohmann::json j;
     j["status"] = status;
     j["name"] = name;
+    j["author"] = std::getenv("USER");
     curlwrapper::post(config::api_url + "gt", j);
     cached_gt_names.is_valid = false;
 }
