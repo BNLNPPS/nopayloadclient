@@ -1,12 +1,6 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <fstream>
 #include <md5.hpp>
 
 #include <payload.hpp>
-#include <exception.hpp>
-#include <config.hpp>
 
 namespace payload{
 

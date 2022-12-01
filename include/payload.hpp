@@ -1,6 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+
+#include <exception.hpp>
+#include <config.hpp>
 
 
 namespace payload {
@@ -22,5 +28,3 @@ namespace payload {
         std::string getBareFileName();
     };
 }
-
-

@@ -1,11 +1,4 @@
-#include <iostream>
-
-#include <nlohmann/json.hpp>
-
-#include <backend.hpp>
-#include <payload.hpp>
-#include <plmover.hpp>
-#include <exception.hpp>
+#include <nopayloadclient.hpp>
 
 
 namespace nopayloadclient {

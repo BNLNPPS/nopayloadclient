@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <nlohmann/json.hpp>
 #include <nopayloadclient.hpp>
 
