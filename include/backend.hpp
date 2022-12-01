@@ -14,15 +14,15 @@ namespace backend {
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists();
-    nlohmann::json getPayloadLists(std::string gtName);
-    nlohmann::json getGlobalTagMap(std::string gtName);
-    nlohmann::json getPayloadIOVs(std::string gtName, int majorIov, int minorIov);
-    std::string getPayloadListName(std::string gtName, std::string plType);
-    std::string getPayloadUrl(std::string gtName, std::string plType, int majorIov, int minorIov);
-    bool gtExists(std::string gtName);
+    nlohmann::json getPayloadLists(std::string gt_name);
+    nlohmann::json getGlobalTagMap(std::string gt_name);
+    nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
+    std::string getPayloadListName(std::string gt_name, std::string plType);
+    std::string getPayloadUrl(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
+    bool gtExists(std::string gt_name);
     bool plTypeExists(std::string plType);
-    bool gtHasPlType(std::string gtName, std::string plType);
-    void checkGtExists(std::string gtName);
+    bool gtHasPlType(std::string gt_name, std::string plType);
+    void checkGtExists(std::string gt_name);
 
     // Writing
     void createGlobalTagStatus(std::string status);
@@ -30,19 +30,19 @@ namespace backend {
     void createGlobalTag(std::string name);
     void createPayloadType(std::string type);
     std::string createPayloadList(std::string type);
-    void attachPayloadList(std::string plName, std::string gtName);
+    void attachPayloadList(std::string plName, std::string gt_name);
     void unlockGlobalTag(std::string name);
     void lockGlobalTag(std::string name);
-    void createNewPllForGt(std::string gtName, std::string plType);
-    int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov);
-    int createPayloadIOV(payload::Payload& pl, int majorIov, int minorIov, int majorIovEnd, int minorIovEnd);
-    void attachPayloadIOV(std::string plListName, int plIovId);
+    void createNewPllForGt(std::string gt_name, std::string plType);
+    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov);
+    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov, long long major_iovEnd, long long minor_iovEnd);
+    void attachPayloadIOV(std::string plListName, long long plIovId);
 
-    void prepareInsertIov(std::string gtName, payload::Payload& pl);
-    void insertIov(std::string gtName, payload::Payload &pl,
-                    int majorIovStart, int minorIovStart);
-    void insertIov(std::string gtName, payload::Payload &pl,
-                    int majorIovStart, int minorIovStart,
-                    int majorIovEnd, int minorIovEnd);
+    void prepareInsertIov(std::string gt_name, payload::Payload& pl);
+    void insertIov(std::string gt_name, payload::Payload &pl,
+                    long long major_iovStart, long long minor_iovStart);
+    void insertIov(std::string gt_name, payload::Payload &pl,
+                    long long major_iovStart, long long minor_iovStart,
+                    long long major_iovEnd, long long minor_iovEnd);
 
 }

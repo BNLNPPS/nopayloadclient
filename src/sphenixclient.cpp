@@ -6,17 +6,9 @@
 namespace sphenixclient {
 
 // Reading
-/*
-nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov){
-    try {
-        std::string payloadUrl = backend::getPayloadUrl(gtName, plType, majorIov, minorIov);
-        return nlohmann::json::object({{"code", 0}, {"msg", payloadUrl}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+nlohmann::json get(std::string gtName, std::string plType, int iov){
+    return nopayloadclient::get(gtName, plType, 0, iov);
 }
-*/
 
 
 // Writing

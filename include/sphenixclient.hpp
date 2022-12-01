@@ -5,7 +5,7 @@
 
 namespace sphenixclient {
     // Reading
-    nlohmann::json get(std::string gtName, std::string plType, int majorIov, int minorIov);
+    nlohmann::json get(std::string gtName, std::string plType, int iov);
 
     // Writing
     nlohmann::json createPayloadType(std::string plType);

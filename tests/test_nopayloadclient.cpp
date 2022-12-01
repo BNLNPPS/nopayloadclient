@@ -63,6 +63,7 @@ int main()
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
 
   // getting the url from the DB again
+  std::cout << "attempting to retrieve" << std::endl;
   resp = nopayloadclient::get("my_gt", "my_pt", rand_iov, 0);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
