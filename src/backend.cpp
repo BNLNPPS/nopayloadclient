@@ -1,15 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <curl/curl.h>
-#include <nlohmann/json.hpp>
-
-#include <config.hpp>
-#include <curlwrapper.hpp>
-#include <payload.hpp>
-#include <exception.hpp>
 #include <backend.hpp>
-
 
 namespace backend {
 

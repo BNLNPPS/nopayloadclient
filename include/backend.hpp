@@ -1,10 +1,14 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include <nlohmann/json.hpp>
 
-#include <payload.hpp>
+#include <config.hpp>
 #include <curlwrapper.hpp>
+#include <payload.hpp>
+#include <exception.hpp>
+
 
 namespace backend {
 
