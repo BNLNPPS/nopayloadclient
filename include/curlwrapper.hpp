@@ -1,7 +1,14 @@
 #pragma once
 
+#include <iostream>
+#include <vector>
+#include <stdexcept>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
+
+#include <config.hpp>
+#include <exception.hpp>
+
 
 namespace curlwrapper {
 

@@ -1,13 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <stdexcept>
-#include <curl/curl.h>
-#include <nlohmann/json.hpp>
-
-#include <config.hpp>
-#include <exception.hpp>
 #include <curlwrapper.hpp>
-
 
 namespace curlwrapper{
 
