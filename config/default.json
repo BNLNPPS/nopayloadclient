@@ -1,7 +1,7 @@
 {
   "base_url": "localhost:8000",
   "api_res":  "/api/cdb_rest/",
-  "remote_pl_dir": "/Users/linogerlach/Projects/DUNE/ConditionsHandling/nopayloadclient/data/remote/",
+  "remote_pl_dir": "/tmp/",
   "n_retries": 5,
   "print_time_stamps": false
 }
