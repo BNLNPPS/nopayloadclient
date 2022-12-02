@@ -34,3 +34,7 @@ jobs:
 
             - name: test curl
               run: curl http://localhost:8000/api/cdb_rest/gt
+
+            - name: run nopayloadclient tests
+              run: cmake -S . -B build && cmake --build build/ && cd build/ && ctest --verbose
+              
