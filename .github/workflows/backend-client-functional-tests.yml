@@ -1,7 +1,7 @@
 on: [push]
 jobs:
     Backend-Client-Functional-Tests-CI:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         steps:
             - name: Print job info
               run: echo "This job was automatically triggered by a ${{ github.event_name }} event. It is now running on a ${{ runner.os }} server hosted by GitHub! The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
@@ -29,3 +29,9 @@ jobs:
               env:
                   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
               run: git clone git@github.com:BNLNPPS/nopayloaddb.git
+
+            - name: Build & launch npdb container
+              run: cd nopayloaddb && docker-compose up --build -d
+
+            - name: test curl
+              run: curl http://localhost:8000/api/cdb_rest/gt
