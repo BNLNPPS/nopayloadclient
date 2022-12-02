@@ -36,15 +36,17 @@ int createRandomPayload(char filename[]) {
 
 int main()
 {
-  // initialize helper variables for this test
+  std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
   nlohmann::json resp;
   srandom(time(NULL));
   int rand_iov = random();
   int n_pl_0 = getPayloadNumber();
 
+  std::cout << "creating random payload file ..." << std::endl;
   if (createRandomPayload(my_local_url) == 1) return 1;
 
+  std::cout << "creating global tag and payload type (if non-existant) ..." << std::endl;
   // create the global tag if it does not exist
   resp = nopayloadclient::createGlobalTag("my_gt");
   std::cout << resp << std::endl;
