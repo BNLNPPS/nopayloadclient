@@ -35,11 +35,10 @@ jobs:
             - name: test curl
               run: curl http://localhost:8000/api/cdb_rest/gt
 
+            - name: install curl
+              run: sudo apt install curl
+
             - name: run nopayloadclient tests
               run: |
-                  pwd
-                  ls
                   cd nopayloadclient
-                  pwd
-                  ls
                   cmake -S . -B build && cmake --build build/ && cd build/ && ctest --verbose
