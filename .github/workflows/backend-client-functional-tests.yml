@@ -33,7 +33,7 @@ jobs:
                   cd nopayloaddb && git pull origin master
 
             - name: gypsy trick - replace one line of code in dockerfile
-              run: sed -i 's/FROM python:3/FROM python:3.7.5'/g' nopayloaddb/Dockerfile
+              run: sed -i 's/FROM python:3/FROM python:3.7.5/g' nopayloaddb/Dockerfile
 
             - name: cat requirements
               run: cat nopayloaddb/requirements.txt
