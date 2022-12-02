@@ -43,7 +43,8 @@ int createRandomPayload(char filename[]) {
 int main()
 {
   std::cout << "initializing helper variables ..." << std::endl;
-  char my_local_url[] = "/tmp/file.dat";
+  //char my_local_url[] = "/tmp/file.dat";
+  char my_local_url[] = "file.dat";
   nlohmann::json resp;
   srandom(time(NULL));
   int rand_iov = random();
