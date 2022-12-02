@@ -44,5 +44,8 @@ jobs:
             - name: Build & launch npdb container
               run: cd nopayloaddb && docker-compose up --build -d
 
+            - name: Sleep for 30 sec
+              run: sleep 30
+
             - name: test curl
               run: curl http://localhost:8000/api/cdb_rest/gt
