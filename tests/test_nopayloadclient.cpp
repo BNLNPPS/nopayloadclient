@@ -23,13 +23,19 @@ int getPayloadNumber() {
 }
 
 int createRandomPayload(char filename[]) {
+  std::cout << "createRandomPayload(filename=" << filename << ")" << std::endl;
+  std::cout << "attempting to remove existing file..." << std::endl;
   std::filesystem::remove(filename);
+  std::cout << "attempting to open new file..." << std::endl;
   int fd = mkstemp(filename);
+  std::cout << "fd = " << fd << std::endl;
   if (fd == -1) return 1;
+  std::cout << "writing random data to new file..." << std::endl;
   for (int i=0; i<10; i++) {
     std::string ding = std::to_string(random());
     write(fd, ding.c_str(), ding.size() + 1);
   }
+  std::cout << "success! random payload file has been created." << std::endl;
   return 0;
 }
 
