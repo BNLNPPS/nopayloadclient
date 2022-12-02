@@ -17,23 +17,23 @@ jobs:
               with:
                 path: ${{ github.event.repository.name }}
 
-#            - name: Check out nopayloaddb
-#              env:
-#                  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-#              run: |
-#                  git clone git@github.com:BNLNPPS/nopayloaddb.git
-#                  cd nopayloaddb && git pull origin master
+            - name: Check out nopayloaddb
+              env:
+                  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+              run: |
+                  git clone git@github.com:BNLNPPS/nopayloaddb.git
+                  cd nopayloaddb && git pull origin master
 
-#            - name: gypsy trick - replace one line of code in dockerfile
-#              run: sed -i 's/FROM python:3/FROM python:3.7.5/g' nopayloaddb/Dockerfile
+            - name: gypsy trick - replace one line of code in dockerfile
+              run: sed -i 's/FROM python:3/FROM python:3.7.5/g' nopayloaddb/Dockerfile
 
-#            - name: Build & launch npdb container
-#              run: |
-#                  cd nopayloaddb && docker-compose up --build -d
-#                  sleep 30
+            - name: Build & launch npdb container
+              run: |
+                  cd nopayloaddb && docker-compose up --build -d
+                  sleep 30
 
-#            - name: test curl
-#              run: curl http://localhost:8000/api/cdb_rest/gt
+            - name: test curl
+              run: curl http://localhost:8000/api/cdb_rest/gt
 
             - name: install libcurl
               run: |
@@ -45,11 +45,6 @@ jobs:
             - name: create remote payload dir
               run: |
                   mkdir /tmp/remote_pl_store/
-                  ls /tmp/
-                  ls /tmp/remote_pl_store/
-                  touch /tmp/file_touch.dat
-                  ls /tmp/
-                
 
             - name: run nopayloadclient tests
               run: |
