@@ -30,6 +30,12 @@ jobs:
                   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
               run: git clone git@github.com:BNLNPPS/nopayloaddb.git
 
+            - name: cat requirements
+              run: cat requirements.txt
+
+            - name: Echo python version
+              run: python --version
+
             - name: Build & launch npdb container
               run: cd nopayloaddb && docker-compose up --build -d
 
