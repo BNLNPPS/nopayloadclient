@@ -1,6 +1,6 @@
 on: [push]
 jobs:
-    Raw-Data-Pipeline-CI:
+    Backend-Client-Functional-Tests-CI:
         runs-on: ubuntu-18.04
         steps:
             - name: Print job info
