@@ -43,7 +43,10 @@ jobs:
                   sudo apt-get install libcurl4-openssl-dev
 
             - name: create remote payload dir
-              run: mkdir /tmp/remote_pl_store/
+              run: |
+                  mkdir /tmp/remote_pl_store/
+                  ls /tmp/
+                  ls /tmp/remote_pl_store/
 
             - name: run nopayloadclient tests
               run: |
