@@ -32,21 +32,35 @@ int createRandomPayload(char filename[]) {
   return 0;
 }
 
+long long randLong(long long lower, long long upper) {
+    return lower + (random() % (upper-lower+1));
+}
+
 
 int main()
 {
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
+  char my_local_url_2[] = "/tmp/file_2.dat";
+
   nlohmann::json resp;
   srandom(time(NULL));
-  int rand_iov = random();
+
+  long long major_iov_start = randLong(0, 1e6);
+  long long minor_iov_start = randLong(0, 1e6);
+  long long major_iov_end = randLong(major_iov_start, 10e6);
+  long long minor_iov_end = randLong(minor_iov_start, 10e6);
+  long long major_iov = randLong(major_iov_start, major_iov_end);
+  long long minor_iov = randLong(minor_iov_start, minor_iov_end);
+
   int n_pl_0 = getPayloadNumber();
 
-  std::cout << "creating random payload file ..." << std::endl;
+  // create random payload files
   if (createRandomPayload(my_local_url) == 1) return 1;
+  if (createRandomPayload(my_local_url_2) == 1) return 1;
 
-  std::cout << "creating global tag and payload type (if non-existant) ..." << std::endl;
   // create the global tag if it does not exist
+  resp = nopayloadclient::deleteGlobalTag("my_gt");
   resp = nopayloadclient::createGlobalTag("my_gt");
   std::cout << resp << std::endl;
 
@@ -55,7 +69,9 @@ int main()
   std::cout << resp << std::endl;
 
   // insert should work
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
+                                        major_iov_start, minor_iov_start,
+                                        major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
@@ -63,36 +79,64 @@ int main()
   int n_pl_1 = getPayloadNumber();
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
 
-  // getting the url from the DB again
-  std::cout << "attempting to retrieve" << std::endl;
-  resp = nopayloadclient::get("my_gt", "my_pt", rand_iov, 0);
+  // getting the url from the DB again should work
+  resp = nopayloadclient::get("my_gt", "my_pt", major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-  // inserting another iov with the same payload should not change number of payloads
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  // inserting another iov with the same payload should work...
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
+                                        major_iov, minor_iov,
+                                        major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
+
+  // ... but not change the number of payloads
   int n_pl_2 = getPayloadNumber();
   if (n_pl_2 != n_pl_1) return 1;
 
-  // should not be able to write to a locked gt
+  // trying to lock the global tag
   resp = nopayloadclient::lockGlobalTag("my_gt");
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  // should not be able to write to a locked gt ...
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
+                                        major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
 
-  // insertion should work again after unlocking
+  // ... except if the IOV does not overlap with existing
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
+                                        major_iov_end, minor_iov_end);
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
+  // deletion of locked global tag should fail
+  resp = nopayloadclient::deleteGlobalTag("my_gt");
+  std::cout << resp << std::endl;
+  if (resp["code"] == 0) return 1;
+
+  // trying to unlock global tag
   resp = nopayloadclient::unlockGlobalTag("my_gt");
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
+  // insertion should work again after unlocking
+  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
+                                        major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
+
+  // deletion of unlocked global tag should work
+  resp = nopayloadclient::deleteGlobalTag("my_gt");
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
+  // retrieval after deletion should fail
+  resp = nopayloadclient::get("my_gt", "my_pt", major_iov, minor_iov);
+  std::cout << resp << std::endl;
+  if (resp["code"] == 0) return 1;
 
 
   // ++++++++++++++++++++++++++++++
@@ -113,11 +157,6 @@ int main()
   resp = nopayloadclient::insertPayload("my_gt", "my_pt", "non_existing_file", 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
-
-//  // ... and if a payload with same IOV already exists ...
-//  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url, rand_iov, 0);
-//  std::cout<<resp<<std::endl;
-//  if (resp["code"]==0) return 1;
 
   return EXIT_SUCCESS;
 }
