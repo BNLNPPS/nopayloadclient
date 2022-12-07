@@ -29,7 +29,7 @@ set(NOPAYLOADCLIENT_SOURCE_DIR                 "${CMAKE_SOURCE_DIR}")
 find_package(CURL REQUIRED)
 
 add_subdirectory(src)
-#add_subdirectory(examples)
+add_subdirectory(examples)
 
 # Install files and export configs
 include(CMakePackageConfigHelpers)
