@@ -7,8 +7,8 @@ namespace nopayloadclient {
 // Reading
 nlohmann::json get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
     try {
-        std::string payloadUrl = backend::getPayloadUrl(gt_name, pl_type, major_iov, minor_iov);
-        return nlohmann::json::object({{"code", 0}, {"msg", payloadUrl}});
+        std::vector<std::string> urls = backend::getPayloadUrls(gt_name, pl_type, major_iov, minor_iov);
+        return nlohmann::json::object({{"code", 0}, {"msg", urls}});
     }
     catch (NoPayloadException &e) {
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
@@ -31,6 +31,16 @@ nlohmann::json createGlobalTag(std::string gt_name) {
     try {
         backend::createGlobalTag(gt_name);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully created global tag"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+nlohmann::json deleteGlobalTag(std::string gt_name) {
+    try {
+        backend::deleteGlobalTag(gt_name);
+        return nlohmann::json::object({{"code", 0}, {"msg", "successfully deleted global tag"}});
     }
     catch (NoPayloadException &e) {
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});

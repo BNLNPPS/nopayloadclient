@@ -133,6 +133,15 @@ std::string getPayloadUrl(std::string gt_name, std::string plType, long long maj
     throw NoPayloadException("Could not find payload for type "+plType);
 }
 
+std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov){
+    std::string payload_url = getPayloadUrl(gt_name, plType, major_iov, minor_iov);
+    std::vector<std::string> payload_urls;
+    for (const auto dir : config::read_dir_list) {
+        payload_urls.push_back(dir + payload_url);
+    }
+    return payload_urls;
+}
+
 std::string getPayloadListName(std::string gt_name, std::string plType){
     nlohmann::json j = getPayloadLists(gt_name);
     if (!j.contains(plType)){
@@ -255,6 +264,12 @@ void createGlobalTag(std::string name) {
         createGlobalTagStatus("locked");
     }
     createGlobalTagObject(name, "unlocked");
+}
+
+void deleteGlobalTag(std::string name) {
+    curlwrapper::del(config::api_url + "deleteGlobalTag/" + name);
+    cached_gt_names.is_valid = false;
+    cached_pt_dict.is_valid = false;
 }
 
 void createNewPllForGt(std::string gt_name, std::string plType){

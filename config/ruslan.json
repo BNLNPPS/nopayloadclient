@@ -1,7 +1,8 @@
 {
   "base_url": "helm-test1.apps.rcf.bnl.gov",
   "api_res":  "/api/cdb_rest/",
-  "remote_pl_dir": "/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/",
+  "write_dir": "/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/",
+  "read_dir_list": ["/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/"],
   "n_retries": 5,
   "print_time_stamps": true
 }

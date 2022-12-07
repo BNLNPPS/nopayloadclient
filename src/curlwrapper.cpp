@@ -71,6 +71,10 @@ class CurlMession{
         void prepareGet(){
         }
 
+        void prepareDelete(){
+            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        }
+
         void preparePut(){
             curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
         }
@@ -88,6 +92,13 @@ class CurlMession{
             preparePost(jsonData);
         }
 };
+
+nlohmann::json del(std::string url){
+    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    CurlMession cm = CurlMession(url);
+    cm.prepareDelete();
+    return cm.try_execute();
+}
 
 nlohmann::json get(std::string url){
     //std::cout<<"backend::get(url="<<url<<")"<<std::endl;

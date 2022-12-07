@@ -40,8 +40,8 @@ void checkRemoteFile(std::string remoteUrl){
 }
 
 void checkRemoteDirExists() {
-    if (!fs::exists(config::remote_pl_dir)){
-        throw NoPayloadException("remote payload directory "+config::remote_pl_dir+" does not exist");
+    if (!fs::exists(config::write_dir)){
+        throw NoPayloadException("remote payload directory "+config::write_dir+" does not exist");
     }
 }
 
@@ -64,8 +64,8 @@ void copyFile(std::string local_url, std::string remote_url) {
 }
 
 void uploadFile(payload::Payload& pl){
-    createDirectory(pl.remote_dir);
-    copyFile(pl.local_url, pl.remote_url);
+    createDirectory(config::write_dir + pl.remote_dir);
+    copyFile(pl.local_url, config::write_dir + pl.remote_url);
 }
 
 }

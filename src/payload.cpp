@@ -41,8 +41,7 @@ std::string Payload::getDirsFromChecksum() {
 }
 
 std::string Payload::getRemoteDir() {
-    std::string remote_dir = config::remote_pl_dir;
-    remote_dir += "/" + type;
+    std::string remote_dir = type;
     remote_dir += "/" + getDirsFromChecksum();
     while ( remote_dir.find("//") != std::string::npos ) {
         remote_dir.replace(remote_dir.find("//"), 2, "/");

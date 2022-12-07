@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 #include <nlohmann/json.hpp>
 
 #include <backend.hpp>
@@ -18,6 +19,7 @@ namespace nopayloadclient {
     // Writing
     nlohmann::json createPayloadType(std::string pl_type);
     nlohmann::json createGlobalTag(std::string gt_name);
+    nlohmann::json deleteGlobalTag(std::string gt_name);
     nlohmann::json lockGlobalTag(std::string gt_name);
     nlohmann::json unlockGlobalTag(std::string gt_name);
     nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,

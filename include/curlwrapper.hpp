@@ -22,6 +22,7 @@ struct Answer {
 nlohmann::json get(std::string url);
 
 // Writing
+nlohmann::json del(std::string url);
 nlohmann::json put(std::string url);
 nlohmann::json put(std::string url, nlohmann::json jsonData);
 nlohmann::json post(std::string url, nlohmann::json jsonData);

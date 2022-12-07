@@ -13,7 +13,7 @@
 
 
 int getPayloadNumber() {
-  const std::filesystem::path pl_path{config::remote_pl_dir};
+  const std::filesystem::path pl_path{config::write_dir};
   std::filesystem::recursive_directory_iterator pl_iterator{pl_path};
   int n = 0;
   for (auto const& dir_entry : pl_iterator) {

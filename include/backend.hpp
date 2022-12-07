@@ -22,7 +22,7 @@ namespace backend {
     nlohmann::json getGlobalTagMap(std::string gt_name);
     nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
     std::string getPayloadListName(std::string gt_name, std::string plType);
-    std::string getPayloadUrl(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
+    std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
     bool gtExists(std::string gt_name);
     bool plTypeExists(std::string plType);
     bool gtHasPlType(std::string gt_name, std::string plType);
@@ -32,6 +32,7 @@ namespace backend {
     void createGlobalTagStatus(std::string status);
     void createGlobalTagObject(std::string name, std::string status);
     void createGlobalTag(std::string name);
+    void deleteGlobalTag(std::string name);
     void createPayloadType(std::string type);
     std::string createPayloadList(std::string type);
     void attachPayloadList(std::string plName, std::string gt_name);
