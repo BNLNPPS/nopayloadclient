@@ -86,12 +86,16 @@ sphenix client. It is compiled along the rest of the project and can be run via
 ./build/examples/cli_sphenix <command> <parameters>
 ```
 The available commands are: get, createGlobalTag, createPayloadType, lockGlobalTag,
-unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded). Example workflow:
+unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
+getPayloadTypes, getGlobalTags. Example workflow:
 ```shell
 export NOPAYLOADCLIENT_CONF=my_sphenix_conf.json
 cd build/examples/
 ./cli_sphenix createGlobalTag example_gt
+./cli_sphenix getGlobalTags
 ./cli_sphenix createPayloadType example_pt
+./cli_sphenix getPayloadTypes
 ./cli_sphenix insertPayload example_gt example_pt /tmp/file.dat 7
 ./cli_sphenix get example_gt example_pt 11
+./cli_sphenix getSize
 ```

@@ -165,10 +165,11 @@ nlohmann::json getSize(){
         n_gt += 1;
     }
     return nlohmann::json::object({{"n_global_tag", n_gt},
-	                           {"n_iov_attached", n_iov_attached},
-	          	           {"n_iov_tot", getPayloadIOVs().size()},
-     			           {"n_pt", getPtNames().size()}});
+	                               {"n_iov_attached", n_iov_attached},
+	          	           //{"n_iov_tot", getPayloadIOVs().size()},
+     			                   {"n_pt", getPtNames().size()}});
 }
+
 
 // Writing
 void createGlobalTagStatus(std::string status){
