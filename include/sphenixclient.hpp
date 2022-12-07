@@ -18,4 +18,10 @@ namespace sphenixclient {
                                  int iovStart);
     nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                                  int iovStart, int iovEnd);
+
+   // Helper (Read-only)
+   nlohmann::json getSize();
+   nlohmann::json getPayloadTypes();
+   nlohmann::json getGlobalTags();
+
 }

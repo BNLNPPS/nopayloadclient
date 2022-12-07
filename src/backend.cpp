@@ -2,16 +2,6 @@
 
 namespace backend {
 
-template <typename T> class Cache {
-    public:
-        bool is_valid = false;
-        T content;
-        void update(T new_content){
-          content = new_content;
-          is_valid = true;
-        }
-};
-
 Cache<std::vector<std::string>> cached_gt_status_names;
 Cache<std::vector<std::string>> cached_gt_names;
 Cache<std::vector<std::string>> cached_pt_names;

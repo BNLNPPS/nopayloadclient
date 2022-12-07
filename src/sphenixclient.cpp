@@ -39,4 +39,15 @@ nlohmann::json insertPayload(std::string gtName, std::string plType, std::string
     return nopayloadclient::insertPayload(gtName, plType, fileUrl, 0, iovStart, 0, iovEnd);
 }
 
+// Helper (Read-only)
+nlohmann::json getSize() {
+    return nopayloadclient::getSize();
+}
+nlohmann::json getPayloadTypes() {
+    return nopayloadclient::getPayloadTypes();
+}
+nlohmann::json getGlobalTags() {
+    return nopayloadclient::getGlobalTags();
+}
+
 }

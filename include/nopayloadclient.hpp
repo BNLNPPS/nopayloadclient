@@ -11,10 +11,10 @@
 
 
 namespace nopayloadclient {
+
     // Reading
     nlohmann::json get(std::string gt_name, std::string pl_type,
                        long long major_iov, long long minor_iov);
-    nlohmann::json getSize();
 
     // Writing
     nlohmann::json createPayloadType(std::string pl_type);
@@ -27,4 +27,10 @@ namespace nopayloadclient {
     nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
                                  long long major_iov_start, long long minor_iov_start,
                                  long long major_iov_end, long long minor_iov_end);
+
+   // Helper (Read-only)
+   nlohmann::json getSize();
+   nlohmann::json getPayloadTypes();
+   nlohmann::json getGlobalTags();
+
 }

@@ -76,6 +76,15 @@ int main(int argc, char *argv[])
   else if (command == "deleteGlobalTag") {
       deleteGlobalTag(argv);
   }
+  else if (command == "getSize") {
+      std::cout << sphenixclient::getSize() << std::endl;
+  }
+  else if (command == "getGlobalTags") {
+      std::cout << sphenixclient::getGlobalTags() << std::endl;
+  }
+  else if (command == "getPayloadTypes") {
+      std::cout << sphenixclient::getPayloadTypes() << std::endl;
+  }
   else {
       std::cout << "unknown command <" << command << ">. (pick from [get, createGlobalTag, createPayloadType, lockGlobalTag, unlockGlobalTag, insertPayload, deleteGlobalTag]" << std::endl;
   }

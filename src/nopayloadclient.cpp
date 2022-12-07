@@ -15,17 +15,6 @@ nlohmann::json get(std::string gt_name, std::string pl_type, long long major_iov
     }
 }
 
-nlohmann::json getSize(){
-    try {
-        nlohmann::json j = backend::getSize();
-        return nlohmann::json::object({{"code", 0}, {"msg", j}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
-}
-
-
 // Writing
 nlohmann::json createGlobalTag(std::string gt_name) {
     try {
@@ -102,6 +91,37 @@ nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::stri
         plmover::uploadFile(pl);
         backend::insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
         return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+// Helper
+nlohmann::json getSize(){
+    try {
+        nlohmann::json j = backend::getSize();
+        return nlohmann::json::object({{"code", 0}, {"msg", j}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+nlohmann::json getPayloadTypes(){
+    try {
+        nlohmann::json j = backend::getPayloadTypes();
+        return nlohmann::json::object({{"code", 0}, {"msg", j}});
+    }
+    catch (NoPayloadException &e) {
+        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+    }
+}
+
+nlohmann::json getGlobalTags(){
+    try {
+        nlohmann::json j = backend::getGlobalTags();
+        return nlohmann::json::object({{"code", 0}, {"msg", j}});
     }
     catch (NoPayloadException &e) {
         return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});

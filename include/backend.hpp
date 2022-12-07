@@ -12,6 +12,16 @@
 
 namespace backend {
 
+    template <typename T> class Cache {
+        public:
+            bool is_valid = false;
+            T content;
+            void update(T new_content){
+              content = new_content;
+              is_valid = true;
+            }
+    };
+
     // Reading
     nlohmann::json getGlobalTags();
     nlohmann::json getSize();
