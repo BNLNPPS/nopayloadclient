@@ -54,8 +54,7 @@ void insertPayload(int argc, char *argv[]) {
 int main(int argc, char *argv[])
 {
   std::string command = argv[1];
-  std::cout << "argc = " << argc << std::endl;
-  std::cout << "command = " << command << std::endl;
+  //std::cout << "command = " << command << std::endl;
   if (command == "get") {
       get(argv);
   }
