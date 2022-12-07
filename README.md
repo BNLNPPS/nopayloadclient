@@ -89,7 +89,7 @@ The available commands are: get, createGlobalTag, createPayloadType, lockGlobalT
 unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
 getPayloadTypes, getGlobalTags. Example workflow:
 ```shell
-export NOPAYLOADCLIENT_CONF=my_sphenix_conf.json
+export NOPAYLOADCLIENT_CONF=for_chris.json
 cd build/examples/
 ./cli_sphenix createGlobalTag example_gt
 ./cli_sphenix getGlobalTags
