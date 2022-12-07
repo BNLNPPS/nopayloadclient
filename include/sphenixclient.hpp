@@ -13,6 +13,7 @@ namespace sphenixclient {
     nlohmann::json createGlobalTag(std::string gtName);
     nlohmann::json lockGlobalTag(std::string gtName);
     nlohmann::json unlockGlobalTag(std::string gtName);
+    nlohmann::json deleteGlobalTag(std::string gtName);
     nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,
                                  int iovStart);
     nlohmann::json insertPayload(std::string gtName, std::string plType, std::string fileUrl,

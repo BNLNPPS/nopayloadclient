@@ -21,6 +21,10 @@ nlohmann::json unlockGlobalTag(std::string gtName) {
     return nopayloadclient::unlockGlobalTag(gtName);
 }
 
+nlohmann::json deleteGlobalTag(std::string gtName) {
+    return nopayloadclient::deleteGlobalTag(gtName);
+}
+
 nlohmann::json createPayloadType(std::string plType) {
     return nopayloadclient::createPayloadType(plType);
 }

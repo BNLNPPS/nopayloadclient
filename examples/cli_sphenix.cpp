@@ -28,6 +28,11 @@ void unlockGlobalTag(char *argv[]) {
   std::cout << sphenixclient::unlockGlobalTag(gt) << std::endl;
 }
 
+void deleteGlobalTag(char *argv[]) {
+  std::string gt = argv[2];
+  std::cout << sphenixclient::deleteGlobalTag(gt) << std::endl;
+}
+
 void insertPayload(int argc, char *argv[]) {
   std::string gt = argv[2];
   std::string pt = argv[3];
@@ -69,8 +74,11 @@ int main(int argc, char *argv[])
   else if (command == "insertPayload") {
       insertPayload(argc, argv);
   }
+  else if (command == "deleteGlobalTag") {
+      deleteGlobalTag(argv);
+  }
   else {
-      std::cout << "unknown command <" << command << ">. (pick from [get, createGlobalTag, createPayloadType, lockGlobalTag, unlockGlobalTag, insertPayload]" << std::endl;
+      std::cout << "unknown command <" << command << ">. (pick from [get, createGlobalTag, createPayloadType, lockGlobalTag, unlockGlobalTag, insertPayload, deleteGlobalTag]" << std::endl;
   }
   return 0;
 }
