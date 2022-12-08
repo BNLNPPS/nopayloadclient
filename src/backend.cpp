@@ -28,20 +28,12 @@ nlohmann::json getPayloadTypes() {
     return curlwrapper::get(config::api_url + "pt");
 }
 
-nlohmann::json getPayloadLists() {
-    return curlwrapper::get(config::api_url + "pl");
-}
-
 nlohmann::json getPayloadIOVs() {
     return curlwrapper::get(config::api_url + "piov");
 }
 
 nlohmann::json _getPayloadLists(std::string gt_name) {
     return curlwrapper::get(config::api_url + "gtPayloadLists/" + gt_name);
-}
-
-nlohmann::json getGlobalTagMap(std::string gt_name){
-    return curlwrapper::get(config::api_url + "globalTag/" + gt_name);
 }
 
 nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
@@ -133,15 +125,6 @@ std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType,
 }
 
 std::string getPayloadListName(std::string gt_name, std::string plType){
-    nlohmann::json j = getPayloadLists(gt_name);
-    if (!j.contains(plType)){
-        std::string msg = "global tag '"+gt_name+"' does not have payload type '"+plType;
-        throw NoPayloadException(msg);
-    }
-    return j[plType];
-}
-
-long long getPayloadListId(std::string gt_name, std::string plType){
     nlohmann::json j = getPayloadLists(gt_name);
     if (!j.contains(plType)){
         std::string msg = "global tag '"+gt_name+"' does not have payload type '"+plType;
