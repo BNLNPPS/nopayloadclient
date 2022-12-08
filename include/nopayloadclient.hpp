@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 #include <nlohmann/json.hpp>
 
 #include <backend.hpp>
@@ -32,5 +33,32 @@ namespace nopayloadclient {
    nlohmann::json getSize();
    nlohmann::json getPayloadTypes();
    nlohmann::json getGlobalTags();
+
+
+   // Response creation (non-interface)
+   template <class> struct ResponseDecorator;
+   template <class R, class... Args>
+   struct ResponseDecorator<R(Args ...)>
+   {
+      ResponseDecorator(std::function<R(Args ...)> f) : f_(f) {}
+
+      nlohmann::json operator()(Args ... args)
+      {
+         std::cout << "Calling the decorated function.\n";
+         try {
+             return nlohmann::json::object({{"code", 0}, {"msg", f_(args...)}});
+         }
+         catch (NoPayloadException &e) {
+             return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+         }
+      }
+      std::function<R(Args ...)> f_;
+   };
+
+   template<class R, class... Args>
+   ResponseDecorator<R(Args...)> makeResponse(R (*f)(Args ...))
+   {
+      return ResponseDecorator<R(Args...)>(std::function<R(Args...)>(f));
+   }
 
 }

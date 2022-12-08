@@ -61,6 +61,8 @@ int main()
 
   // create the global tag if it does not exist
   resp = nopayloadclient::deleteGlobalTag("my_gt");
+  std::cout << resp << std::endl;
+
   resp = nopayloadclient::createGlobalTag("my_gt");
   std::cout << resp << std::endl;
 

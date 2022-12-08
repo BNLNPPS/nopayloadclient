@@ -6,126 +6,93 @@ namespace nopayloadclient {
 
 // Reading
 nlohmann::json get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
-    try {
-        std::vector<std::string> urls = backend::getPayloadUrls(gt_name, pl_type, major_iov, minor_iov);
-        return nlohmann::json::object({{"code", 0}, {"msg", urls}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(backend::getPayloadUrls)(gt_name, pl_type, major_iov, minor_iov);
 }
 
 // Writing
+std::string _createGlobalTag(std::string gt_name) {
+    backend::createGlobalTag(gt_name);
+    return "successfully created global tag";
+}
 nlohmann::json createGlobalTag(std::string gt_name) {
-    try {
-        backend::createGlobalTag(gt_name);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully created global tag"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_createGlobalTag)(gt_name);
 }
 
+std::string _deleteGlobalTag(std::string gt_name) {
+    backend::deleteGlobalTag(gt_name);
+    return "successfully deleted global tag";
+}
 nlohmann::json deleteGlobalTag(std::string gt_name) {
-    try {
-        backend::deleteGlobalTag(gt_name);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully deleted global tag"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_deleteGlobalTag)(gt_name);
 }
 
+std::string _lockGlobalTag(std::string gt_name) {
+    backend::lockGlobalTag(gt_name);
+    return "successfully locked global tag";
+}
 nlohmann::json lockGlobalTag(std::string gt_name) {
-    try {
-        backend::lockGlobalTag(gt_name);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully locked global tag"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_lockGlobalTag)(gt_name);
 }
 
+std::string _unlockGlobalTag(std::string gt_name) {
+    backend::unlockGlobalTag(gt_name);
+    return "successfully unlocked global tag";
+}
 nlohmann::json unlockGlobalTag(std::string gt_name) {
-    try {
-        backend::unlockGlobalTag(gt_name);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully unlocked global tag"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_unlockGlobalTag)(gt_name);
 }
 
+std::string _createPayloadType(std::string pl_type) {
+    backend::createPayloadType(pl_type);
+    return "successfully created payload type";
+}
 nlohmann::json createPayloadType(std::string pl_type) {
-    try {
-        backend::createPayloadType(pl_type);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully created payload type"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_createPayloadType)(pl_type);
 }
 
+std::string _insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
+                             long long major_iovStart, long long minor_iovStart) {
+    payload::Payload pl = payload::Payload(fileUrl, pl_type);
+    plmover::prepareUploadFile(pl);
+    backend::prepareInsertIov(gt_name, pl);
+    plmover::uploadFile(pl);
+    backend::insertIov(gt_name, pl, major_iovStart, minor_iovStart);
+    return "successfully inserted payload";
+}
 nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
                              long long major_iovStart, long long minor_iovStart){
-    try {
-        payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover::prepareUploadFile(pl);
-        backend::prepareInsertIov(gt_name, pl);
-        plmover::uploadFile(pl);
-        backend::insertIov(gt_name, pl, major_iovStart, minor_iovStart);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_insertPayload)(gt_name, pl_type, fileUrl, major_iovStart, minor_iovStart);
+}
+
+std::string _insertPayload2(std::string gt_name, std::string pl_type, std::string fileUrl,
+                             long long major_iovStart, long long minor_iovStart,
+                             long long major_iovEnd, long long minor_iovEnd){
+    payload::Payload pl = payload::Payload(fileUrl, pl_type);
+    plmover::prepareUploadFile(pl);
+    backend::prepareInsertIov(gt_name, pl);
+    plmover::uploadFile(pl);
+    backend::insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
+    return "successfully inserted payload";
 }
 
 nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
                              long long major_iovStart, long long minor_iovStart,
                              long long major_iovEnd, long long minor_iovEnd){
-    try {
-        payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover::prepareUploadFile(pl);
-        backend::prepareInsertIov(gt_name, pl);
-        plmover::uploadFile(pl);
-        backend::insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
-        return nlohmann::json::object({{"code", 0}, {"msg", "successfully inserted payload"}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(_insertPayload2)(gt_name, pl_type, fileUrl, major_iovStart, minor_iovStart,
+                                       major_iovEnd, minor_iovEnd);
 }
 
 // Helper
 nlohmann::json getSize(){
-    try {
-        nlohmann::json j = backend::getSize();
-        return nlohmann::json::object({{"code", 0}, {"msg", j}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(backend::getSize)();
 }
 
 nlohmann::json getPayloadTypes(){
-    try {
-        nlohmann::json j = backend::getPayloadTypes();
-        return nlohmann::json::object({{"code", 0}, {"msg", j}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(backend::getPayloadTypes)();
 }
 
 nlohmann::json getGlobalTags(){
-    try {
-        nlohmann::json j = backend::getGlobalTags();
-        return nlohmann::json::object({{"code", 0}, {"msg", j}});
-    }
-    catch (NoPayloadException &e) {
-        return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
-    }
+    return makeResponse(backend::getGlobalTags)();
 }
 
 }

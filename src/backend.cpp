@@ -268,16 +268,6 @@ void createNewPllForGt(std::string gt_name, std::string plType){
     attachPayloadList(gt_name, pllName);
 }
 
-nlohmann::json extractPllWithName(nlohmann::json plLists, std::string pllName){
-    for (auto pll : plLists){
-        if (pll["name"] == pllName){
-            return pll["payload_iov"];
-        }
-    }
-    std::string msg = "no pll with name '" + pllName + "' exists";
-    throw NoPayloadException(msg);
-}
-
 void prepareInsertIov(std::string gt_name, payload::Payload& pl){
     checkGtExists(gt_name);
     checkPlTypeExists(pl.type);
