@@ -37,9 +37,7 @@ jobs:
 
             - name: install libcurl
               run: |
-                  sudo apt update
-                  sudo apt upgrade
-                  sudo apt install curl
+                  sudo apt-get install curl
                   sudo apt-get install libcurl4-openssl-dev
 
             - name: create remote payload dir

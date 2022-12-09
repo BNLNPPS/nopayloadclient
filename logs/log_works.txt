@@ -1,0 +1,476 @@
+08T14:23:07.3704241Z Get:14 http://azure.archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [24.5 kB]
+2022-12-08T14:23:07.4273600Z Get:15 http://azure.archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [24.9 kB]
+2022-12-08T14:23:07.4284931Z Get:16 http://azure.archive.ubuntu.com/ubuntu focal-backports/universe amd64 c-n-f Metadata [880 B]
+2022-12-08T14:23:07.5746227Z Get:17 http://azure.archive.ubuntu.com/ubuntu focal-security/main amd64 Packages [1892 kB]
+2022-12-08T14:23:07.5928472Z Get:18 http://azure.archive.ubuntu.com/ubuntu focal-security/main Translation-en [310 kB]
+2022-12-08T14:23:07.5939422Z Get:19 http://azure.archive.ubuntu.com/ubuntu focal-security/main amd64 c-n-f Metadata [11.5 kB]
+2022-12-08T14:23:07.5984645Z Get:20 http://azure.archive.ubuntu.com/ubuntu focal-security/universe amd64 Packages [777 kB]
+2022-12-08T14:23:07.6031652Z Get:21 http://azure.archive.ubuntu.com/ubuntu focal-security/universe Translation-en [150 kB]
+2022-12-08T14:23:07.6058437Z Get:22 http://azure.archive.ubuntu.com/ubuntu focal-security/universe amd64 c-n-f Metadata [16.9 kB]
+2022-12-08T14:23:07.6951387Z Get:23 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 Packages [215 kB]
+2022-12-08T14:23:12.6600982Z Fetched 9180 kB in 2s (5076 kB/s)
+2022-12-08T14:23:13.6080299Z Reading package lists...
+2022-12-08T14:23:13.7789636Z Building dependency tree...
+2022-12-08T14:23:13.7803620Z Reading state information...
+2022-12-08T14:23:13.8646735Z 35 packages can be upgraded. Run 'apt list --upgradable' to see them.
+2022-12-08T14:23:13.8743077Z
+2022-12-08T14:23:13.8743723Z WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+2022-12-08T14:23:13.8743989Z
+2022-12-08T14:23:13.9285194Z Reading package lists...
+2022-12-08T14:23:14.0881201Z Building dependency tree...
+2022-12-08T14:23:14.0895572Z Reading state information...
+2022-12-08T14:23:14.1618174Z Calculating upgrade...
+2022-12-08T14:23:14.2616381Z #
+2022-12-08T14:23:14.2617327Z # News about significant security updates, features and services will
+2022-12-08T14:23:14.2618165Z # appear here to raise awareness and perhaps tease /r/Linux ;)
+2022-12-08T14:23:14.2618837Z # Use 'pro config set apt_news=false' to hide this and future APT news.
+2022-12-08T14:23:14.2619128Z #
+2022-12-08T14:23:14.3831773Z The following packages will be upgraded:
+2022-12-08T14:23:14.3832786Z   binutils binutils-common binutils-x86-64-linux-gnu ca-certificates
+2022-12-08T14:23:14.3833518Z   cloud-init dnsmasq-base lib32gcc-s1 lib32stdc++6 libasn1-8-heimdal
+2022-12-08T14:23:14.3834219Z   libatomic1 libbinutils libcc1-0 libctf-nobfd0 libctf0 libgcc-s1 libgomp1
+2022-12-08T14:23:14.3834801Z   libgssapi3-heimdal libhcrypto4-heimdal libheimbase1-heimdal
+2022-12-08T14:23:14.3835388Z   libheimntlm0-heimdal libhx509-5-heimdal libitm1 libkrb5-26-heimdal liblsan0
+2022-12-08T14:23:14.3835992Z   libobjc4 libquadmath0 libroken18-heimdal libstdc++6 libtsan0 libubsan1
+2022-12-08T14:23:14.3837181Z   libwbclient0 libwind0-heimdal libxml2 libxml2-dev powershell
+2022-12-08T14:23:14.3922459Z 35 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+2022-12-08T14:23:14.3966877Z 18 standard LTS security updates
+2022-12-08T14:23:14.4667759Z Need to get 83.0 MB of archives.
+2022-12-08T14:23:14.4668143Z After this operation, 11.3 MB of additional disk space will be used.
+2022-12-08T14:23:14.4668971Z Get:1 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libwbclient0 amd64 2:4.13.17~dfsg-0ubuntu1.20.04.2 [208 kB]
+2022-12-08T14:23:14.5244412Z Get:2 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 ca-certificates all 20211016ubuntu0.20.04.1 [141 kB]
+2022-12-08T14:23:14.5723150Z Get:3 https://packages.microsoft.com/ubuntu/20.04/prod focal/main amd64 powershell amd64 7.3.0-1.deb [71.7 MB]
+2022-12-08T14:23:14.5778829Z Get:4 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libxml2-dev amd64 2.9.10+dfsg-5ubuntu0.20.04.5 [735 kB]
+2022-12-08T14:23:14.6690500Z Get:5 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libxml2 amd64 2.9.10+dfsg-5ubuntu0.20.04.5 [640 kB]
+2022-12-08T14:23:14.6770882Z Get:6 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libgcc-s1 amd64 11.1.0-1ubuntu1~20.04 [42.1 kB]
+2022-12-08T14:23:14.7411043Z Get:7 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libctf0 amd64 2.34-6ubuntu1.4 [46.6 kB]
+2022-12-08T14:23:14.7897844Z Get:8 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 binutils-x86-64-linux-gnu amd64 2.34-6ubuntu1.4 [1613 kB]
+2022-12-08T14:23:14.8967096Z Get:9 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libbinutils amd64 2.34-6ubuntu1.4 [474 kB]
+2022-12-08T14:23:14.9513119Z Get:10 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 binutils amd64 2.34-6ubuntu1.4 [3380 B]
+2022-12-08T14:23:14.9990926Z Get:11 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 binutils-common amd64 2.34-6ubuntu1.4 [207 kB]
+2022-12-08T14:23:15.0047409Z Get:12 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libstdc++6 amd64 11.1.0-1ubuntu1~20.04 [584 kB]
+2022-12-08T14:23:15.0486045Z Get:13 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libctf-nobfd0 amd64 2.34-6ubuntu1.4 [47.2 kB]
+2022-12-08T14:23:15.0980886Z Get:14 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 dnsmasq-base amd64 2.80-1.1ubuntu1.6 [315 kB]
+2022-12-08T14:23:15.1498599Z Get:15 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libroken18-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [42.3 kB]
+2022-12-08T14:23:15.1976486Z Get:16 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libasn1-8-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [181 kB]
+2022-12-08T14:23:15.2472701Z Get:17 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libheimbase1-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [30.0 kB]
+2022-12-08T14:23:15.2951807Z Get:18 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libhcrypto4-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [87.9 kB]
+2022-12-08T14:23:15.3441700Z Get:19 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libwind0-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [48.0 kB]
+2022-12-08T14:23:15.3917754Z Get:20 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libhx509-5-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [107 kB]
+2022-12-08T14:23:15.4417302Z Get:21 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libkrb5-26-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [207 kB]
+2022-12-08T14:23:15.5098813Z Get:22 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libheimntlm0-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [15.1 kB]
+2022-12-08T14:23:15.5573896Z Get:23 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libgssapi3-heimdal amd64 7.7.0+dfsg-1ubuntu1.2 [96.2 kB]
+2022-12-08T14:23:15.6134550Z Get:24 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 cloud-init all 22.4.2-0ubuntu0~20.04.1 [529 kB]
+2022-12-08T14:23:15.7765922Z Get:25 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 lib32gcc-s1 amd64 11.1.0-1ubuntu1~20.04 [49.6 kB]
+2022-12-08T14:23:16.2174169Z Get:26 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 lib32stdc++6 amd64 11.1.0-1ubuntu1~20.04 [612 kB]
+2022-12-08T14:23:16.9901867Z Get:27 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libatomic1 amd64 11.1.0-1ubuntu1~20.04 [9232 B]
+2022-12-08T14:23:17.2114760Z Get:28 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libcc1-0 amd64 11.1.0-1ubuntu1~20.04 [48.7 kB]
+2022-12-08T14:23:17.6528373Z Get:29 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libgomp1 amd64 11.1.0-1ubuntu1~20.04 [107 kB]
+2022-12-08T14:23:18.2036173Z Get:30 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libitm1 amd64 11.1.0-1ubuntu1~20.04 [26.3 kB]
+2022-12-08T14:23:18.5347891Z Get:31 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 liblsan0 amd64 11.1.0-1ubuntu1~20.04 [894 kB]
+2022-12-08T14:23:19.4175147Z Get:32 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libobjc4 amd64 11.1.0-1ubuntu1~20.04 [43.2 kB]
+2022-12-08T14:23:19.7489012Z Get:33 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libquadmath0 amd64 11.1.0-1ubuntu1~20.04 [146 kB]
+2022-12-08T14:23:20.3015854Z Get:34 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libtsan0 amd64 11.1.0-1ubuntu1~20.04 [2091 kB]
+2022-12-08T14:23:21.3007048Z Get:35 http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal/main amd64 libubsan1 amd64 11.1.0-1ubuntu1~20.04 [846 kB]
+2022-12-08T14:23:22.4038993Z Preconfiguring packages ...
+2022-12-08T14:23:22.8426010Z Fetched 83.0 MB in 8s (11.0 MB/s)
+2022-12-08T14:23:22.8920746Z (Reading database ...
+2022-12-08T14:23:22.8921063Z (Reading database ... 5%
+2022-12-08T14:23:22.8921319Z (Reading database ... 10%
+2022-12-08T14:23:22.8921577Z (Reading database ... 15%
+2022-12-08T14:23:22.8921815Z (Reading database ... 20%
+2022-12-08T14:23:22.8922065Z (Reading database ... 25%
+2022-12-08T14:23:22.8922291Z (Reading database ... 30%
+2022-12-08T14:23:22.8922711Z (Reading database ... 35%
+2022-12-08T14:23:22.8923028Z (Reading database ... 40%
+2022-12-08T14:23:22.8923382Z (Reading database ... 45%
+2022-12-08T14:23:22.8923712Z (Reading database ... 50%
+2022-12-08T14:23:22.9147778Z (Reading database ... 55%
+2022-12-08T14:23:22.9405109Z (Reading database ... 60%
+2022-12-08T14:23:22.9598589Z (Reading database ... 65%
+2022-12-08T14:23:23.0053561Z (Reading database ... 70%
+2022-12-08T14:23:23.0728677Z (Reading database ... 75%
+2022-12-08T14:23:23.1069730Z (Reading database ... 80%
+2022-12-08T14:23:23.1606602Z (Reading database ... 85%
+2022-12-08T14:23:23.2122234Z (Reading database ... 90%
+2022-12-08T14:23:23.2622389Z (Reading database ... 95%
+2022-12-08T14:23:23.2622960Z (Reading database ... 100%
+2022-12-08T14:23:23.2624227Z (Reading database ... 246841 files and directories currently installed.)
+2022-12-08T14:23:23.2698998Z Preparing to unpack .../libwbclient0_2%3a4.13.17~dfsg-0ubuntu1.20.04.2_amd64.deb ...
+2022-12-08T14:23:23.3361144Z Unpacking libwbclient0:amd64 (2:4.13.17~dfsg-0ubuntu1.20.04.2) over (2:4.13.17~dfsg-0ubuntu1.20.04.1) ...
+2022-12-08T14:23:23.3993540Z Preparing to unpack .../libgcc-s1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:23.4369712Z Unpacking libgcc-s1:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:23.4949428Z Setting up libgcc-s1:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:23.5461231Z (Reading database ...
+2022-12-08T14:23:23.5461834Z (Reading database ... 5%
+2022-12-08T14:23:23.5462568Z (Reading database ... 10%
+2022-12-08T14:23:23.5463365Z (Reading database ... 15%
+2022-12-08T14:23:23.5464079Z (Reading database ... 20%
+2022-12-08T14:23:23.5464547Z (Reading database ... 25%
+2022-12-08T14:23:23.5465286Z (Reading database ... 30%
+2022-12-08T14:23:23.5465798Z (Reading database ... 35%
+2022-12-08T14:23:23.5466481Z (Reading database ... 40%
+2022-12-08T14:23:23.5467011Z (Reading database ... 45%
+2022-12-08T14:23:23.5467689Z (Reading database ... 50%
+2022-12-08T14:23:23.5496396Z (Reading database ... 55%
+2022-12-08T14:23:23.5535925Z (Reading database ... 60%
+2022-12-08T14:23:23.5556461Z (Reading database ... 65%
+2022-12-08T14:23:23.5687557Z (Reading database ... 70%
+2022-12-08T14:23:23.5989729Z (Reading database ... 75%
+2022-12-08T14:23:23.6047021Z (Reading database ... 80%
+2022-12-08T14:23:23.6242291Z (Reading database ... 85%
+2022-12-08T14:23:23.6359218Z (Reading database ... 90%
+2022-12-08T14:23:23.6468073Z (Reading database ... 95%
+2022-12-08T14:23:23.6468567Z (Reading database ... 100%
+2022-12-08T14:23:23.6469516Z (Reading database ... 246841 files and directories currently installed.)
+2022-12-08T14:23:23.6542026Z Preparing to unpack .../libstdc++6_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:23.7264047Z Unpacking libstdc++6:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:23.8355332Z Setting up libstdc++6:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:23.8852871Z (Reading database ...
+2022-12-08T14:23:23.8853496Z (Reading database ... 5%
+2022-12-08T14:23:23.8853914Z (Reading database ... 10%
+2022-12-08T14:23:23.8854634Z (Reading database ... 15%
+2022-12-08T14:23:23.8855026Z (Reading database ... 20%
+2022-12-08T14:23:23.8855349Z (Reading database ... 25%
+2022-12-08T14:23:23.8855659Z (Reading database ... 30%
+2022-12-08T14:23:23.8855952Z (Reading database ... 35%
+2022-12-08T14:23:23.8856321Z (Reading database ... 40%
+2022-12-08T14:23:23.8856645Z (Reading database ... 45%
+2022-12-08T14:23:23.8856941Z (Reading database ... 50%
+2022-12-08T14:23:23.8890291Z (Reading database ... 55%
+2022-12-08T14:23:23.8930044Z (Reading database ... 60%
+2022-12-08T14:23:23.8951106Z (Reading database ... 65%
+2022-12-08T14:23:23.9077107Z (Reading database ... 70%
+2022-12-08T14:23:23.9373082Z (Reading database ... 75%
+2022-12-08T14:23:23.9428126Z (Reading database ... 80%
+2022-12-08T14:23:23.9614151Z (Reading database ... 85%
+2022-12-08T14:23:23.9728901Z (Reading database ... 90%
+2022-12-08T14:23:23.9836718Z (Reading database ... 95%
+2022-12-08T14:23:23.9837286Z (Reading database ... 100%
+2022-12-08T14:23:23.9837769Z (Reading database ... 246841 files and directories currently installed.)
+2022-12-08T14:23:23.9909614Z Preparing to unpack .../00-ca-certificates_20211016ubuntu0.20.04.1_all.deb ...
+2022-12-08T14:23:24.0001142Z Unpacking ca-certificates (20211016ubuntu0.20.04.1) over (20211016~20.04.1) ...
+2022-12-08T14:23:24.1699868Z Preparing to unpack .../01-libxml2-dev_2.9.10+dfsg-5ubuntu0.20.04.5_amd64.deb ...
+2022-12-08T14:23:24.1726203Z Unpacking libxml2-dev:amd64 (2.9.10+dfsg-5ubuntu0.20.04.5) over (2.9.10+dfsg-5ubuntu0.20.04.4) ...
+2022-12-08T14:23:24.3714969Z Preparing to unpack .../02-libxml2_2.9.10+dfsg-5ubuntu0.20.04.5_amd64.deb ...
+2022-12-08T14:23:24.3807873Z Unpacking libxml2:amd64 (2.9.10+dfsg-5ubuntu0.20.04.5) over (2.9.10+dfsg-5ubuntu0.20.04.4) ...
+2022-12-08T14:23:24.4837123Z Preparing to unpack .../03-libctf0_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:24.4939261Z Unpacking libctf0:amd64 (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:24.5756875Z Preparing to unpack .../04-binutils-x86-64-linux-gnu_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:24.5781673Z Unpacking binutils-x86-64-linux-gnu (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:24.8192115Z Preparing to unpack .../05-libbinutils_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:24.8282439Z Unpacking libbinutils:amd64 (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:24.9181704Z Preparing to unpack .../06-binutils_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:24.9204204Z Unpacking binutils (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:24.9651584Z Preparing to unpack .../07-binutils-common_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:24.9682679Z Unpacking binutils-common:amd64 (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:25.0325307Z Preparing to unpack .../08-libctf-nobfd0_2.34-6ubuntu1.4_amd64.deb ...
+2022-12-08T14:23:25.0352805Z Unpacking libctf-nobfd0:amd64 (2.34-6ubuntu1.4) over (2.34-6ubuntu1.3) ...
+2022-12-08T14:23:25.0829027Z Preparing to unpack .../09-dnsmasq-base_2.80-1.1ubuntu1.6_amd64.deb ...
+2022-12-08T14:23:25.0854923Z Unpacking dnsmasq-base (2.80-1.1ubuntu1.6) over (2.80-1.1ubuntu1.5) ...
+2022-12-08T14:23:25.1738680Z Preparing to unpack .../10-lib32gcc-s1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:25.1827069Z Unpacking lib32gcc-s1 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:25.2364186Z Preparing to unpack .../11-lib32stdc++6_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:25.2458967Z Unpacking lib32stdc++6 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:25.3609819Z Preparing to unpack .../12-libroken18-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.3711161Z Unpacking libroken18-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.4258493Z Preparing to unpack .../13-libasn1-8-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.4347727Z Unpacking libasn1-8-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.4975130Z Preparing to unpack .../14-libatomic1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:25.5057906Z Unpacking libatomic1:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:25.5485883Z Preparing to unpack .../15-libcc1-0_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:25.5580923Z Unpacking libcc1-0:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:25.6069403Z Preparing to unpack .../16-libgomp1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:25.6181622Z Unpacking libgomp1:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:25.6720015Z Preparing to unpack .../17-libheimbase1-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.6853944Z Unpacking libheimbase1-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.7319300Z Preparing to unpack .../18-libhcrypto4-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.7416135Z Unpacking libhcrypto4-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.7932103Z Preparing to unpack .../19-libwind0-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.8035070Z Unpacking libwind0-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.8536398Z Preparing to unpack .../20-libhx509-5-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.8629851Z Unpacking libhx509-5-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.9169875Z Preparing to unpack .../21-libkrb5-26-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:25.9268642Z Unpacking libkrb5-26-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:25.9900116Z Preparing to unpack .../22-libheimntlm0-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:26.0001067Z Unpacking libheimntlm0-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:26.0455220Z Preparing to unpack .../23-libgssapi3-heimdal_7.7.0+dfsg-1ubuntu1.2_amd64.deb ...
+2022-12-08T14:23:26.0566093Z Unpacking libgssapi3-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) over (7.7.0+dfsg-1ubuntu1.1) ...
+2022-12-08T14:23:26.1141916Z Preparing to unpack .../24-libitm1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.1224213Z Unpacking libitm1:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.1692063Z Preparing to unpack .../25-liblsan0_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.1783448Z Unpacking liblsan0:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.3138150Z Preparing to unpack .../26-libobjc4_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.3240400Z Unpacking libobjc4:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.3723830Z Preparing to unpack .../27-libquadmath0_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.3804354Z Unpacking libquadmath0:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.4368263Z Preparing to unpack .../28-libtsan0_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.4451096Z Unpacking libtsan0:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.7130308Z Preparing to unpack .../29-libubsan1_11.1.0-1ubuntu1~20.04_amd64.deb ...
+2022-12-08T14:23:26.7217833Z Unpacking libubsan1:amd64 (11.1.0-1ubuntu1~20.04) over (10.3.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:26.8557464Z Preparing to unpack .../30-cloud-init_22.4.2-0ubuntu0~20.04.1_all.deb ...
+2022-12-08T14:23:27.1324050Z Unpacking cloud-init (22.4.2-0ubuntu0~20.04.1) over (22.3.4-0ubuntu1~20.04.1) ...
+2022-12-08T14:23:27.5246963Z Preparing to unpack .../31-powershell_7.3.0-1.deb_amd64.deb ...
+2022-12-08T14:23:27.5268738Z Unpacking powershell (7.3.0-1.deb) over (7.2.7-1.deb) ...
+2022-12-08T14:23:29.0996402Z Setting up cloud-init (22.4.2-0ubuntu0~20.04.1) ...
+2022-12-08T14:23:29.1028162Z Installing new version of config file /etc/cloud/cloud.cfg ...
+2022-12-08T14:23:32.6168917Z Setting up binutils-common:amd64 (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:32.6190348Z Setting up libctf-nobfd0:amd64 (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:32.6207569Z Setting up libobjc4:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:32.6226308Z Setting up dnsmasq-base (2.80-1.1ubuntu1.6) ...
+2022-12-08T14:23:32.6294508Z Setting up libgomp1:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:32.6320010Z Setting up libwbclient0:amd64 (2:4.13.17~dfsg-0ubuntu1.20.04.2) ...
+2022-12-08T14:23:32.6341033Z Setting up ca-certificates (20211016ubuntu0.20.04.1) ...
+2022-12-08T14:23:34.3088774Z Updating certificates in /etc/ssl/certs...
+2022-12-08T14:23:34.9470126Z rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+2022-12-08T14:23:34.9552838Z 0 added, 3 removed; done.
+2022-12-08T14:23:34.9936489Z Setting up lib32gcc-s1 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:34.9959741Z Setting up lib32stdc++6 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:34.9989899Z Setting up libquadmath0:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0007898Z Setting up libatomic1:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0034136Z Setting up libroken18-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0062640Z Setting up libubsan1:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0088515Z Setting up powershell (7.3.0-1.deb) ...
+2022-12-08T14:23:35.0244260Z Setting up libbinutils:amd64 (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:35.0264521Z Setting up libxml2:amd64 (2.9.10+dfsg-5ubuntu0.20.04.5) ...
+2022-12-08T14:23:35.0284741Z Setting up libcc1-0:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0322472Z Setting up liblsan0:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0339653Z Setting up libitm1:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0376154Z Setting up libheimbase1-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0398721Z Setting up libtsan0:amd64 (11.1.0-1ubuntu1~20.04) ...
+2022-12-08T14:23:35.0419546Z Setting up libctf0:amd64 (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:35.0438204Z Setting up libasn1-8-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0458332Z Setting up libhcrypto4-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0477908Z Setting up libwind0-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0496646Z Setting up libxml2-dev:amd64 (2.9.10+dfsg-5ubuntu0.20.04.5) ...
+2022-12-08T14:23:35.0517891Z Setting up binutils-x86-64-linux-gnu (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:35.0536676Z Setting up libhx509-5-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0557279Z Setting up binutils (2.34-6ubuntu1.4) ...
+2022-12-08T14:23:35.0583436Z Setting up libkrb5-26-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0605280Z Setting up libheimntlm0-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0626255Z Setting up libgssapi3-heimdal:amd64 (7.7.0+dfsg-1ubuntu1.2) ...
+2022-12-08T14:23:35.0658486Z Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+2022-12-08T14:23:46.4452852Z Processing triggers for rsyslog (8.2001.0-1ubuntu1.3) ...
+2022-12-08T14:23:46.7394760Z Processing triggers for man-db (2.9.1-1) ...
+2022-12-08T14:23:51.2285431Z Processing triggers for dbus (1.12.16-2ubuntu2.3) ...
+2022-12-08T14:23:51.2434391Z Processing triggers for ca-certificates (20211016ubuntu0.20.04.1) ...
+2022-12-08T14:23:51.2483388Z Updating certificates in /etc/ssl/certs...
+2022-12-08T14:23:51.6875053Z 0 added, 0 removed; done.
+2022-12-08T14:23:51.6876048Z Running hooks in /etc/ca-certificates/update.d...
+2022-12-08T14:23:51.8515990Z /etc/ssl/certs/adoptium/cacerts successfully populated.
+2022-12-08T14:23:51.8526514Z Updating Mono key store
+2022-12-08T14:23:51.8763201Z Mono Certificate Store Sync - version 6.12.0.182
+2022-12-08T14:23:51.8764029Z Populate Mono certificate store from a concatenated list of certificates.
+2022-12-08T14:23:51.8764783Z Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+2022-12-08T14:23:51.8765141Z
+2022-12-08T14:23:51.9654665Z Importing into legacy system store:
+2022-12-08T14:23:52.1848179Z I already trust 127, your new list has 124
+2022-12-08T14:23:52.1935696Z 3 previously trusted certificates were removed.
+2022-12-08T14:23:52.1949487Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor RootCert CA-1
+2022-12-08T14:23:52.1950395Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor ECA-1
+2022-12-08T14:23:52.1951237Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor RootCert CA-2
+2022-12-08T14:23:52.2061266Z Import process completed.
+2022-12-08T14:23:52.2061447Z
+2022-12-08T14:23:52.2061568Z Importing into BTLS system store:
+2022-12-08T14:23:52.9952924Z I already trust 127, your new list has 124
+2022-12-08T14:23:52.9999810Z 3 previously trusted certificates were removed.
+2022-12-08T14:23:53.1986465Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor RootCert CA-1
+2022-12-08T14:23:53.1987656Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor ECA-1
+2022-12-08T14:23:53.1988409Z Certificate removed: C=PA, S=Panama, L=Panama City, O=TrustCor Systems S. de R.L., OU=TrustCor Certificate Authority, CN=TrustCor RootCert CA-2
+2022-12-08T14:23:53.1988901Z Import process completed.
+2022-12-08T14:23:53.2636234Z Done
+2022-12-08T14:23:53.2637096Z done.
+2022-12-08T14:23:55.1687153Z
+2022-12-08T14:23:55.1687722Z WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+2022-12-08T14:23:55.1688089Z
+2022-12-08T14:23:55.2227596Z Reading package lists...
+2022-12-08T14:23:55.3704566Z Building dependency tree...
+2022-12-08T14:23:55.3763820Z Reading state information...
+2022-12-08T14:23:55.5190563Z curl is already the newest version (7.68.0-1ubuntu2.14).
+2022-12-08T14:23:55.5684496Z 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+2022-12-08T14:23:55.6695744Z Reading package lists...
+2022-12-08T14:23:55.8150966Z Building dependency tree...
+2022-12-08T14:23:55.8165759Z Reading state information...
+2022-12-08T14:23:55.9657826Z Suggested packages:
+2022-12-08T14:23:55.9658822Z   libcurl4-doc libidn11-dev libkrb5-dev libldap2-dev librtmp-dev libssh2-1-dev
+2022-12-08T14:23:55.9995679Z The following NEW packages will be installed:
+2022-12-08T14:23:55.9999049Z   libcurl4-openssl-dev
+2022-12-08T14:23:56.0198208Z 0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+2022-12-08T14:23:56.1009697Z Need to get 322 kB of archives.
+2022-12-08T14:23:56.1010521Z After this operation, 1544 kB of additional disk space will be used.
+2022-12-08T14:23:56.1011391Z Get:1 http://azure.archive.ubuntu.com/ubuntu focal-updates/main amd64 libcurl4-openssl-dev amd64 7.68.0-1ubuntu2.14 [322 kB]
+2022-12-08T14:23:56.4906504Z Fetched 322 kB in 0s (4586 kB/s)
+2022-12-08T14:23:56.5191767Z Selecting previously unselected package libcurl4-openssl-dev:amd64.
+2022-12-08T14:23:56.5257980Z (Reading database ...
+2022-12-08T14:23:56.5258466Z (Reading database ... 5%
+2022-12-08T14:23:56.5259264Z (Reading database ... 10%
+2022-12-08T14:23:56.5259696Z (Reading database ... 15%
+2022-12-08T14:23:56.5260045Z (Reading database ... 20%
+2022-12-08T14:23:56.5349639Z (Reading database ... 25%
+2022-12-08T14:23:56.5349896Z (Reading database ... 30%
+2022-12-08T14:23:56.5350127Z (Reading database ... 35%
+2022-12-08T14:23:56.5350360Z (Reading database ... 40%
+2022-12-08T14:23:56.5350599Z (Reading database ... 45%
+2022-12-08T14:23:56.5350824Z (Reading database ... 50%
+2022-12-08T14:23:56.5351047Z (Reading database ... 55%
+2022-12-08T14:23:56.5351426Z (Reading database ... 60%
+2022-12-08T14:23:56.5356589Z (Reading database ... 65%
+2022-12-08T14:23:56.5473440Z (Reading database ... 70%
+2022-12-08T14:23:56.5768179Z (Reading database ... 75%
+2022-12-08T14:23:56.5823156Z (Reading database ... 80%
+2022-12-08T14:23:56.5999051Z (Reading database ... 85%
+2022-12-08T14:23:56.6118700Z (Reading database ... 90%
+2022-12-08T14:23:56.6219826Z (Reading database ... 95%
+2022-12-08T14:23:56.6220083Z (Reading database ... 100%
+2022-12-08T14:23:56.6220420Z (Reading database ... 246863 files and directories currently installed.)
+2022-12-08T14:23:56.6285872Z Preparing to unpack .../libcurl4-openssl-dev_7.68.0-1ubuntu2.14_amd64.deb ...
+2022-12-08T14:23:56.6297263Z Unpacking libcurl4-openssl-dev:amd64 (7.68.0-1ubuntu2.14) ...
+2022-12-08T14:23:56.7161659Z Setting up libcurl4-openssl-dev:amd64 (7.68.0-1ubuntu2.14) ...
+2022-12-08T14:23:56.7190532Z Processing triggers for man-db (2.9.1-1) ...
+2022-12-08T14:23:58.6497676Z ##[group]Run mkdir /tmp/remote_pl_store/
+2022-12-08T14:23:58.6498017Z mkdir /tmp/remote_pl_store/m
+2022-12-08T14:23:58.6550772Z shell: /usr/bin/bash -e {0}
+2022-12-08T14:23:58.6551035Z ##[endgroup]
+2022-12-08T14:23:58.6653999Z ##[group]Run cd nopayloadclient
+2022-12-08T14:23:58.6654305Z cd nopayloadclientm
+2022-12-08T14:23:58.6654658Z cmake -S . -B build && cmake --build build/ && cd build/ && ctest --verbosem
+2022-12-08T14:23:58.6701221Z shell: /usr/bin/bash -e {0}
+2022-12-08T14:23:58.6701489Z ##[endgroup]
+2022-12-08T14:24:00.1445571Z -- The CXX compiler identification is GNU 9.4.0
+2022-12-08T14:24:00.3891266Z -- Detecting CXX compiler ABI info
+2022-12-08T14:24:00.5942577Z -- Detecting CXX compiler ABI info - done
+2022-12-08T14:24:00.6052422Z -- Check for working CXX compiler: /usr/bin/c++ - skipped
+2022-12-08T14:24:00.6147716Z -- Detecting CXX compile features
+2022-12-08T14:24:00.6221932Z -- Detecting CXX compile features - done
+2022-12-08T14:24:00.7730694Z -- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "7.68.0")
+2022-12-08T14:24:00.8447012Z -- Configuring done
+2022-12-08T14:24:00.8815230Z -- Generating done
+2022-12-08T14:24:00.8854283Z -- Build files have been written to: /home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build
+2022-12-08T14:24:00.9050279Z [  2%] Building CXX object src/CMakeFiles/nopayloadclient.dir/nopayloadclient.cpp.o
+2022-12-08T14:24:03.7263154Z [  5%] Building CXX object src/CMakeFiles/nopayloadclient.dir/sphenixclient.cpp.o
+2022-12-08T14:24:05.2587689Z [  7%] Building CXX object src/CMakeFiles/nopayloadclient.dir/backend.cpp.o
+2022-12-08T14:24:07.6836592Z [ 10%] Building CXX object src/CMakeFiles/nopayloadclient.dir/curlwrapper.cpp.o
+2022-12-08T14:24:10.1547794Z [ 12%] Building CXX object src/CMakeFiles/nopayloadclient.dir/payload.cpp.o
+2022-12-08T14:24:11.6687939Z [ 15%] Building CXX object src/CMakeFiles/nopayloadclient.dir/plmover.cpp.o
+2022-12-08T14:24:13.1572738Z [ 17%] Building CXX object src/CMakeFiles/nopayloadclient.dir/config.cpp.o
+2022-12-08T14:24:15.6787770Z [ 20%] Linking CXX static library libnopayloadclient.a
+2022-12-08T14:24:15.7497349Z [ 20%] Built target nopayloadclient
+2022-12-08T14:24:15.7567189Z [ 22%] Building CXX object examples/CMakeFiles/example_insert.dir/example_insert.cpp.o
+2022-12-08T14:24:17.8870838Z [ 25%] Linking CXX executable example_insert
+2022-12-08T14:24:18.1766569Z [ 25%] Built target example_insert
+2022-12-08T14:24:18.1833223Z [ 27%] Building CXX object examples/CMakeFiles/example_insert_short.dir/example_insert_short.cpp.o
+2022-12-08T14:24:20.2796328Z [ 30%] Linking CXX executable example_insert_short
+2022-12-08T14:24:20.5133486Z [ 30%] Built target example_insert_short
+2022-12-08T14:24:20.5200026Z [ 32%] Building CXX object examples/CMakeFiles/example_read.dir/example_read.cpp.o
+2022-12-08T14:24:22.4671825Z [ 35%] Linking CXX executable example_read
+2022-12-08T14:24:22.7026795Z [ 35%] Built target example_read
+2022-12-08T14:24:22.7095706Z [ 37%] Building CXX object examples/CMakeFiles/cli_get.dir/cli_get.cpp.o
+2022-12-08T14:24:24.6676085Z [ 40%] Linking CXX executable cli_get
+2022-12-08T14:24:24.9053300Z [ 40%] Built target cli_get
+2022-12-08T14:24:24.9122330Z [ 42%] Building CXX object examples/CMakeFiles/check_size.dir/check_size.cpp.o
+2022-12-08T14:24:26.8686238Z [ 45%] Linking CXX executable check_size
+2022-12-08T14:24:27.1040094Z [ 45%] Built target check_size
+2022-12-08T14:24:27.1109352Z [ 47%] Building CXX object examples/CMakeFiles/example_sphenix.dir/example_sphenix.cpp.o
+2022-12-08T14:24:29.2218838Z [ 50%] Linking CXX executable example_sphenix
+2022-12-08T14:24:29.4604218Z [ 50%] Built target example_sphenix
+2022-12-08T14:24:29.4674260Z [ 52%] Building CXX object examples/CMakeFiles/cli_sphenix.dir/cli_sphenix.cpp.o
+2022-12-08T14:24:31.4520406Z [ 55%] Linking CXX executable cli_sphenix
+2022-12-08T14:24:31.6850071Z [ 55%] Built target cli_sphenix
+2022-12-08T14:24:31.6919109Z [ 57%] Building CXX object tests/CMakeFiles/test_nopayloadclient.dir/test_nopayloadclient.cpp.o
+2022-12-08T14:24:33.8388433Z [ 60%] Linking CXX executable test_nopayloadclient
+2022-12-08T14:24:34.0773440Z [ 60%] Built target test_nopayloadclient
+2022-12-08T14:24:34.0843183Z [ 62%] Building CXX object tests/CMakeFiles/test_sphenixclient.dir/test_sphenixclient.cpp.o
+2022-12-08T14:24:36.0499642Z [ 65%] Linking CXX executable test_sphenixclient
+2022-12-08T14:24:36.2803567Z [ 65%] Built target test_sphenixclient
+2022-12-08T14:24:36.2872396Z [ 67%] Building CXX object tests/CMakeFiles/test_backend.dir/test_backend.cpp.o
+2022-12-08T14:24:38.2252007Z [ 70%] Linking CXX executable test_backend
+2022-12-08T14:24:38.4348263Z [ 70%] Built target test_backend
+2022-12-08T14:24:38.4418261Z [ 72%] Building CXX object tests/CMakeFiles/test_plmover.dir/test_plmover.cpp.o
+2022-12-08T14:24:39.8769717Z [ 75%] Linking CXX executable test_plmover
+2022-12-08T14:24:39.9398696Z [ 75%] Built target test_plmover
+2022-12-08T14:24:39.9466136Z [ 77%] Building CXX object tests/CMakeFiles/test_payload.dir/test_payload.cpp.o
+2022-12-08T14:24:41.4082659Z [ 80%] Linking CXX executable test_payload
+2022-12-08T14:24:41.4734361Z [ 80%] Built target test_payload
+2022-12-08T14:24:41.4804897Z [ 82%] Building CXX object tests/CMakeFiles/test_get.dir/test_get.cpp.o
+2022-12-08T14:24:43.4229998Z [ 85%] Linking CXX executable test_get
+2022-12-08T14:24:43.6508643Z [ 85%] Built target test_get
+2022-12-08T14:24:43.6576668Z [ 87%] Building CXX object tests/CMakeFiles/test_config.dir/test_config.cpp.o
+2022-12-08T14:24:45.1340848Z [ 90%] Linking CXX executable test_config
+2022-12-08T14:24:45.2270997Z [ 90%] Built target test_config
+2022-12-08T14:24:45.2341479Z [ 92%] Building CXX object tests/CMakeFiles/test_size.dir/test_size.cpp.o
+2022-12-08T14:24:47.1893346Z [ 95%] Linking CXX executable test_size
+2022-12-08T14:24:47.4207600Z [ 95%] Built target test_size
+2022-12-08T14:24:47.4283317Z [ 97%] Building CXX object tests/CMakeFiles/test_cache.dir/test_cache.cpp.o
+2022-12-08T14:24:49.0325132Z [100%] Linking CXX executable test_cache
+2022-12-08T14:24:49.2566925Z [100%] Built target test_cache
+2022-12-08T14:24:49.9057862Z UpdateCTestConfiguration  from :/home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/DartConfiguration.tcl
+2022-12-08T14:24:49.9058836Z Parse Config file:/home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/DartConfiguration.tcl
+2022-12-08T14:24:50.1124330Z UpdateCTestConfiguration  from :/home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/DartConfiguration.tcl
+2022-12-08T14:24:50.1124965Z Parse Config file:/home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/DartConfiguration.tcl
+2022-12-08T14:24:50.1127398Z Test project /home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build
+2022-12-08T14:24:50.1128012Z Constructing a list of tests
+2022-12-08T14:24:50.1237153Z Done constructing a list of tests
+2022-12-08T14:24:50.1237453Z Updating test list for fixtures
+2022-12-08T14:24:50.1238820Z Added 0 tests to meet fixture requirements
+2022-12-08T14:24:50.1339757Z Checking test dependency graph...
+2022-12-08T14:24:50.1340207Z Checking test dependency graph end
+2022-12-08T14:24:50.1416072Z test 1
+2022-12-08T14:24:50.1423687Z     Start 1: test_nopayloadclient
+2022-12-08T14:24:50.1425086Z
+2022-12-08T14:24:50.1425429Z 1: Test command: /home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/tests/test_nopayloadclient
+2022-12-08T14:24:50.1425966Z 1: Working Directory: /home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient/build/tests
+2022-12-08T14:24:50.1511622Z 1: Test timeout computed to be: 1500
+2022-12-08T14:24:50.1577485Z 1: variable NOPAYLOADCLIENT_CONF not set. Using default.json...
+2022-12-08T14:24:50.1580371Z 1: initializing helper variables ...
+2022-12-08T14:24:50.1725420Z 1: Calling the decorated function.
+2022-12-08T14:24:50.1726187Z 1: {"code":1,"msg":"{\"detail\":\"Not found.\"}"}
+2022-12-08T14:24:50.2411941Z 1: Calling the decorated function.
+2022-12-08T14:24:50.2412612Z 1: {"code":0,"msg":"successfully created global tag"}
+2022-12-08T14:24:50.2549810Z 1: Calling the decorated function.
+2022-12-08T14:24:50.2550500Z 1: {"code":0,"msg":"successfully created payload type"}
+2022-12-08T14:24:50.3802669Z 1: Calling the decorated function.
+2022-12-08T14:24:50.3804148Z 1: {"code":0,"msg":"successfully inserted payload"}
+2022-12-08T14:24:50.4006622Z 1: Calling the decorated function.
+2022-12-08T14:24:50.4019518Z 1: {"code":0,"msg":["/tmp/remote_pl_store/my_pt/a5/9d/a59d7c0e03548b216f570bfacde5d22e_file.dat","/cvmfs/place/holder/my_pt/a5/9d/a59d7c0e03548b216f570bfacde5d22e_file.dat"]}
+2022-12-08T14:24:50.4360128Z 1: Calling the decorated function.
+2022-12-08T14:24:50.4360801Z 1: {"code":0,"msg":"successfully inserted payload"}
+2022-12-08T14:24:50.4508200Z 1: Calling the decorated function.
+2022-12-08T14:24:50.4508844Z 1: {"code":0,"msg":"successfully locked global tag"}
+2022-12-08T14:24:50.4821944Z 1: Calling the decorated function.
+2022-12-08T14:24:50.4822881Z 1: {"code":1,"msg":"{\"detail\":\"GT is LOCKED. You are attempting to insert IOV (major_iov,minor_iov,major_iov_end, minor_iov_end) (7238581,217038,9223372036854775807,9223372036854775807). Conflicts with existing IOV my_pt/a5/9d/a59d7c0e03548b216f570bfacde5d22e_file.dat (7238581,217038,8332743,3321575)\"}"}
+2022-12-08T14:24:50.5199860Z 1: Calling the decorated function.
+2022-12-08T14:24:50.5200244Z 1: {"code":0,"msg":"successfully inserted payload"}
+2022-12-08T14:24:50.5338419Z 1: Calling the decorated function.
+2022-12-08T14:24:50.5339070Z 1: {"code":1,"msg":"{\"detail\":\"Global Tag is locked.\"}"}
+2022-12-08T14:24:50.5485281Z 1: Calling the decorated function.
+2022-12-08T14:24:50.5485923Z 1: {"code":0,"msg":"successfully unlocked global tag"}
+2022-12-08T14:24:50.5858061Z 1: Calling the decorated function.
+2022-12-08T14:24:50.5858711Z 1: {"code":0,"msg":"successfully inserted payload"}
+2022-12-08T14:24:50.6029213Z 1: Calling the decorated function.
+2022-12-08T14:24:50.6030046Z 1: {"code":0,"msg":"successfully deleted global tag"}
+2022-12-08T14:24:50.6190727Z 1: Calling the decorated function.
+2022-12-08T14:24:50.6191110Z 1: {"code":1,"msg":"Could not find payload for type my_pt"}
+2022-12-08T14:24:50.6310943Z 1: Calling the decorated function.
+2022-12-08T14:24:50.6311922Z 1: {"code":1,"msg":"no global tag with name 'non_existing_gt' exists"}
+2022-12-08T14:24:50.6312589Z 1: Calling the decorated function.
+2022-12-08T14:24:50.6313172Z 1: {"code":1,"msg":"no global tag with name 'my_gt' exists"}
+2022-12-08T14:24:50.6315650Z 1: Calling the decorated function.
+2022-12-08T14:24:50.6316683Z 1: {"code":1,"msg":"local payload file does not exist (non_existing_file)"}
+2022-12-08T14:24:50.6336213Z 1/1 Test #1: test_nopayloadclient .............   Passed    0.48 sec
+2022-12-08T14:24:50.6336710Z
+2022-12-08T14:24:50.6337012Z 100% tests passed, 0 tests failed out of 1
+2022-12-08T14:24:50.6337222Z
+2022-12-08T14:24:50.6337338Z Total Test time (real) =   0.52 sec
+2022-12-08T14:24:50.6876600Z Post job cleanup.
+2022-12-08T14:24:50.8117466Z [command]/usr/bin/git version
+2022-12-08T14:24:50.8166216Z git version 2.38.1
+2022-12-08T14:24:50.8219187Z Temporarily overriding HOME='/home/runner/work/_temp/b3638543-3c75-41bf-8e89-ab6f92f3403b' before making global git config changes
+2022-12-08T14:24:50.8223009Z Adding repository directory to the temporary git global config as a safe directory
+2022-12-08T14:24:50.8229787Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nopayloadclient/nopayloadclient/nopayloadclient
+2022-12-08T14:24:50.8269638Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2022-12-08T14:24:50.8306166Z [command]/usr/bin/git submodule foreach --recursive git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :
+2022-12-08T14:24:50.8536476Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2022-12-08T14:24:50.8554773Z http.https://github.com/.extraheader
+2022-12-08T14:24:50.8566187Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2022-12-08T14:24:50.8603356Z [command]/usr/bin/git submodule foreach --recursive git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :
+2022-12-08T14:24:50.9087711Z Cleaning up orphan processes
