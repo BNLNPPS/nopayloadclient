@@ -60,7 +60,7 @@ class CurlMession{
                 throw std::runtime_error(msg);
             }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
-	    //            printResults();
+	        //printResults();
             if (ans.httpCode!=200){
                 throw NoPayloadException(ans.readBuffer);
             }

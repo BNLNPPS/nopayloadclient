@@ -44,7 +44,6 @@ namespace nopayloadclient {
 
       nlohmann::json operator()(Args ... args)
       {
-         std::cout << "Calling the decorated function.\n";
          try {
              return nlohmann::json::object({{"code", 0}, {"msg", f_(args...)}});
          }

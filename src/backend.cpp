@@ -2,10 +2,7 @@
 
 namespace backend {
 
-Cache<std::vector<std::string>> cached_gt_status_names;
-Cache<std::vector<std::string>> cached_gt_names;
-Cache<std::vector<std::string>> cached_pt_names;
-Cache<nlohmann::json> cached_pt_dict;// {gt_0: {pl_type_0: pl_type_0_3, pl_type_1: pl_type_1_6, ...}} ONLY ONE GT!
+CacheGroup cache;
 
 std::vector<std::string> _getItemNames(nlohmann::json j) {
     std::vector<std::string> name_list;
@@ -37,36 +34,36 @@ nlohmann::json _getPayloadLists(std::string gt_name) {
 }
 
 nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
-    return curlwrapper::get(config::api_url + "payloadiovs/?gtName=" + gt_name + "&majorIOV=" +
+    return curlwrapper::get(config::api_url + "payloadiovsfast/?gtName=" + gt_name + "&majorIOV=" +
                             std::to_string(major_iov) + "&minorIOV=" + std::to_string(minor_iov));
 }
 
 std::vector<std::string> getGtStatusNames(){
-    if (!cached_gt_status_names.is_valid){
-        cached_gt_status_names.update(_getItemNames(getGlobalTagStatuses()));
+    if (!cache.gt_status_names.is_valid){
+        cache.gt_status_names.update(_getItemNames(getGlobalTagStatuses()));
     }
-    return cached_gt_status_names.content;
+    return cache.gt_status_names.content;
 }
 
 std::vector<std::string> getGtNames(){
-    if (!cached_gt_names.is_valid){
-        cached_gt_names.update(_getItemNames(getGlobalTags()));
+    if (!cache.gt_names.is_valid){
+        cache.gt_names.update(_getItemNames(getGlobalTags()));
     }
-    return cached_gt_names.content;
+    return cache.gt_names.content;
 }
 
 std::vector<std::string> getPtNames(){
-    if (!cached_pt_names.is_valid){
-        cached_pt_names.update(_getItemNames(getPayloadTypes()));
+    if (!cache.pt_names.is_valid){
+        cache.pt_names.update(_getItemNames(getPayloadTypes()));
     }
-    return cached_pt_names.content;
+    return cache.pt_names.content;
 }
 
 nlohmann::json getPayloadLists(std::string gt_name){
-    if (!cached_pt_dict.is_valid || !cached_pt_dict.content.contains(gt_name)) {
-        cached_pt_dict.update(nlohmann::json::object({{gt_name, _getPayloadLists(gt_name)}}));
+    if (!cache.pt_dict.is_valid || !cache.pt_dict.content.contains(gt_name)) {
+        cache.pt_dict.update(nlohmann::json::object({{gt_name, _getPayloadLists(gt_name)}}));
     }
-    return cached_pt_dict.content[gt_name];
+    return cache.pt_dict.content[gt_name];
 }
 
 bool gtStatusExists(std::string gtStatusName){
@@ -159,7 +156,7 @@ void createGlobalTagStatus(std::string status){
     nlohmann::json j;
     j["name"] = status;
     curlwrapper::post(config::api_url + "gtstatus", j);
-    cached_gt_status_names.is_valid = false;
+    cache.invalidate();
 }
 
 void createGlobalTagObject(std::string name, std::string status) {
@@ -168,14 +165,14 @@ void createGlobalTagObject(std::string name, std::string status) {
     j["name"] = name;
     j["author"] = std::getenv("USER");
     curlwrapper::post(config::api_url + "gt", j);
-    cached_gt_names.is_valid = false;
+    cache.invalidate();
 }
 
 void createPayloadType(std::string type){
     nlohmann::json j;
     j["name"] = type;
     curlwrapper::post(config::api_url + "pt", j);
-    cached_pt_names.is_valid = false;
+    cache.invalidate();
 }
 
 std::string createPayloadList(std::string type){
@@ -190,7 +187,7 @@ void attachPayloadList(std::string gt_name, std::string plName){
     j["payload_list"] = plName;
     j["global_tag"] = gt_name;
     curlwrapper::put(config::api_url + "pl_attach", j);
-    cached_pt_dict.is_valid = false;
+    cache.invalidate();
 }
 
 void lockGlobalTag(std::string name){
@@ -242,8 +239,7 @@ void createGlobalTag(std::string name) {
 
 void deleteGlobalTag(std::string name) {
     curlwrapper::del(config::api_url + "deleteGlobalTag/" + name);
-    cached_gt_names.is_valid = false;
-    cached_pt_dict.is_valid = false;
+    cache.invalidate();
 }
 
 void createNewPllForGt(std::string gt_name, std::string plType){
