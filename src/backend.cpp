@@ -34,7 +34,7 @@ nlohmann::json _getPayloadLists(std::string gt_name) {
 }
 
 nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
-    return curlwrapper::get(config::api_url + "payloadiovsfast/?gtName=" + gt_name + "&majorIOV=" +
+    return curlwrapper::get(config::api_url + "payloadiovs/?gtName=" + gt_name + "&majorIOV=" +
                             std::to_string(major_iov) + "&minorIOV=" + std::to_string(minor_iov));
 }
 
