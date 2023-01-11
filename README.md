@@ -12,8 +12,12 @@ NoPayloadDB (https://github.com/bnlnpps/nopayloaddb).
 
 ### Setup
 In the project folder, configure cmake and compile
-```
+```shell
 cmake -S . -B build && cmake --build build/
+```
+Install the client
+```shell
+cmake --install build/
 ```
 Configure the client by specifying the config file in
 an env variable
@@ -44,7 +48,7 @@ header and the widely-spread nlohmann json header-only lib
 (https://github.com/nlohmann/json)
 ```c
 #include <nlohmann/json.hpp>
-#include "nopayloadclient.hpp"
+#include <nopayloadclient.hpp>
 ```
 Payloads can be inserted via
 ```c
@@ -66,6 +70,10 @@ Currently, the following response codes are implemented:
 ```
 Examples on how to use this tool in a c++ program can be found in the ```examples/```
 folder. The following command compiles and runs them:
+```
+g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
+```
+
 ```
 cmake -S . -B build && cmake --build build/ && build/examples/example_insert_short && cd ..
 ```

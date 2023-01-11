@@ -9,6 +9,7 @@ nlohmann::json get(std::string gt_name, std::string pl_type, long long major_iov
     return makeResponse(backend::getPayloadUrls)(gt_name, pl_type, major_iov, minor_iov);
 }
 
+
 // Writing
 std::string _createGlobalTag(std::string gt_name) {
     backend::createGlobalTag(gt_name);
@@ -93,6 +94,10 @@ nlohmann::json getPayloadTypes(){
 
 nlohmann::json getGlobalTags(){
     return makeResponse(backend::getGlobalTags)();
+}
+
+void sayHello() {
+    std::cout << "Hello" << std::endl;
 }
 
 }

@@ -33,6 +33,7 @@ namespace nopayloadclient {
    nlohmann::json getSize();
    nlohmann::json getPayloadTypes();
    nlohmann::json getGlobalTags();
+   void sayHello();
 
 
    // Response creation (non-interface)
@@ -47,8 +48,8 @@ namespace nopayloadclient {
          try {
              return nlohmann::json::object({{"code", 0}, {"msg", f_(args...)}});
          }
-         catch (NoPayloadException &e) {
-             return nlohmann::json::object({{"code", 1}, {"msg", e.what()}});
+         catch (BaseException &e) {
+             return e.jsonify();
          }
       }
       std::function<R(Args ...)> f_;

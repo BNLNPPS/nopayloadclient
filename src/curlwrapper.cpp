@@ -41,7 +41,7 @@ class CurlMession{
             }
             std::string msg = "curl failed after n=" + std::to_string(n_retries);
             msg += " tries (url: " + url + ")";
-            throw NoPayloadException(msg);
+            throw BaseException(msg);
             return answer;
         }
 
@@ -60,12 +60,18 @@ class CurlMession{
                 throw std::runtime_error(msg);
             }
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
-	        //printResults();
-            if (ans.httpCode!=200){
-                throw NoPayloadException(ans.readBuffer);
-            }
             curl_easy_cleanup(curl);
-            return nlohmann::json::parse(ans.readBuffer);
+            nlohmann::json response = nlohmann::json::parse(ans.readBuffer);
+            std::cout << "response = " << response << std::endl;
+            if (ans.httpCode!=200){
+                std::string msg;
+                if (response.contains("name")) msg = response["name"][0];
+                else if (response.contains("detail")) msg = response["detail"];
+                else msg = response.dump();
+                std::cout << "msg = " << msg << std::endl;
+                throw DataBaseException(msg);
+            }
+            return response;
         }
 
         void prepareGet(){

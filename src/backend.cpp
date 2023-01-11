@@ -84,21 +84,21 @@ bool plTypeExists(std::string plType){
 void checkGtStatusExists(std::string gtStatusName){
     if (!gtStatusExists(gtStatusName)){
         std::string msg = "no global tag status with name '"+gtStatusName+"' exists";
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
 }
 
 void checkGtExists(std::string gt_name){
     if (!gtExists(gt_name)){
         std::string msg = "no global tag with name '"+gt_name+"' exists";
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
 }
 
 void checkPlTypeExists(std::string plType){
     if (!plTypeExists(plType)){
         std::string msg = "no payload type with name '"+plType+"' exists";
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
 }
 
@@ -109,7 +109,7 @@ std::string getPayloadUrl(std::string gt_name, std::string plType, long long maj
             return piov["payload_iov"][0]["payload_url"];
         }
     }
-    throw NoPayloadException("Could not find payload for type "+plType);
+    throw BaseException("Could not find payload for type "+plType);
 }
 
 std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov){
@@ -125,7 +125,7 @@ std::string getPayloadListName(std::string gt_name, std::string plType){
     nlohmann::json j = getPayloadLists(gt_name);
     if (!j.contains(plType)){
         std::string msg = "global tag '"+gt_name+"' does not have payload type '"+plType;
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
     return j[plType];
 }

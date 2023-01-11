@@ -18,7 +18,7 @@ void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
         std::string msg = "checksums of the following two files differ: ";
         msg += firstFileUrl + ", ";
         msg += secondFileUrl;
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
     */
 }
@@ -27,7 +27,7 @@ void checkLocalFileExists(std::string localUrl){
     if (!fileExists(localUrl)){
         std::string msg = "local payload file does not exist (";
         msg += localUrl + ")";
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
 }
 
@@ -35,13 +35,13 @@ void checkRemoteFile(std::string remoteUrl){
     if (fileExists(remoteUrl)){
         std::string msg = "remote payload file already exists (";
         msg += remoteUrl + ")";
-        throw NoPayloadException(msg);
+        throw BaseException(msg);
     }
 }
 
 void checkRemoteDirExists() {
     if (!fs::exists(config::write_dir)){
-        throw NoPayloadException("remote payload directory "+config::write_dir+" does not exist");
+        throw BaseException("remote payload directory "+config::write_dir+" does not exist");
     }
 }
 
