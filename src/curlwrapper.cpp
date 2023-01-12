@@ -62,13 +62,13 @@ class CurlMession{
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
             curl_easy_cleanup(curl);
             nlohmann::json response = nlohmann::json::parse(ans.readBuffer);
-            std::cout << "response = " << response << std::endl;
+            //std::cout << "response = " << response << std::endl;
             if (ans.httpCode!=200){
                 std::string msg;
                 if (response.contains("name")) msg = response["name"][0];
                 else if (response.contains("detail")) msg = response["detail"];
                 else msg = response.dump();
-                std::cout << "msg = " << msg << std::endl;
+                //std::cout << "msg = " << msg << std::endl;
                 throw DataBaseException(msg);
             }
             return response;

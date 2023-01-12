@@ -66,7 +66,9 @@ message body in the  following format:
 Currently, the following response codes are implemented:
 ```
 0: ok
-1: error
+1: base error (no further details)
+2: error when handling a payload
+3: error in the database (server-side)
 ```
 Examples on how to use this tool in a c++ program can be found in the ```examples/```
 folder. The following command compiles and runs them:
@@ -77,6 +79,31 @@ g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
 ```
 cmake -S . -B build && cmake --build build/ && build/examples/example_insert_short && cd ..
 ```
+
+#### Usage through command line interface
+```examples/cli_npc.cpp``` is an implementation of a command line interface.
+It is compiled along the rest of the project and can be run via 
+```shell
+./build/examples/cli_npc <command> <parameters>
+```
+or - if installed - simply via
+```shell
+cli_npc <command> <parameters>
+```
+The available commands are: get, createGlobalTag, createPayloadType, lockGlobalTag,
+unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
+getPayloadTypes, getGlobalTags. Example workflow:
+```shell
+export NOPAYLOADCLIENT_CONF=default.json
+cli_npc createGlobalTag example_gt
+cli_npc getGlobalTags
+cli_npc createPayloadType example_pt
+cli_npc getPayloadTypes
+cli_npc insertPayload example_gt example_pt /tmp/file.dat 7 0
+cli_npc get example_gt example_pt 11 0
+cli_npc getSize
+```
+
 
 ### Sphenix use case
 An experiment-specific version of this client has been developed for the sphenix use case.
