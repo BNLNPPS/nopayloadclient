@@ -96,6 +96,10 @@ nlohmann::json getGlobalTags(){
     return makeResponse(backend::getGlobalTags)();
 }
 
+nlohmann::json checkConnection(){
+    return makeResponse(backend::checkConnection)();
+}
+
 void sayHello() {
     std::cout << "Hello" << std::endl;
 }

@@ -19,6 +19,7 @@ namespace backend {
     nlohmann::json getPayloadTypes();
     nlohmann::json getPayloadLists(std::string gt_name);
     nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
+    std::string checkConnection();
     std::string getPayloadListName(std::string gt_name, std::string plType);
     std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
     bool gtExists(std::string gt_name);
@@ -71,10 +72,5 @@ namespace backend {
                 pt_dict.is_valid = false;
             }
     };
-
-
-
-
-
 
 }

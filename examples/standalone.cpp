@@ -8,6 +8,7 @@ int main () {
     //         PREPARATION
     // ++++++++++++++++++++++++++++++
 
+    std::cout << "beginning of standalone..." << std::endl;
     // make sure global tag & payload type exist
     std::cout << nopayloadclient::createGlobalTag("ExampleGT") << std::endl;
     std::cout << nopayloadclient::createPayloadType("ExamplePT") << std::endl;;

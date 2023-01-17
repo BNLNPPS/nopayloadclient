@@ -136,6 +136,11 @@ bool gtHasPlType(std::string gt_name, std::string plType){
     return true;
 }
 
+std::string checkConnection(){
+    getGlobalTags();
+    return "connection is good";
+}
+
 nlohmann::json getSize(){
     int n_iov_attached = 0;
     int n_gt = 0;

@@ -59,6 +59,10 @@ int main()
   if (createRandomPayload(my_local_url) == 1) return 1;
   if (createRandomPayload(my_local_url_2) == 1) return 1;
 
+  resp = nopayloadclient::checkConnection();
+  std::cout << resp << std::endl;
+
+
   // create the global tag if it does not exist
   resp = nopayloadclient::deleteGlobalTag("my_gt");
   std::cout << resp << std::endl;
