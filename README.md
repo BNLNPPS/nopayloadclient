@@ -93,6 +93,7 @@ unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
 getPayloadTypes, getGlobalTags. Example workflow:
 ```shell
 export NOPAYLOADCLIENT_CONF=/path/to/config.json
+cli_npc checkConnection
 cli_npc createGlobalTag example_gt
 cli_npc getGlobalTags
 cli_npc createPayloadType example_pt

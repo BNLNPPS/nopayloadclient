@@ -90,8 +90,11 @@ int main(int argc, char *argv[])
   else if (command == "getPayloadTypes") {
       std::cout << nopayloadclient::getPayloadTypes() << std::endl;
   }
+  else if (command == "checkConnection") {
+      std::cout << nopayloadclient::checkConnection() << std::endl;
+  }
   else {
-      std::cout << "unknown command <" << command << ">. (pick from [get, createGlobalTag, createPayloadType, lockGlobalTag, unlockGlobalTag, insertPayload, deleteGlobalTag]" << std::endl;
+      std::cout << "unknown command <" << command << ">. (pick from [get, createGlobalTag, createPayloadType, lockGlobalTag, unlockGlobalTag, insertPayload, deleteGlobalTag, checkConnection]" << std::endl;
   }
   return 0;
 }
