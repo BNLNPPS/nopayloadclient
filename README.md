@@ -4,7 +4,6 @@
 * [Setup](#setup)
 * [Testing](#testing)
 * [Usage](#usage)
-* [SPHENIX use case](#sphenix)
 
 ### Introduction
 This client-side library is meant to communicate with
@@ -102,35 +101,4 @@ cli_npc getPayloadTypes
 cli_npc insertPayload example_gt example_pt /tmp/file.dat 7 0
 cli_npc get example_gt example_pt 11 0
 cli_npc getSize
-```
-
-
-### Sphenix use case
-An experiment-specific version of this client has been developed for the sphenix use case.
-It's simplified API can be found in ```include/sphenixclient.hpp```. It drops the major-
-and minorIOV in favor of a single iov parameter.
-
-#### Usage within a c++ program
-An example of how to use this client in a c++ program can be found in
-```examples/example_sphenix.cpp```.
-
-#### Usage through command line interface
-```examples/cli_sphenix.cpp``` is an implementation of a command line interface for the
-sphenix client. It is compiled along the rest of the project and can be run via 
-```shell
-./build/examples/cli_sphenix <command> <parameters>
-```
-The available commands are: get, createGlobalTag, createPayloadType, lockGlobalTag,
-unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
-getPayloadTypes, getGlobalTags. Example workflow:
-```shell
-export NOPAYLOADCLIENT_CONF=for_chris.json
-cd build/examples/
-./cli_sphenix createGlobalTag example_gt
-./cli_sphenix getGlobalTags
-./cli_sphenix createPayloadType example_pt
-./cli_sphenix getPayloadTypes
-./cli_sphenix insertPayload example_gt example_pt /tmp/file.dat 7
-./cli_sphenix get example_gt example_pt 11
-./cli_sphenix getSize
 ```
