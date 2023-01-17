@@ -74,9 +74,6 @@ folder. The following command compiles and runs them:
 g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
 ```
 
-```
-cmake -S . -B build && cmake --build build/ && build/examples/example_insert_short && cd ..
-```
 
 #### Usage through command line interface
 ```examples/cli_npc.cpp``` is an implementation of a command line interface.
