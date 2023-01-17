@@ -18,15 +18,6 @@ add_executable(check_size check_size.cpp)
 target_link_libraries(check_size nopayloadclient ${_std_cxx_filesystem_lib})
 target_include_directories(check_size PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-add_executable(example_sphenix example_sphenix.cpp)
-target_link_libraries(example_sphenix nopayloadclient ${_std_cxx_filesystem_lib})
-target_include_directories(example_sphenix PRIVATE ${CMAKE_SOURCE_DIR}/include)
-
-add_executable(cli_sphenix cli_sphenix.cpp)
-target_link_libraries(cli_sphenix nopayloadclient ${_std_cxx_filesystem_lib})
-target_include_directories(cli_sphenix PRIVATE ${CMAKE_SOURCE_DIR}/include)
-install(TARGETS cli_sphenix DESTINATION bin)
-
 add_executable(cli_npc cli_npc.cpp)
 target_link_libraries(cli_npc nopayloadclient ${_std_cxx_filesystem_lib})
 target_include_directories(cli_npc PRIVATE ${CMAKE_SOURCE_DIR}/include)
