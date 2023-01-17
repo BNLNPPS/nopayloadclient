@@ -1,8 +1,0 @@
-{
-  "base_url": "helm-test1.apps.rcf.bnl.gov",
-  "api_res":  "/api/cdb_rest/",
-  "write_dir": "/path/to/your/pl/store/",
-  "read_dir_list": ["/path/to/your/pl/store/", "/cvmfs/alternative/path/"],
-  "n_retries": 5,
-  "print_time_stamps": false
-}
