@@ -21,10 +21,9 @@ cmake --install build/
 Configure the client by specifying the config file in
 an env variable
 ```
-export NOPAYLOADCLIENT_CONF=example_config.json
+export NOPAYLOADCLIENT_CONF=/path/to/config.json
 ```
-where only files in the ```config/``` directory are considered.
-If this is not done, the parameters in ```default.json``` will
+If this is not done, the parameters in ```config/default.json``` will
 be assumed.
 
 ### Testing
@@ -93,7 +92,7 @@ The available commands are: get, createGlobalTag, createPayloadType, lockGlobalT
 unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
 getPayloadTypes, getGlobalTags. Example workflow:
 ```shell
-export NOPAYLOADCLIENT_CONF=default.json
+export NOPAYLOADCLIENT_CONF=/path/to/config.json
 cli_npc createGlobalTag example_gt
 cli_npc getGlobalTags
 cli_npc createPayloadType example_pt
