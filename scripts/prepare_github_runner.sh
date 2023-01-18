@@ -9,6 +9,14 @@ fi
 
 echo "Proceeding with the setup..."
 
+echo "check out nopayloaddb and launch container..."
+git clone git@github.com:BNLNPPS/nopayloaddb.git
+cd nopayloaddb
+git pull origin master
+sed -i 's/FROM python:3/FROM python:3.7.5/g' Dockerfile
+docker-compose up --build -d
+cd ..
+
 echo "install libcurl..."
 sudo apt-get update
 sudo apt-get install -y libnghttp2-dev
@@ -22,17 +30,8 @@ cmake --build build/
 sudo cmake --install build/
 cd ..
 
-echo "check out nopayloaddb and launch container..."
-git clone git@github.com:BNLNPPS/nopayloaddb.git
-cd nopayloaddb
-git pull origin master
-sed -i 's/FROM python:3/FROM python:3.7.5/g' Dockerfile
-docker-compose up --build -d
-sleep 30
-cd ..
+echo "create remote payload dir"
+mkdir /tmp/remote_pl_store/
 
 echo "test curl..."
 curl http://localhost:8000/api/cdb_rest/gt
-
-echo "create remote payload dir"
-mkdir /tmp/remote_pl_store/
