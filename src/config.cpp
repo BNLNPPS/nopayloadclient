@@ -51,3 +51,4 @@ std::string config::write_dir = (std::string) dict["write_dir"];
 std::vector<std::string> config::read_dir_list = dict["read_dir_list"];
 int config::n_retries = dict["n_retries"];
 bool config::print_time_stamps = dict["print_time_stamps"];
+nlohmann::json config::getDict() {return dict;}

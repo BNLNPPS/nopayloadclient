@@ -10,7 +10,9 @@ set(source_files
 )
 
 add_library(nopayloadclient ${source_files})
+
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
+
 if (UNIX AND NOT APPLE)
     target_link_libraries(nopayloadclient PUBLIC stdc++fs)
 endif (UNIX AND NOT APPLE)
@@ -28,11 +30,5 @@ set_target_properties(nopayloadclient PROPERTIES
     VERSION ${PROJECT_VERSION}
     POSITION_INDEPENDENT_CODE ON)
 
-install(TARGETS nopayloadclient EXPORT nopayloadclientTargets
-    RUNTIME   DESTINATION ${NOPAYLOADCLIENT_RUNTIME_INSTALL_DIR}
-    LIBRARY   DESTINATION ${NOPAYLOADCLIENT_LIBRARY_INSTALL_DIR}
-    ARCHIVE   DESTINATION ${NOPAYLOADCLIENT_ARCHIVE_INSTALL_DIR}
-    FRAMEWORK DESTINATION ${NOPAYLOADCLIENT_FRAMEWORK_INSTALL_DIR})
-
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${NOPAYLOADCLIENT_INCLUDE_INSTALL_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h DESTINATION ${NOPAYLOADCLIENT_INCLUDE_INSTALL_DIR})
+install(TARGETS nopayloadclient DESTINATION lib)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)

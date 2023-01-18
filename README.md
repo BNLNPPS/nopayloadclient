@@ -27,17 +27,10 @@ If this is not done, the parameters in ```config/default.json``` will
 be assumed.
 
 ### Testing
-Go to build/ directory and run the tests (with verbose output)
+The following command activates testing, reconfigures cmake, recompiles the code
+and runs the tests defined in the ```tests/``` directory
 ```
-cd build/
-ctest --verbose
-```
-You can specify which tests to run at the very bottom of
-```tests/CMakeLists.txt```. Don't forget to recompile before
-running the tests again. The following command does everything
-in one step:
-```
-cmake -S . -B build && cmake --build build/ && cd build/ && ctest --verbose && cd ..
+cmake -DBUILD_TESTING=ON -S . -B build && cmake --build build/ && cd build/ && ctest --verbose && cd ..
 ```
 
 ### Usage

@@ -34,6 +34,7 @@ namespace nopayloadclient {
    nlohmann::json getPayloadTypes();
    nlohmann::json getGlobalTags();
    nlohmann::json checkConnection();
+   nlohmann::json getConfDict();
    void sayHello();
 
 

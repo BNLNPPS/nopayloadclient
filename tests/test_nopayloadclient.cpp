@@ -1,19 +1,15 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <nlohmann/json.hpp>
 #include <time.h>
-#include <stdlib.h>
-#include <sstream>
 #include <filesystem>
-#include <unistd.h>
 
-#include <config.hpp>
-#include "nopayloadclient.hpp"
+#include <nopayloadclient.hpp>
 
 
 int getPayloadNumber() {
-  const std::filesystem::path pl_path{config::write_dir};
+  nlohmann::json conf_dict = nopayloadclient::getConfDict()["msg"];
+  const std::filesystem::path pl_path{conf_dict["write_dir"]};
   std::filesystem::recursive_directory_iterator pl_iterator{pl_path};
   int n = 0;
   for (auto const& dir_entry : pl_iterator) {
@@ -61,7 +57,6 @@ int main()
 
   resp = nopayloadclient::checkConnection();
   std::cout << resp << std::endl;
-
 
   // create the global tag if it does not exist
   resp = nopayloadclient::deleteGlobalTag("my_gt");

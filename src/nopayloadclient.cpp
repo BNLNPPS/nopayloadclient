@@ -100,6 +100,10 @@ nlohmann::json checkConnection(){
     return makeResponse(backend::checkConnection)();
 }
 
+nlohmann::json getConfDict(){
+    return makeResponse(config::getDict)();
+}
+
 void sayHello() {
     std::cout << "Hello" << std::endl;
 }
