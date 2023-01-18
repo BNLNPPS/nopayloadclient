@@ -15,7 +15,14 @@ sudo apt-get install -y libnghttp2-dev
 sudo apt-get install curl
 sudo apt-get install libcurl4-openssl-dev
 
-echo "check out nopayloaddb..."
+echo "install nopayloadclient..."
+cd nopayloadclient
+cmake -DBUILD_TESTING=ON -S . -B build
+cmake --build build/
+cmake --install build/
+cd ..
+
+echo "check out nopayloaddb and launch container..."
 git clone git@github.com:BNLNPPS/nopayloaddb.git
 cd nopayloaddb
 git pull origin master
