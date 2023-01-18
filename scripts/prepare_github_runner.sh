@@ -19,7 +19,7 @@ echo "install nopayloadclient..."
 cd nopayloadclient
 cmake -DBUILD_TESTING=ON -S . -B build
 cmake --build build/
-cmake --install build/
+sudo cmake --install build/
 cd ..
 
 echo "check out nopayloaddb and launch container..."
