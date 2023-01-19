@@ -1,0 +1,13 @@
+on: [push]
+jobs:
+    Backend-Client-Functional-Tests-CI:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Trigger CI in all daughter repos
+              run: |
+                  curl -XPOST \ 
+                       -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
+                       -H "Accept: application/vnd.github.everest-preview+json" \
+                       -H "Content-Type: application/json" \
+                       https://api.github.com/repos/ligerlac/sphenixnpc/dispatches \ 
+                       --data '{"event_type": "triggered by nopayloadclient (${{ github.head_ref }}.${{ github.sha }})"}'
