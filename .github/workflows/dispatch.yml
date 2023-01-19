@@ -7,11 +7,8 @@ jobs:
               uses: actions/github-script@v6
               id: my-script
               with:
-                result-encoding: string
-                retries: 3
-                retry-exempt-status-codes: 400,401
                 script: |
-                  github.rest.issues.get({
+                  github.rest.actions.createWorkflowDispatch({
                     issue_number: context.issue.number,
                     owner: context.repo.owner,
                     repo: context.repo.repo,
