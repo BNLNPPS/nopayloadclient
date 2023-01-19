@@ -7,7 +7,9 @@ if [ "$CONT" != "y" ]; then
     exit 0
 fi
 
+DEPLOY_KEY=$1
+
 mkdir -p ~/.ssh
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-ssh-add - <<< "${{ secrets.DEPLOY_KEY }}"
+ssh-add - <<< $DEPLOY_KEY

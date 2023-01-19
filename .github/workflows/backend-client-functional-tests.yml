@@ -16,7 +16,7 @@ jobs:
             - name: Prepare github runner
               env:
                   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-              run: yes | sh nopayloadclient/scripts/prepare_github_runner.sh
+              run: yes | sh nopayloadclient/scripts/prepare_github_runner.sh "${{ secrets.DEPLOY_KEY }}"
 
             - name: run nopayloadclient tests
               run: |
