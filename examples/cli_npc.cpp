@@ -4,8 +4,8 @@
 void get(char *argv[]){
   std::string global_tag = argv[2];
   std::string pl_type = argv[3];
-  int major_iov = std::atoi(argv[4]);
-  int minor_iov = std::atoi(argv[5]);
+  long long major_iov = std::atoi(argv[4]);
+  long long minor_iov = std::atoi(argv[5]);
   std::cout << nopayloadclient::get(global_tag, pl_type, major_iov, minor_iov) << std::endl;
 }
 
