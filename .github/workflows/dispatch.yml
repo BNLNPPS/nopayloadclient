@@ -9,8 +9,8 @@ jobs:
               with:
                 script: |
                   github.rest.actions.createWorkflowDispatch({
-                    'ligerlac',
-                    'sphenixnpc',
-                    'workflows/backend-client-functional-tests.yaml',
-                    'main',
+                    owner: 'ligerlac',
+                    repo: 'sphenixnpc',
+                    workflow_id: 'backend-client-functional-tests.yaml',
+                    ref: 'main',
                   })
