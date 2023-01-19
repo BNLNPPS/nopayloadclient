@@ -1,0 +1,33 @@
+on: [push]
+jobs:
+    Backend-Client-Functional-Tests-CI:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Check out the commit that triggered this job
+              uses: actions/checkout@v3
+              with:
+                path: ${{ github.event.repository.name }}
+
+            - name: Setup SSH Keys and known_hosts
+              env:
+                  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+              run: yes | sh nopayloadclient/scripts/prepare_ssh.sh
+
+            - name: Prepare github runner
+              env:
+                  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+              run: yes | sh nopayloadclient/scripts/prepare_github_runner.sh
+
+            - name: run nopayloadclient tests
+              run: |
+                  cd nopayloadclient/build/
+                  ctest --verbose
+
+            - name: test downstream lib (sphenixnpc)
+              run: |
+                  git clone git@github.com:ligerlac/sphenixnpc.git
+                  cd sphenixnpc
+                  cmake -DBUILD_TESTING=ON -S . -B build
+                  cmake --build build/
+                  cd build/
+                  ctest --verbose
