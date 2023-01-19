@@ -4,12 +4,15 @@ jobs:
         runs-on: ubuntu-20.04
         steps:
             - name: Deploy Stage
-              uses: actions/github-script@v5
+            - uses: actions/github-script@v6
+              id: my-script
               with:
+                result-encoding: string
+                retries: 3
+                retry-exempt-status-codes: 400,401
                 script: |
-                  await github.rest.actions.createWorkflowDispatch({
-                    'ligerlac',
-                    'sphenixnpc',
-                    'workflows/backend-client-functional-tests.yaml',
-                    'main',
+                  github.rest.issues.get({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
                   })
