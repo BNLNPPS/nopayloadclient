@@ -4,7 +4,7 @@ jobs:
         runs-on: ubuntu-20.04
         steps:
             - name: Deploy Stage
-            - uses: actions/github-script@v6
+              uses: actions/github-script@v6
               id: my-script
               with:
                 result-encoding: string
