@@ -35,7 +35,6 @@ namespace nopayloadclient {
    nlohmann::json getGlobalTags();
    nlohmann::json checkConnection();
    nlohmann::json getConfDict();
-   void sayHello();
 
 
    // Response creation (non-interface)
