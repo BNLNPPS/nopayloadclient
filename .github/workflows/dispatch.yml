@@ -9,7 +9,8 @@ jobs:
               with:
                 script: |
                   github.rest.actions.createWorkflowDispatch({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
+                    'ligerlac',
+                    'sphenixnpc',
+                    'workflows/backend-client-functional-tests.yaml',
+                    'main',
                   })
