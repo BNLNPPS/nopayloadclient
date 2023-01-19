@@ -34,6 +34,7 @@ nlohmann::json _getPayloadLists(std::string gt_name) {
 }
 
 nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
+    checkGtExists(gt_name);
     return curlwrapper::get(config::api_url + "payloadiovs/?gtName=" + gt_name + "&majorIOV=" +
                             std::to_string(major_iov) + "&minorIOV=" + std::to_string(minor_iov));
 }
@@ -112,7 +113,8 @@ std::string getPayloadUrl(std::string gt_name, std::string plType, long long maj
     throw BaseException("Could not find payload for type "+plType);
 }
 
-std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov){
+std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType,
+                                        long long major_iov, long long minor_iov){
     std::string payload_url = getPayloadUrl(gt_name, plType, major_iov, minor_iov);
     std::vector<std::string> payload_urls;
     for (const auto dir : config::read_dir_list) {
