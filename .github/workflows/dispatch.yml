@@ -11,5 +11,5 @@ jobs:
                     'ligerlac',
                     'sphenixnpc',
                     'workflows/backend-client-functional-tests.yaml',
-                    'main',
+                    'main'
                   });
