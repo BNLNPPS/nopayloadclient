@@ -42,8 +42,8 @@ jobs:
               env:
                   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
               run: |
-                  git clone git@github.com:ligerlac/sphenixnpc.git
-                  cd sphenixnpc
+                  git clone git@github.com:ligerlac/dunenpc.git
+                  cd dunenpc
                   cmake -DBUILD_TESTING=ON -S . -B build
                   cmake --build build/
                   cd build/
