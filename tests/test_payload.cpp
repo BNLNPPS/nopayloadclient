@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "payload.hpp"
-#include "exception.hpp"
+#include <nopayloadclient/payload.hpp>
+#include <nopayloadclient/exception.hpp>
 
 
 int main()

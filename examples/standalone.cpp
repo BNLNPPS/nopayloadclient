@@ -1,6 +1,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <nopayloadclient.hpp>
+#include <nopayloadclient/nopayloadclient.hpp>
 
 
 int main () {

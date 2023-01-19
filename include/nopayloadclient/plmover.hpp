@@ -7,9 +7,9 @@
 #include <fstream>
 #include <unistd.h>
 
-#include <exception.hpp>
-#include <config.hpp>
-#include <payload.hpp>
+#include <nopayloadclient/exception.hpp>
+#include <nopayloadclient/config.hpp>
+#include <nopayloadclient/payload.hpp>
 
 namespace plmover {
 

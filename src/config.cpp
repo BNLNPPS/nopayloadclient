@@ -1,4 +1,4 @@
-#include <config.hpp>
+#include <nopayloadclient/config.hpp>
 #include "config.h"
 
 namespace config {

@@ -6,8 +6,8 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
-#include <config.hpp>
-#include <exception.hpp>
+#include <nopayloadclient/config.hpp>
+#include <nopayloadclient/exception.hpp>
 
 
 namespace curlwrapper {

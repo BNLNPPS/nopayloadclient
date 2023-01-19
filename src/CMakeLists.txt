@@ -22,7 +22,6 @@ target_include_directories(nopayloadclient
     $<INSTALL_INTERFACE:include>
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/contrib
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR})
 

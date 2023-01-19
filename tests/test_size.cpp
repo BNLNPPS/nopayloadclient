@@ -1,7 +1,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <nopayloadclient.hpp>
-#include <config.hpp>
+#include <nopayloadclient/nopayloadclient.hpp>
+#include <nopayloadclient/config.hpp>
 
 
 int main()

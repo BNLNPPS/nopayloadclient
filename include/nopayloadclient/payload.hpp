@@ -5,8 +5,8 @@
 #include <sstream>
 #include <fstream>
 
-#include <exception.hpp>
-#include <config.hpp>
+#include <nopayloadclient/exception.hpp>
+#include <nopayloadclient/config.hpp>
 
 
 namespace payload {
