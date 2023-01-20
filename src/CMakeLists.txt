@@ -18,16 +18,10 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 target_include_directories(nopayloadclient
-    INTERFACE
-    $<INSTALL_INTERFACE:include>
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR})
-
-set_target_properties(nopayloadclient PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    POSITION_INDEPENDENT_CODE ON)
 
 install(TARGETS nopayloadclient DESTINATION lib)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)

@@ -10,6 +10,12 @@ This client-side library is meant to communicate with
 NoPayloadDB (https://github.com/bnlnpps/nopayloaddb).
 
 ### Setup
+Define where ```nopayloadclient``` will be installed 
+```shell
+source setup_custom_install_path.sh /absolute/install/path
+```
+If this step is omitted, the default install path (```/usr/local/```) will be assumed.
+
 In the project folder, configure cmake and compile
 ```shell
 cmake -S . -B build && cmake --build build/
@@ -61,8 +67,8 @@ Currently, the following response codes are implemented:
 2: error when handling a payload
 3: error in the database (server-side)
 ```
-Examples on how to use this tool in a c++ program can be found in the ```examples/```
-folder. The following command compiles and runs them:
+An example on how to use this tool in a c++ program can be found in
+```examples/standalone.cpp```. It can be compiled via
 ```
 g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
 ```
@@ -70,11 +76,7 @@ g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
 
 #### Usage through command line interface
 ```examples/cli_npc.cpp``` is an implementation of a command line interface.
-It is compiled along the rest of the project and can be run via 
-```shell
-./build/examples/cli_npc <command> <parameters>
-```
-or - if installed - simply via
+It is compiled along the rest of the project and can be run via
 ```shell
 cli_npc <command> <parameters>
 ```
