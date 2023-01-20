@@ -49,11 +49,11 @@ header and the widely-spread nlohmann json header-only lib
 ```
 Payloads can be inserted via
 ```c
-nopayloadclient::insertPayload(<gtName>, <gtType>, <localUrl>, <majorIov>, <minorIov>);
+nopayloadclient::insertPayload(<gt_name>, <gt_type>, <local_url>, <major_iov>, <minor_iov>);
 ```
 and their url can be retrieved via
 ```c
-nopayloadclient::get(<gtName>, <gtType>, <majorIov>, <minorIov>);
+nopayloadclient::get(<gt_name>, <gt_type>, <major_iov>, <minor_iov>);
 ```
 Every method returns a nlohmann::json object with a response code and a
 message body in the  following format:
