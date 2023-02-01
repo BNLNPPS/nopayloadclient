@@ -2,24 +2,27 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <time.h>
-#include <filesystem>
+//#include <filesystem>
+#include <experimental/filesystem>
 
 #include <nopayloadclient/nopayloadclient.hpp>
+
+namespace fs = std::experimental::filesystem::v1;
 
 
 int getPayloadNumber() {
   nlohmann::json conf_dict = nopayloadclient::getConfDict()["msg"];
-  const std::filesystem::path pl_path{conf_dict["write_dir"]};
-  std::filesystem::recursive_directory_iterator pl_iterator{pl_path};
+  const fs::path pl_path = conf_dict["write_dir"];
+  fs::recursive_directory_iterator pl_iterator{pl_path};
   int n = 0;
   for (auto const& dir_entry : pl_iterator) {
-      if (!std::filesystem::is_directory(dir_entry.path())) n++;
+      if (!fs::is_directory(dir_entry.path())) n++;
   }
   return n;
 }
 
 int createRandomPayload(char filename[]) {
-  std::filesystem::remove(filename);
+  fs::remove(filename);
   std::ofstream my_file(filename);
   for (int i=0; i<10; i++) {
     my_file << std::to_string(random());

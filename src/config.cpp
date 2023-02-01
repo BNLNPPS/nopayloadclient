@@ -5,8 +5,8 @@ namespace config {
 
 
 void _checkKeys(nlohmann::json j){
-  std::vector keys = {"base_url", "api_res", "n_retries",
-                      "write_dir", "read_dir_list"};
+  std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
+                                   "write_dir", "read_dir_list"};
   for(auto key : keys){
     if (!j.contains(key)){
         std::cerr<<"config does not contain key <"<<key<<">"<<std::endl;

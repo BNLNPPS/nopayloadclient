@@ -1,7 +1,7 @@
 #include <nopayloadclient/plmover.hpp>
 
-
-namespace fs = std::filesystem;
+//namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem::v1;
 namespace plmover {
 
 bool fileExists(std::string fileUrl){
@@ -59,7 +59,7 @@ void prepareUploadFile(payload::Payload& pl) {
 
 void copyFile(std::string local_url, std::string remote_url) {
     if (!fs::exists(remote_url)) {
-        std::filesystem::copy_file(local_url, remote_url);
+        fs::copy_file(local_url, remote_url);
     }
 }
 
