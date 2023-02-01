@@ -9,6 +9,8 @@ set(source_files
     config.cpp
 )
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 add_library(nopayloadclient ${source_files})
 
 target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
