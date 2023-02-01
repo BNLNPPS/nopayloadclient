@@ -1,6 +1,5 @@
 #include <nopayloadclient/plmover.hpp>
 
-//namespace fs = std::filesystem;
 namespace fs = std::experimental::filesystem::v1;
 namespace plmover {
 
@@ -8,7 +7,6 @@ bool fileExists(std::string fileUrl){
     struct stat buffer;
     return (stat (fileUrl.c_str(), &buffer) ==0);
 }
-
 
 void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
     /*
