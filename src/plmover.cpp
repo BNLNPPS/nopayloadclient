@@ -67,3 +67,9 @@ void uploadFile(payload::Payload& pl){
 }
 
 }
+
+PLMover::PLMover(const nlohmann::json& config) {
+    std::cout << "BACKEND CTOR" << std::endl;
+    write_dir_ = config["write_dir"];
+    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
+}

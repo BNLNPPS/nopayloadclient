@@ -10,22 +10,59 @@
 #include <nopayloadclient/exception.hpp>
 
 
-namespace backend {
+template <typename T>
+class Cache {
+    public:
+        bool is_valid = false;
+        T content;
+        void update(T new_content){
+          content = new_content;
+          is_valid = true;
+        }
+};
 
+class CacheGroup {
+    public:
+        Cache<std::vector<std::string>> gt_status_names;
+        Cache<std::vector<std::string>> gt_names;
+        Cache<std::vector<std::string>> pt_names;
+        Cache<nlohmann::json> pt_dict;// {gt_0: {pl_type_0: pl_type_0_3, pl_type_1: pl_type_1_6, ...}} ONLY ONE GT!
+        void invalidate() {
+            gt_status_names.is_valid = false;
+            gt_names.is_valid = false;
+            pt_names.is_valid = false;
+            pt_dict.is_valid = false;
+        }
+};
+
+
+class Backend {
+public:
+    Backend(const nlohmann::json& config);
     // Reading
     nlohmann::json getGlobalTags();
     nlohmann::json getSize();
     nlohmann::json getGlobalTagStatuses();
     nlohmann::json getPayloadTypes();
+    nlohmann::json _getPayloadLists(std::string gt_name);
     nlohmann::json getPayloadLists(std::string gt_name);
+    nlohmann::json getPayloadIOVs();
     nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
     std::string checkConnection();
     std::string getPayloadListName(std::string gt_name, std::string plType);
     std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
+    std::string getPayloadUrl(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
+    std::vector<std::string> getGtStatusNames();
+    std::vector<std::string> getGtNames();
+    std::vector<std::string> getPtNames();
     bool gtExists(std::string gt_name);
+    bool gtStatusExists(std::string name);
     bool plTypeExists(std::string plType);
     bool gtHasPlType(std::string gt_name, std::string plType);
+    void checkStatusExists(std::string gtStatusName);
     void checkGtExists(std::string gt_name);
+    void checkGtStatusExists(std::string name);
+    void checkPlTypeExists(std::string name);
 
     // Writing
     void createGlobalTagStatus(std::string status);
@@ -48,29 +85,7 @@ namespace backend {
                     long long major_iovStart, long long minor_iovStart,
                     long long major_iovEnd, long long minor_iovEnd);
 
-    template <typename T>
-    class Cache {
-        public:
-            bool is_valid = false;
-            T content;
-            void update(T new_content){
-              content = new_content;
-              is_valid = true;
-            }
-    };
-
-    class CacheGroup {
-        public:
-            Cache<std::vector<std::string>> gt_status_names;
-            Cache<std::vector<std::string>> gt_names;
-            Cache<std::vector<std::string>> pt_names;
-            Cache<nlohmann::json> pt_dict;// {gt_0: {pl_type_0: pl_type_0_3, pl_type_1: pl_type_1_6, ...}} ONLY ONE GT!
-            void invalidate() {
-                gt_status_names.is_valid = false;
-                gt_names.is_valid = false;
-                pt_names.is_valid = false;
-                pt_dict.is_valid = false;
-            }
-    };
-
-}
+private:
+    std::vector<std::string> read_dir_list_;
+    CurlWrapper* curlwrapper_;
+};

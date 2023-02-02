@@ -8,10 +8,24 @@
 #include <nopayloadclient/backend.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/plmover.hpp>
+#include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
+
+#define TRY(...) {              \
+    try {                       \
+        __VA_ARGS__             \
+    }                           \
+    catch (BaseException &e) {  \
+        return e.jsonify();     \
+    }                           \
+}                               \
 
 
 namespace nopayloadclient {
+
+class Client {
+public:
+    Client();
 
     // Reading
     nlohmann::json get(std::string gt_name, std::string pl_type,
@@ -29,37 +43,20 @@ namespace nopayloadclient {
                                  long long major_iov_start, long long minor_iov_start,
                                  long long major_iov_end, long long minor_iov_end);
 
-   // Helper (Read-only)
-   nlohmann::json getSize();
-   nlohmann::json getPayloadTypes();
-   nlohmann::json getGlobalTags();
-   nlohmann::json checkConnection();
-   nlohmann::json getConfDict();
+    // Helper (Read-only)
+    nlohmann::json getSize();
+    nlohmann::json getPayloadTypes();
+    nlohmann::json getGlobalTags();
+    nlohmann::json checkConnection();
+    nlohmann::json getConfDict();
+    friend std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c);
 
-
-   // Response creation (non-interface)
-   template <class> struct ResponseDecorator;
-   template <class R, class... Args>
-   struct ResponseDecorator<R(Args ...)>
-   {
-      ResponseDecorator(std::function<R(Args ...)> f) : f_(f) {}
-
-      nlohmann::json operator()(Args ... args)
-      {
-         try {
-             return nlohmann::json::object({{"code", 0}, {"msg", f_(args...)}});
-         }
-         catch (BaseException &e) {
-             return e.jsonify();
-         }
-      }
-      std::function<R(Args ...)> f_;
-   };
-
-   template<class R, class... Args>
-   ResponseDecorator<R(Args...)> makeResponse(R (*f)(Args ...))
-   {
-      return ResponseDecorator<R(Args...)>(std::function<R(Args...)>(f));
-   }
+private:
+    nlohmann::json config_;
+    Backend* backend_;
+    PLMover* plmover_;
+    template<typename T>
+    nlohmann::json makeResp(T msg);
+};
 
 }

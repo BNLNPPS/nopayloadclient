@@ -25,7 +25,7 @@ message(STATUS "CMAKE_INSTALL_PREFIX: [${CMAKE_INSTALL_PREFIX}]")
 find_package(CURL REQUIRED)
 
 add_subdirectory(src)
-add_subdirectory(examples)
+#add_subdirectory(examples)
 
 # Install files and export configs
 include(CMakePackageConfigHelpers)

@@ -3,10 +3,15 @@ if ((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND ${CMAKE_CXX_COMPILER_VERSION}
   set(_std_cxx_filesystem_lib "stdc++fs")
 endif()
 
-add_executable(test_nopayloadclient test_nopayloadclient.cpp)
-target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem_lib})
-target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/include)
-add_test(NAME test_nopayloadclient COMMAND $<TARGET_FILE:test_nopayloadclient>)
+#add_executable(test_nopayloadclient test_nopayloadclient.cpp)
+#target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem_lib})
+#target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/include)
+#add_test(NAME test_nopayloadclient COMMAND $<TARGET_FILE:test_nopayloadclient>)
+
+add_executable(test_client test_client.cpp)
+target_link_libraries(test_client nopayloadclient ${_std_cxx_filesystem_lib})
+target_include_directories(test_client PRIVATE ${CMAKE_SOURCE_DIR}/include)
+add_test(NAME test_client COMMAND $<TARGET_FILE:test_client>)
 
 #add_executable(test_backend test_backend.cpp)
 #add_executable(test_plmover test_plmover.cpp)

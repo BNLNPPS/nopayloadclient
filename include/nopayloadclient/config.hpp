@@ -15,5 +15,8 @@ namespace config {
     extern bool print_time_stamps;
     nlohmann::json getDict();
 
+    nlohmann::json getConfDict();
+    std::string getFilePath();
+
 }
 

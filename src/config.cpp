@@ -34,14 +34,28 @@ nlohmann::json fromFile(std::string path_to_file){
 }
 
 nlohmann::json fromFile(){
-    char* confPath = std::getenv("NOPAYLOADCLIENT_CONF");
-    if (confPath==NULL){
-        std::string default_path = getDefaultConfPath();
-        std::cout << "variable NOPAYLOADCLIENT_CONF not set. Using " << default_path << std::endl;
-        return fromFile(default_path);
-    }
-    return fromFile(confPath);
+    std::string file_path = getFilePath();
+    return fromFile(file_path);
 }
+
+std::string getFilePath() {
+    char* env_char = std::getenv("NOPAYLOADCLIENT_CONF");
+    if (env_char==NULL){
+        std::cout << "variable NOPAYLOADCLIENT_CONF not set. Using default..." << std::endl;
+        return std::string(PROJECT_CONFIG_SEARCH_PATHS) + "default.json";
+    }
+    return std::string( env_char );
+}
+
+nlohmann::json getConfDict(){
+    std::string file_path = getFilePath();
+    std::ifstream conf_file(file_path, std::ifstream::binary);
+    nlohmann::json j;
+    conf_file >> j;
+    _checkKeys(j);
+    return j;
+}
+
 
 }
 
@@ -52,3 +66,11 @@ std::vector<std::string> config::read_dir_list = dict["read_dir_list"];
 int config::n_retries = dict["n_retries"];
 bool config::print_time_stamps = dict["print_time_stamps"];
 nlohmann::json config::getDict() {return dict;}
+
+
+// -----------------------------------------------------------
+
+
+
+
+

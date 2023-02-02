@@ -18,3 +18,12 @@ namespace plmover {
     void uploadFile(payload::Payload& pl);
 
 }
+
+
+class PLMover {
+public:
+    PLMover(const nlohmann::json& config);
+private:
+    std::string write_dir_;
+    std::vector<std::string> read_dir_list_;
+};
