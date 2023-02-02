@@ -56,9 +56,9 @@ nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, s
                              long long major_iovStart, long long minor_iovStart){
     TRY(
         payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover::prepareUploadFile(pl);
+        plmover_->prepareUploadFile(pl);
         backend_->prepareInsertIov(gt_name, pl);
-        plmover::uploadFile(pl);
+        plmover_->uploadFile(pl);
         backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart);
         return makeResp("successfully inserted payload");
     )
@@ -69,9 +69,9 @@ nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, s
                              long long major_iovEnd, long long minor_iovEnd){
     TRY(
         payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover::prepareUploadFile(pl);
+        plmover_->prepareUploadFile(pl);
         backend_->prepareInsertIov(gt_name, pl);
-        plmover::uploadFile(pl);
+        plmover_->uploadFile(pl);
         backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
         return makeResp("successfully inserted payload");
     )

@@ -8,15 +8,6 @@
 
 namespace config {
 
-    extern std::string api_url;
-    extern std::string write_dir;
-    extern std::vector<std::string> read_dir_list;
-    extern int n_retries;
-    extern bool print_time_stamps;
     nlohmann::json getDict();
 
-    nlohmann::json getConfDict();
-    std::string getFilePath();
-
 }
-

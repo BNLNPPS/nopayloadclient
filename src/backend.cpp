@@ -115,7 +115,7 @@ std::vector<std::string> Backend::getPayloadUrls(std::string gt_name, std::strin
                                         long long major_iov, long long minor_iov){
     std::string payload_url = getPayloadUrl(gt_name, plType, major_iov, minor_iov);
     std::vector<std::string> payload_urls;
-    for (const auto dir : config::read_dir_list) {
+    for (const auto dir : read_dir_list_) {
         payload_urls.push_back(dir + payload_url);
     }
     return payload_urls;
@@ -280,6 +280,6 @@ void Backend::insertIov(std::string gt_name, payload::Payload& pl,
 
 Backend::Backend(const nlohmann::json& config) {
     std::cout << "BACKEND CTOR, config = " << config << std::endl;
-    std::vector<std::string> read_dir_list = config["read_dir_list"];
+    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
     curlwrapper_ = new CurlWrapper(config);
 }

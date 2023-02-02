@@ -23,7 +23,17 @@ namespace plmover {
 class PLMover {
 public:
     PLMover(const nlohmann::json& config);
+    void compareCheckSums(std::string first_url, std::string second_url);
+    void prepareUploadFile(payload::Payload& pl);
+    void uploadFile(payload::Payload& pl);
 private:
     std::string write_dir_;
     std::vector<std::string> read_dir_list_;
+    bool fileExists(std::string url);
+    void checkLocalFileExists(std::string url);
+    void checkRemoteFile(std::string url);
+    void checkRemoteDirExists();
+    void createDirectory(std::string path);
+    void copyFile(std::string local_url, std::string remote_url);
+
 };

@@ -3,7 +3,6 @@
 
 namespace config {
 
-
 void _checkKeys(nlohmann::json j){
   std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
                                    "write_dir", "read_dir_list"};
@@ -21,23 +20,6 @@ std::string getDefaultConfPath() {
     return path;
 }
 
-nlohmann::json fromFile(std::string path_to_file){
-    std::ifstream conf_file(path_to_file, std::ifstream::binary);
-    nlohmann::json j;
-    conf_file >> j;
-    _checkKeys(j);
-    std::string api_url = "http://";
-    api_url += j["base_url"];
-    api_url += j["api_res"];
-    j["api_url"] = api_url;
-    return j;
-}
-
-nlohmann::json fromFile(){
-    std::string file_path = getFilePath();
-    return fromFile(file_path);
-}
-
 std::string getFilePath() {
     char* env_char = std::getenv("NOPAYLOADCLIENT_CONF");
     if (env_char==NULL){
@@ -47,7 +29,7 @@ std::string getFilePath() {
     return std::string( env_char );
 }
 
-nlohmann::json getConfDict(){
+nlohmann::json getDict(){
     std::string file_path = getFilePath();
     std::ifstream conf_file(file_path, std::ifstream::binary);
     nlohmann::json j;
@@ -56,19 +38,7 @@ nlohmann::json getConfDict(){
     return j;
 }
 
-
 }
-
-nlohmann::json dict = config::fromFile();
-std::string config::api_url = (std::string) dict["api_url"];
-std::string config::write_dir = (std::string) dict["write_dir"];
-std::vector<std::string> config::read_dir_list = dict["read_dir_list"];
-int config::n_retries = dict["n_retries"];
-bool config::print_time_stamps = dict["print_time_stamps"];
-nlohmann::json config::getDict() {return dict;}
-
-
-// -----------------------------------------------------------
 
 
 

@@ -1,14 +1,19 @@
 #include <nopayloadclient/plmover.hpp>
 
 namespace fs = std::experimental::filesystem::v1;
-namespace plmover {
 
-bool fileExists(std::string fileUrl){
-    struct stat buffer;
-    return (stat (fileUrl.c_str(), &buffer) ==0);
+PLMover::PLMover(const nlohmann::json& config) {
+    std::cout << "BACKEND CTOR" << std::endl;
+    write_dir_ = config["write_dir"];
+    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
 }
 
-void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
+bool PLMover::fileExists(std::string url){
+    struct stat buffer;
+    return (stat (url.c_str(), &buffer) ==0);
+}
+
+void PLMover::compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
     /*
     std::string firstCheckSum = getCheckSum(firstFileUrl);
     std::string secondCheckSum = getCheckSum(secondFileUrl);
@@ -21,55 +26,48 @@ void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
     */
 }
 
-void checkLocalFileExists(std::string localUrl){
-    if (!fileExists(localUrl)){
+void PLMover::checkLocalFileExists(std::string url){
+    if (!fileExists(url)){
         std::string msg = "local payload file does not exist (";
-        msg += localUrl + ")";
+        msg += url + ")";
         throw BaseException(msg);
     }
 }
 
-void checkRemoteFile(std::string remoteUrl){
-    if (fileExists(remoteUrl)){
+void PLMover::checkRemoteFile(std::string url){
+    if (fileExists(url)){
         std::string msg = "remote payload file already exists (";
-        msg += remoteUrl + ")";
+        msg += url + ")";
         throw BaseException(msg);
     }
 }
 
-void checkRemoteDirExists() {
-    if (!fs::exists(config::write_dir)){
-        throw BaseException("remote payload directory "+config::write_dir+" does not exist");
+void PLMover::checkRemoteDirExists() {
+    if (!fs::exists(write_dir_)){
+        throw BaseException("remote payload directory "+write_dir_+" does not exist");
     }
 }
 
-void createDirectory(std::string dirName){
-    if (!fs::is_directory(dirName) || !fs::exists(dirName)) {
-        fs::create_directories(dirName);
+void PLMover::createDirectory(std::string path){
+    if (!fs::is_directory(path) || !fs::exists(path)) {
+        fs::create_directories(path);
     }
 }
 
-void prepareUploadFile(payload::Payload& pl) {
+void PLMover::prepareUploadFile(payload::Payload& pl) {
     checkLocalFileExists(pl.local_url);
     //checkRemoteFile(pl.remote_url);
     checkRemoteDirExists();
 }
 
-void copyFile(std::string local_url, std::string remote_url) {
+void PLMover::copyFile(std::string local_url, std::string remote_url) {
     if (!fs::exists(remote_url)) {
         fs::copy_file(local_url, remote_url);
     }
 }
 
-void uploadFile(payload::Payload& pl){
-    createDirectory(config::write_dir + pl.remote_dir);
-    copyFile(pl.local_url, config::write_dir + pl.remote_url);
+void PLMover::uploadFile(payload::Payload& pl){
+    createDirectory(write_dir_ + pl.remote_dir);
+    copyFile(pl.local_url, write_dir_ + pl.remote_url);
 }
 
-}
-
-PLMover::PLMover(const nlohmann::json& config) {
-    std::cout << "BACKEND CTOR" << std::endl;
-    write_dir_ = config["write_dir"];
-    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
-}
