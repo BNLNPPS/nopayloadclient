@@ -11,7 +11,6 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 
 
 CurlWrapper::CurlWrapper(const nlohmann::json& config) {
-    std::cout << "CurlWrapper CTOR" << std::endl;
     base_url_ = "http://";
     base_url_ += config["base_url"];
     base_url_ += config["api_res"];
@@ -20,7 +19,7 @@ CurlWrapper::CurlWrapper(const nlohmann::json& config) {
 }
 
 nlohmann::json CurlWrapper::del(std::string url){
-    //std::cout<<"backend::get(url="<<url<<")"<<std::endl;
+    std::cout<<"CurlWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
@@ -34,21 +33,21 @@ nlohmann::json CurlWrapper::get(std::string url){
 }
 
 nlohmann::json CurlWrapper::post(std::string url, nlohmann::json jsonData){
-    //std::cout<<"backend::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    std::cout<<"CurlWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 nlohmann::json CurlWrapper::put(std::string url){
-    //std::cout<<"backend::put(url="<<url<<")"<<std::endl;
+    std::cout<<"CurlWrapper::put(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut();
     return cm.try_execute();
 }
 
 nlohmann::json CurlWrapper::put(std::string url, nlohmann::json jsonData){
-    //std::cout<<"backend::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    std::cout<<"CurlWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut(jsonData);
     return cm.try_execute();
@@ -128,7 +127,7 @@ void CurlSession::preparePut(){
 void CurlSession::preparePost(nlohmann::json jsonData){
     slist1 = curl_slist_append(slist1, "Content-Type: application/json");
     jsonStr = jsonData.dump();
-    std::cout<<"jsonStr = "<<jsonStr<<std::endl;
+    //std::cout<<"jsonStr = "<<jsonStr<<std::endl;
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
 }

@@ -6,7 +6,6 @@
 #include <fstream>
 
 #include <nopayloadclient/exception.hpp>
-#include <nopayloadclient/config.hpp>
 
 
 namespace payload {

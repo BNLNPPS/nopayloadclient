@@ -13,6 +13,11 @@ target_link_libraries(test_client nopayloadclient ${_std_cxx_filesystem_lib})
 target_include_directories(test_client PRIVATE ${CMAKE_SOURCE_DIR}/include)
 add_test(NAME test_client COMMAND $<TARGET_FILE:test_client>)
 
+#add_executable(test_cache test_cache.cpp)
+#target_link_libraries(test_cache nopayloadclient ${_std_cxx_filesystem_lib})
+#target_include_directories(test_cache PRIVATE ${CMAKE_SOURCE_DIR}/include)
+#add_test(NAME test_cache COMMAND $<TARGET_FILE:test_cache>)
+
 #add_executable(test_backend test_backend.cpp)
 #add_executable(test_plmover test_plmover.cpp)
 #add_executable(test_payload test_payload.cpp)

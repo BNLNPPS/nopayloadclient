@@ -73,9 +73,10 @@ int main()
   std::cout << resp << std::endl;
 
   // insert should work
+  std::cout << "attempting insertion" << std::endl;
   resp = client.insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov_start, minor_iov_start,
-                                        major_iov_end, minor_iov_end);
+                              major_iov_start, minor_iov_start,
+                              major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
