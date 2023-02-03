@@ -170,7 +170,6 @@ void Backend::createGlobalTagStatus(std::string status){
     nlohmann::json j;
     j["name"] = status;
     post("gtstatus", j);
-    //cache_->invalidate();
 }
 
 void Backend::createGlobalTagObject(std::string name, std::string status) {
@@ -179,14 +178,12 @@ void Backend::createGlobalTagObject(std::string name, std::string status) {
     j["name"] = name;
     j["author"] = std::getenv("USER");
     post("gt", j);
-    //cache_->invalidate();
 }
 
 void Backend::createPayloadType(std::string type){
     nlohmann::json j;
     j["name"] = type;
     post("pt", j);
-    //cache_->invalidate();
 }
 
 std::string Backend::createPayloadList(std::string type){
@@ -201,7 +198,6 @@ void Backend::attachPayloadList(std::string gt_name, std::string plName){
     j["payload_list"] = plName;
     j["global_tag"] = gt_name;
     put("pl_attach", j);
-    //cache_->invalidate();
 }
 
 void Backend::lockGlobalTag(std::string name){
@@ -253,7 +249,6 @@ void Backend::createGlobalTag(std::string name) {
 
 void Backend::deleteGlobalTag(std::string name) {
     del("deleteGlobalTag/" + name);
-    //cache_->invalidate();
 }
 
 void Backend::createNewPllForGt(std::string gt_name, std::string plType){
@@ -295,5 +290,4 @@ Backend::Backend(const nlohmann::json& config) {
     use_cache_ = true;
     curlwrapper_ = new CurlWrapper(config);
     cache_dict_ = nlohmann::json();
-    //cache_ = new Cache();
 }

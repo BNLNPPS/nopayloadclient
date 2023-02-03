@@ -8,7 +8,6 @@
 #include <nopayloadclient/curlwrapper.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/exception.hpp>
-#include <nopayloadclient/cache.hpp>
 
 
 class Backend {
