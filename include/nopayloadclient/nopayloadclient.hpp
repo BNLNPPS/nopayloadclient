@@ -28,6 +28,7 @@ namespace nopayloadclient {
 class Client {
 public:
     Client();
+    Client(std::string gt_name);
 
     // use return of dict, not old 'get' method
     // rename: plmover -> plhandler
@@ -37,21 +38,22 @@ public:
     // use fucking smart pointers
     // use default arguments instead of overloading
 
+    // Configuration
+    json setGlobalTag(std::string name);
 
     // Reading
-    json get(std::string gt_name, std::string pl_type,
-             ll major_iov, ll minor_iov);
-    json getTypeUrlDict(std::string gt_name, ll major_iov, ll minor_iov);
+    json get(std::string pl_type, ll major_iov, ll minor_iov);
+    json getTypeUrlDict(ll major_iov, ll minor_iov);
 
     // Writing
     json createPayloadType(std::string pl_type);
-    json createGlobalTag(std::string gt_name);
-    json deleteGlobalTag(std::string gt_name);
-    json lockGlobalTag(std::string gt_name);
-    json unlockGlobalTag(std::string gt_name);
-    json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
+    json createGlobalTag();
+    json deleteGlobalTag();
+    json lockGlobalTag();
+    json unlockGlobalTag();
+    json insertPayload(std::string pl_type, std::string file_url,
                        ll major_iov_start, ll minor_iov_start);
-    json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
+    json insertPayload(std::string pl_type, std::string file_url,
                        ll major_iov_start, ll minor_iov_start,
                        ll major_iov_end, ll minor_iov_end);
 

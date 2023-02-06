@@ -39,12 +39,10 @@ public:
     void createPayloadType(std::string type);
     void unlockGlobalTag(std::string name);
     void lockGlobalTag(std::string name);
-    ll createPayloadIOV(payload::Payload& pl, ll major_iov, ll minor_iov);
-    ll createPayloadIOV(payload::Payload& pl, ll major_iov, ll minor_iov,
-                                              ll major_iov_end, ll minor_iov_end);
+    ll createPayloadIOV(payload::Payload& pl,
+                        ll major_iov, ll minor_iov,
+                        ll major_iov_end=-1, ll minor_iov_end=-1);
     void prepareInsertIov(std::string gt_name, payload::Payload& pl);
-    void insertIov(std::string gt_name, payload::Payload &pl,
-                    ll major_iov_start, ll minor_iov_start);
     void insertIov(std::string gt_name, payload::Payload &pl,
                     ll major_iov_start, ll minor_iov_start,
                     ll major_iov_end, ll minor_iov_end);

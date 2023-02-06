@@ -212,26 +212,17 @@ void Backend::unlockGlobalTag(std::string name){
     put("gt_change_status/" + name + "/unlocked");
 }
 
-ll Backend::createPayloadIOV(payload::Payload& pl, ll major_iov, ll minor_iov){
+ll Backend::createPayloadIOV(payload::Payload& pl, ll major, ll minor, ll major_end, ll minor_end){
     json j = {
         {"payload_url", pl.remote_url},
-        {"major_iov", major_iov},
-        {"minor_iov", minor_iov},
+        {"major_iov", major},
+        {"minor_iov", minor},
         {"checksum", pl.check_sum}
     };
-    json res = post("piov", j);
-    return res["id"];
-}
-
-ll Backend::createPayloadIOV(payload::Payload& pl, ll major_iov, ll minor_iov, ll major_iov_end, ll minor_iov_end){
-    json j = {
-        {"payload_url", pl.remote_url},
-        {"major_iov", major_iov},
-        {"minor_iov", minor_iov},
-        {"major_iov_end", major_iov_end},
-        {"minor_iov_end", minor_iov_end},
-        {"checksum", pl.check_sum}
-    };
+    if (major_end!=-1 && minor_end!=-1){
+        j["major_iov_end"] = major_end;
+        j["minor_iov_end"] = minor_end;
+    }
     json res = post("piov", j);
     return res["id"];
 }
@@ -274,6 +265,7 @@ void Backend::prepareInsertIov(std::string gt_name, payload::Payload& pl){
     }
 }
 
+/*
 void Backend::insertIov(std::string gt_name, payload::Payload& pl,
                         ll major_iov_start, ll minor_iov_start){
     std::string remoteUrl = pl.remote_url;
@@ -281,6 +273,7 @@ void Backend::insertIov(std::string gt_name, payload::Payload& pl,
     ll piov_id = createPayloadIOV(pl, major_iov_start, minor_iov_start);
     attachPayloadIOV(pllName, piov_id);
 }
+*/
 
 void Backend::insertIov(std::string gt_name, payload::Payload& pl,
                         ll major_iov_start, ll minor_iov_start,

@@ -9,45 +9,60 @@ Client::Client() {
     plhandler_ = new PLHandler(config_);
 }
 
+Client::Client(std::string gt_name) {
+//    Client();
+    global_tag_ = gt_name;
+    config_ = config::getDict();
+    backend_ = new Backend(config_);
+    plhandler_ = new PLHandler(config_);
+}
+
+// Configuring
+json Client::setGlobalTag(std::string name) {
+    TRY (
+        global_tag_ = name;
+        return "successfully changed global tag to " + name;
+    )
+}
+
 // Reading
-json Client::get(std::string gt_name, std::string pl_type, ll major_iov, ll minor_iov){
+json Client::get(std::string pl_type, ll major_iov, ll minor_iov) {
     TRY(
-        return makeResp(backend_->getPayloadUrls(gt_name, pl_type, major_iov, minor_iov));
+        return makeResp(backend_->getPayloadUrls(global_tag_, pl_type, major_iov, minor_iov));
     )
 }
 
-json Client::getTypeUrlDict(std::string gt_name, ll major_iov, ll minor_iov){
+json Client::getTypeUrlDict(ll major_iov, ll minor_iov){
     TRY(
-        return makeResp(backend_->getTypeUrlDict(gt_name, major_iov, minor_iov));
+        return makeResp(backend_->getTypeUrlDict(global_tag_, major_iov, minor_iov));
     )
 }
-
 
 // Writing
-json Client::createGlobalTag(std::string gt_name) {
+json Client::createGlobalTag() {
     TRY(
-        backend_->createGlobalTag(gt_name);
+        backend_->createGlobalTag(global_tag_);
         return makeResp("successfully created global tag");
     )
 }
 
-json Client::deleteGlobalTag(std::string name) {
+json Client::deleteGlobalTag() {
     TRY(
-        backend_->deleteGlobalTag(name);
+        backend_->deleteGlobalTag(global_tag_);
         return makeResp("successfully deleted global tag");
     )
 }
 
-json Client::lockGlobalTag(std::string name) {
+json Client::lockGlobalTag() {
     TRY(
-        backend_->lockGlobalTag(name);
+        backend_->lockGlobalTag(global_tag_);
         return makeResp("successfully locked global tag");
     )
 }
 
-json Client::unlockGlobalTag(std::string name) {
+json Client::unlockGlobalTag() {
     TRY(
-        backend_->unlockGlobalTag(name);
+        backend_->unlockGlobalTag(global_tag_);
         return makeResp("successfully unlocked global tag");
     )
 }
@@ -59,27 +74,23 @@ json Client::createPayloadType(std::string name) {
     )
 }
 
-json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
-                           ll major_iovStart, ll minor_iovStart){
-    TRY(
-        payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plhandler_->prepareUploadFile(pl);
-        backend_->prepareInsertIov(gt_name, pl);
-        plhandler_->uploadFile(pl);
-        backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart);
-        return makeResp("successfully inserted payload");
-    )
+json Client::insertPayload(std::string pl_type, std::string file_url,
+                           ll major_iov_start, ll minor_iov_start){
+    return insertPayload(pl_type, file_url,
+                         major_iov_start, minor_iov_start, -1, -1);
 }
 
-json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
-                           ll major_iovStart, ll minor_iovStart,
-                           ll major_iovEnd, ll minor_iovEnd){
+json Client::insertPayload(std::string pl_type, std::string file_url,
+                           ll major_iov_start, ll minor_iov_start,
+                           ll major_iov_end, ll minor_iov_end){
     TRY(
-        payload::Payload pl = payload::Payload(fileUrl, pl_type);
+        payload::Payload pl = payload::Payload(file_url, pl_type);
         plhandler_->prepareUploadFile(pl);
-        backend_->prepareInsertIov(gt_name, pl);
+        backend_->prepareInsertIov(global_tag_, pl);
         plhandler_->uploadFile(pl);
-        backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
+        backend_->insertIov(global_tag_, pl,
+                            major_iov_start, minor_iov_start,
+                            major_iov_end, minor_iov_end);
         return makeResp("successfully inserted payload");
     )
 }
@@ -117,7 +128,7 @@ json Client::getConfDict(){
 
 std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c) {
     os << "Client instance with following attributes:" << std::endl;
-    //os << "global tag = " << c.global_tag_ << std::endl;
+    os << "global tag = " << c.global_tag_ << std::endl;
     os << "config = " << c.config_ << std::endl;
     return os;
 }
