@@ -5,7 +5,7 @@ set(source_files
     backend.cpp
     curlwrapper.cpp
     payload.cpp
-    plmover.cpp
+    plhandler.cpp
     config.cpp
 )
 

@@ -6,15 +6,22 @@ namespace nopayloadclient {
 Client::Client() {
     config_ = config::getDict();
     backend_ = new Backend(config_);
-    plmover_ = new PLMover(config_);
+    plhandler_ = new PLHandler(config_);
 }
 
 // Reading
-json Client::get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
+json Client::get(std::string gt_name, std::string pl_type, ll major_iov, ll minor_iov){
     TRY(
         return makeResp(backend_->getPayloadUrls(gt_name, pl_type, major_iov, minor_iov));
     )
 }
+
+json Client::getTypeUrlDict(std::string gt_name, ll major_iov, ll minor_iov){
+    TRY(
+        return makeResp(backend_->getTypeUrlDict(gt_name, major_iov, minor_iov));
+    )
+}
+
 
 // Writing
 json Client::createGlobalTag(std::string gt_name) {
@@ -53,25 +60,25 @@ json Client::createPayloadType(std::string name) {
 }
 
 json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
-                             long long major_iovStart, long long minor_iovStart){
+                           ll major_iovStart, ll minor_iovStart){
     TRY(
         payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover_->prepareUploadFile(pl);
+        plhandler_->prepareUploadFile(pl);
         backend_->prepareInsertIov(gt_name, pl);
-        plmover_->uploadFile(pl);
+        plhandler_->uploadFile(pl);
         backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart);
         return makeResp("successfully inserted payload");
     )
 }
 
 json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
-                             long long major_iovStart, long long minor_iovStart,
-                             long long major_iovEnd, long long minor_iovEnd){
+                           ll major_iovStart, ll minor_iovStart,
+                           ll major_iovEnd, ll minor_iovEnd){
     TRY(
         payload::Payload pl = payload::Payload(fileUrl, pl_type);
-        plmover_->prepareUploadFile(pl);
+        plhandler_->prepareUploadFile(pl);
         backend_->prepareInsertIov(gt_name, pl);
-        plmover_->uploadFile(pl);
+        plhandler_->uploadFile(pl);
         backend_->insertIov(gt_name, pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
         return makeResp("successfully inserted payload");
     )
@@ -117,7 +124,7 @@ std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c) {
 
 template<typename T>
 json Client::makeResp(T msg) {
-    return json::object({{"code", 0}, {"msg", msg}});
+    return {{"code", 0}, {"msg", msg}};
 }
 
 }

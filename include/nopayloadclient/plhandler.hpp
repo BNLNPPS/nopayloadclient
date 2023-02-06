@@ -13,9 +13,9 @@
 
 using json = nlohmann::json;
 
-class PLMover {
+class PLHandler {
 public:
-    PLMover(const json& config);
+    PLHandler(const json& config);
     void compareCheckSums(std::string first_url, std::string second_url);
     void prepareUploadFile(payload::Payload& pl);
     void uploadFile(payload::Payload& pl);

@@ -37,6 +37,7 @@ long long randLong(long long lower, long long upper) {
 
 int main()
 {
+
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
   char my_local_url_2[] = "/tmp/file_2.dat";
@@ -58,6 +59,7 @@ int main()
   if (createRandomPayload(my_local_url_2) == 1) return 1;
 
   nopayloadclient::Client client = nopayloadclient::Client();
+
   resp = client.checkConnection();
   std::cout << resp << std::endl;
 
@@ -79,6 +81,14 @@ int main()
                               major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
+
+
+  // ---------------- TEMP
+  std::cout << client.getTypeUrlDict("my_gt", major_iov, minor_iov) << std::endl;
+  return 0;
+  // ---------------- TEMP
+
+
 
   // number of payloads should have increased by one
   int n_pl_1 = getPayloadNumber();
