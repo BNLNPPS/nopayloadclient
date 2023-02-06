@@ -20,6 +20,7 @@
     }                           \
 }                               \
 
+using json = nlohmann::json;
 
 namespace nopayloadclient {
 
@@ -28,35 +29,35 @@ public:
     Client();
 
     // Reading
-    nlohmann::json get(std::string gt_name, std::string pl_type,
+    json get(std::string gt_name, std::string pl_type,
                        long long major_iov, long long minor_iov);
 
     // Writing
-    nlohmann::json createPayloadType(std::string pl_type);
-    nlohmann::json createGlobalTag(std::string gt_name);
-    nlohmann::json deleteGlobalTag(std::string gt_name);
-    nlohmann::json lockGlobalTag(std::string gt_name);
-    nlohmann::json unlockGlobalTag(std::string gt_name);
-    nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
+    json createPayloadType(std::string pl_type);
+    json createGlobalTag(std::string gt_name);
+    json deleteGlobalTag(std::string gt_name);
+    json lockGlobalTag(std::string gt_name);
+    json unlockGlobalTag(std::string gt_name);
+    json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
                                  long long major_iov_start, long long minor_iov_start);
-    nlohmann::json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
+    json insertPayload(std::string gt_name, std::string pl_type, std::string file_url,
                                  long long major_iov_start, long long minor_iov_start,
                                  long long major_iov_end, long long minor_iov_end);
 
     // Helper (Read-only)
-    nlohmann::json getSize();
-    nlohmann::json getPayloadTypes();
-    nlohmann::json getGlobalTags();
-    nlohmann::json checkConnection();
-    nlohmann::json getConfDict();
+    json getSize();
+    json getPayloadTypes();
+    json getGlobalTags();
+    json checkConnection();
+    json getConfDict();
     friend std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c);
 
 private:
-    nlohmann::json config_;
+    json config_;
     Backend* backend_;
     PLMover* plmover_;
     template<typename T>
-    nlohmann::json makeResp(T msg);
+    json makeResp(T msg);
 };
 
 }

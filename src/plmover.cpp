@@ -2,7 +2,7 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
-PLMover::PLMover(const nlohmann::json& config) {
+PLMover::PLMover(const json& config) {
     write_dir_ = config["write_dir"];
     std::vector<std::string> read_dir_list_ = config["read_dir_list"];
 }

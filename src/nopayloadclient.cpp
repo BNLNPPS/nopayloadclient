@@ -10,49 +10,49 @@ Client::Client() {
 }
 
 // Reading
-nlohmann::json Client::get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
+json Client::get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
     TRY(
         return makeResp(backend_->getPayloadUrls(gt_name, pl_type, major_iov, minor_iov));
     )
 }
 
 // Writing
-nlohmann::json Client::createGlobalTag(std::string gt_name) {
+json Client::createGlobalTag(std::string gt_name) {
     TRY(
         backend_->createGlobalTag(gt_name);
         return makeResp("successfully created global tag");
     )
 }
 
-nlohmann::json Client::deleteGlobalTag(std::string name) {
+json Client::deleteGlobalTag(std::string name) {
     TRY(
         backend_->deleteGlobalTag(name);
         return makeResp("successfully deleted global tag");
     )
 }
 
-nlohmann::json Client::lockGlobalTag(std::string name) {
+json Client::lockGlobalTag(std::string name) {
     TRY(
         backend_->lockGlobalTag(name);
         return makeResp("successfully locked global tag");
     )
 }
 
-nlohmann::json Client::unlockGlobalTag(std::string name) {
+json Client::unlockGlobalTag(std::string name) {
     TRY(
         backend_->unlockGlobalTag(name);
         return makeResp("successfully unlocked global tag");
     )
 }
 
-nlohmann::json Client::createPayloadType(std::string name) {
+json Client::createPayloadType(std::string name) {
     TRY(
         backend_->createPayloadType(name);
         return makeResp("successfully created payload type");
     )
 }
 
-nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
+json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
                              long long major_iovStart, long long minor_iovStart){
     TRY(
         payload::Payload pl = payload::Payload(fileUrl, pl_type);
@@ -64,7 +64,7 @@ nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, s
     )
 }
 
-nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
+json Client::insertPayload(std::string gt_name, std::string pl_type, std::string fileUrl,
                              long long major_iovStart, long long minor_iovStart,
                              long long major_iovEnd, long long minor_iovEnd){
     TRY(
@@ -78,31 +78,31 @@ nlohmann::json Client::insertPayload(std::string gt_name, std::string pl_type, s
 }
 
 // Helper
-nlohmann::json Client::getSize(){
+json Client::getSize(){
     TRY(
         return makeResp(backend_->getSize());
     )
 }
 
-nlohmann::json Client::getPayloadTypes(){
+json Client::getPayloadTypes(){
     TRY(
         return makeResp(backend_->getPayloadTypes());
     )
 }
 
-nlohmann::json Client::getGlobalTags(){
+json Client::getGlobalTags(){
     TRY(
         return makeResp(backend_->getGlobalTags());
     )
 }
 
-nlohmann::json Client::checkConnection(){
+json Client::checkConnection(){
     TRY(
         return makeResp(backend_->checkConnection());
     )
 }
 
-nlohmann::json Client::getConfDict(){
+json Client::getConfDict(){
     TRY(
         return makeResp(config::getDict());
     )
@@ -116,8 +116,8 @@ std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c) {
 }
 
 template<typename T>
-nlohmann::json Client::makeResp(T msg) {
-    return nlohmann::json::object({{"code", 0}, {"msg", msg}});
+json Client::makeResp(T msg) {
+    return json::object({{"code", 0}, {"msg", msg}});
 }
 
 }

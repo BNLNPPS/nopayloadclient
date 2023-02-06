@@ -10,17 +10,19 @@
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
 
+using json = nlohmann::json;
+
 
 class CurlWrapper {
 public:
-    CurlWrapper(const nlohmann::json& config);
+    CurlWrapper(const json& config);
     // Reading
-    nlohmann::json get(std::string url);
+    json get(std::string url);
     // Writing
-    nlohmann::json del(std::string url);
-    nlohmann::json put(std::string url);
-    nlohmann::json put(std::string url, nlohmann::json jsonData);
-    nlohmann::json post(std::string url, nlohmann::json jsonData);
+    json del(std::string url);
+    json put(std::string url);
+    json put(std::string url, json jsonData);
+    json post(std::string url, json jsonData);
 private:
     std::string base_url_;
     int n_retries_;
@@ -37,13 +39,13 @@ class CurlSession{
     public:
         CurlSession(std::string _url, int n_retries, bool print_time_stamps);
         void printResults();
-        nlohmann::json try_execute();
-        nlohmann::json execute();
+        json try_execute();
+        json execute();
         void prepareGet();
         void prepareDelete();
         void preparePut();
-        void preparePost(nlohmann::json jsonData);
-        void preparePut(nlohmann::json jsonData);
+        void preparePost(json jsonData);
+        void preparePut(json jsonData);
     private:
         Answer ans;
         CURL *curl;

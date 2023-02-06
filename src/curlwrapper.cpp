@@ -10,7 +10,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 }
 
 
-CurlWrapper::CurlWrapper(const nlohmann::json& config) {
+CurlWrapper::CurlWrapper(const json& config) {
     base_url_ = "http://";
     base_url_ += config["base_url"];
     base_url_ += config["api_res"];
@@ -18,35 +18,35 @@ CurlWrapper::CurlWrapper(const nlohmann::json& config) {
     print_time_stamps_ = config["print_time_stamps"];
 }
 
-nlohmann::json CurlWrapper::del(std::string url){
+json CurlWrapper::del(std::string url){
     std::cout<<"CurlWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
 }
 
-nlohmann::json CurlWrapper::get(std::string url){
+json CurlWrapper::get(std::string url){
     std::cout<<"CurlWrapper::get(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareGet();
     return cm.try_execute();
 }
 
-nlohmann::json CurlWrapper::post(std::string url, nlohmann::json jsonData){
+json CurlWrapper::post(std::string url, json jsonData){
     std::cout<<"CurlWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
-nlohmann::json CurlWrapper::put(std::string url){
+json CurlWrapper::put(std::string url){
     std::cout<<"CurlWrapper::put(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut();
     return cm.try_execute();
 }
 
-nlohmann::json CurlWrapper::put(std::string url, nlohmann::json jsonData){
+json CurlWrapper::put(std::string url, json jsonData){
     std::cout<<"CurlWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut(jsonData);
@@ -69,8 +69,8 @@ void CurlSession::printResults(){
     std::cout<<"httpCode = "<<ans.httpCode<<std::endl;
 }
 
-nlohmann::json CurlSession::try_execute(){
-    nlohmann::json answer;
+json CurlSession::try_execute(){
+    json answer;
     for(int i = 0; i<n_retries_; i++){
         try{return execute();}
         catch (std::runtime_error& e){
@@ -84,7 +84,7 @@ nlohmann::json CurlSession::try_execute(){
     return answer;
 }
 
-nlohmann::json CurlSession::execute(){
+json CurlSession::execute(){
     using namespace std::chrono;
     if (print_time_stamps_) {
         std::cout << "begin curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
@@ -100,7 +100,7 @@ nlohmann::json CurlSession::execute(){
     }
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
     curl_easy_cleanup(curl);
-    nlohmann::json response = nlohmann::json::parse(ans.readBuffer);
+    json response = json::parse(ans.readBuffer);
     //std::cout << "response = " << response << std::endl;
     if (ans.httpCode!=200){
         std::string msg;
@@ -124,7 +124,7 @@ void CurlSession::preparePut(){
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
 }
 
-void CurlSession::preparePost(nlohmann::json jsonData){
+void CurlSession::preparePost(json jsonData){
     slist1 = curl_slist_append(slist1, "Content-Type: application/json");
     jsonStr = jsonData.dump();
     //std::cout<<"jsonStr = "<<jsonStr<<std::endl;
@@ -132,7 +132,7 @@ void CurlSession::preparePost(nlohmann::json jsonData){
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
 }
 
-void CurlSession::preparePut(nlohmann::json jsonData){
+void CurlSession::preparePut(json jsonData){
     preparePut();
     preparePost(jsonData);
 }

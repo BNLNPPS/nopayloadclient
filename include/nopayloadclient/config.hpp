@@ -5,9 +5,10 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 
+using json = nlohmann::json;
 
 namespace config {
 
-    nlohmann::json getDict();
+    json getDict();
 
 }

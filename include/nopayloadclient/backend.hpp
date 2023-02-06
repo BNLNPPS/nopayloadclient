@@ -9,25 +9,55 @@
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/exception.hpp>
 
+using json = nlohmann::json;
+
 
 class Backend {
 public:
-    Backend(const nlohmann::json& config);
+    Backend(const json& config);
+
     // Reading
-    nlohmann::json getGlobalTags();
-    nlohmann::json getSize();
-    nlohmann::json getGlobalTagStatuses();
-    nlohmann::json getPayloadTypes();
-    nlohmann::json _getPayloadLists(std::string gt_name);
-    nlohmann::json getPayloadLists(std::string gt_name);
-    nlohmann::json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
+    json getGlobalTags();
+    json getSize();
+    json getGlobalTagStatuses();
+    json getPayloadTypes();
     std::string checkConnection();
-    std::string getPayloadListName(std::string gt_name, std::string plType);
     std::vector<std::string> getPayloadUrls(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
-    std::string getPayloadUrl(std::string gt_name, std::string plType, long long major_iov, long long minor_iov);
     std::vector<std::string> getGtStatusNames();
     std::vector<std::string> getGtNames();
     std::vector<std::string> getPtNames();
+
+    // Writing
+    void createGlobalTagStatus(std::string status);
+    void createGlobalTagObject(std::string name, std::string status);
+    void createGlobalTag(std::string name);
+    void deleteGlobalTag(std::string name);
+    void createPayloadType(std::string type);
+    void unlockGlobalTag(std::string name);
+    void lockGlobalTag(std::string name);
+    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov);
+    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov,
+                               long long major_iovEnd, long long minor_iovEnd);
+    void prepareInsertIov(std::string gt_name, payload::Payload& pl);
+    void insertIov(std::string gt_name, payload::Payload &pl,
+                    long long major_iov_start, long long minor_iov_start);
+    void insertIov(std::string gt_name, payload::Payload &pl,
+                    long long major_iov_start, long long minor_iov_start,
+                    long long major_iov_end, long long minor_iov_end);
+
+private:
+    // Member variables
+    std::vector<std::string> read_dir_list_;
+    CurlWrapper* curlwrapper_;
+    bool use_cache_;
+    json cache_dict_;
+
+    // Reading
+    std::string getPayloadUrl(std::string gt_name, std::string plType,
+                              long long major_iov, long long minor_iov);
+    std::string getPayloadListName(std::string gt_name, std::string plType);
+    json getPayloadLists(std::string gt_name);
+    json getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov);
     bool gtExists(std::string gt_name);
     bool gtStatusExists(std::string name);
     bool plTypeExists(std::string plType);
@@ -38,35 +68,17 @@ public:
     void checkPlTypeExists(std::string name);
 
     // Writing
-    void createGlobalTagStatus(std::string status);
-    void createGlobalTagObject(std::string name, std::string status);
-    void createGlobalTag(std::string name);
-    void deleteGlobalTag(std::string name);
-    void createPayloadType(std::string type);
-    std::string createPayloadList(std::string type);
-    void attachPayloadList(std::string plName, std::string gt_name);
-    void unlockGlobalTag(std::string name);
-    void lockGlobalTag(std::string name);
     void createNewPllForGt(std::string gt_name, std::string plType);
-    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov);
-    long long createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov, long long major_iovEnd, long long minor_iovEnd);
     void attachPayloadIOV(std::string plListName, long long plIovId);
-    void prepareInsertIov(std::string gt_name, payload::Payload& pl);
-    void insertIov(std::string gt_name, payload::Payload &pl,
-                    long long major_iovStart, long long minor_iovStart);
-    void insertIov(std::string gt_name, payload::Payload &pl,
-                    long long major_iovStart, long long minor_iovStart,
-                    long long major_iovEnd, long long minor_iovEnd);
+    void attachPayloadList(std::string plName, std::string gt_name);
+    std::string createPayloadList(std::string type);
 
-private:
-    std::vector<std::string> read_dir_list_;
-    CurlWrapper* curlwrapper_;
-    bool use_cache_;
-    //Cache* cache_;
-    nlohmann::json cache_dict_;
-    nlohmann::json get(std::string url);
-    nlohmann::json del(std::string url, bool trash_cache=true);
-    nlohmann::json put(std::string url, bool trash_cache=true);
-    nlohmann::json put(std::string url, nlohmann::json data, bool trash_cache=true);
-    nlohmann::json post(std::string url, nlohmann::json data, bool trash_cache=true);
+    json get(std::string url);
+    json del(std::string url, bool trash_cache=true);
+    json put(std::string url, bool trash_cache=true);
+    json put(std::string url, json data, bool trash_cache=true);
+    json post(std::string url, json data, bool trash_cache=true);
+
+    // Helper
+    std::vector<std::string> getItemNames(json j);
 };

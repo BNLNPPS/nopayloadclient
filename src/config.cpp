@@ -3,7 +3,7 @@
 
 namespace config {
 
-void _checkKeys(nlohmann::json j){
+void _checkKeys(json j){
   std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
                                    "write_dir", "read_dir_list"};
   for(auto key : keys){
@@ -29,10 +29,10 @@ std::string getFilePath() {
     return std::string( env_char );
 }
 
-nlohmann::json getDict(){
+json getDict(){
     std::string file_path = getFilePath();
     std::ifstream conf_file(file_path, std::ifstream::binary);
-    nlohmann::json j;
+    json j;
     conf_file >> j;
     _checkKeys(j);
     return j;

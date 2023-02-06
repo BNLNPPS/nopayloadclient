@@ -1,7 +1,7 @@
 #include <nopayloadclient/backend.hpp>
 
 
-std::vector<std::string> _getItemNames(nlohmann::json j) {
+std::vector<std::string> Backend::getItemNames(json j) {
     std::vector<std::string> name_list;
     for (const auto& obj: j){
         name_list.push_back(obj["name"]);
@@ -10,7 +10,7 @@ std::vector<std::string> _getItemNames(nlohmann::json j) {
 }
 
 // Private
-nlohmann::json Backend::get(std::string url) {
+json Backend::get(std::string url) {
     if (!use_cache_) return curlwrapper_->get(url);
     if (!cache_dict_.contains(url)) {
         cache_dict_[url] = curlwrapper_->get(url);
@@ -18,61 +18,60 @@ nlohmann::json Backend::get(std::string url) {
     return cache_dict_[url];
 }
 
-nlohmann::json Backend::del(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = nlohmann::json();
+json Backend::del(std::string url, bool trash_cache) {
+    if (trash_cache) cache_dict_ = json();
     return curlwrapper_->del(url);
 }
 
-nlohmann::json Backend::put(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = nlohmann::json();
+json Backend::put(std::string url, bool trash_cache) {
+    if (trash_cache) cache_dict_ = json();
     return curlwrapper_->put(url);
 }
 
-nlohmann::json Backend::put(std::string url, nlohmann::json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = nlohmann::json();
+json Backend::put(std::string url, json data, bool trash_cache) {
+    if (trash_cache) cache_dict_ = json();
     return curlwrapper_->put(url, data);
 }
 
-nlohmann::json Backend::post(std::string url, nlohmann::json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = nlohmann::json();
+json Backend::post(std::string url, json data, bool trash_cache) {
+    if (trash_cache) cache_dict_ = json();
     return curlwrapper_->post(url, data);
 }
 
 
 // Reading
-
-nlohmann::json Backend::getGlobalTags() {
+json Backend::getGlobalTags() {
     return get("globalTags");
 }
 
-nlohmann::json Backend::getGlobalTagStatuses() {
+json Backend::getGlobalTagStatuses() {
     return get("gtstatus");
 }
 
-nlohmann::json Backend::getPayloadTypes() {
+json Backend::getPayloadTypes() {
     return get("pt");
 }
 
-nlohmann::json Backend::getPayloadLists(std::string gt_name) {
+json Backend::getPayloadLists(std::string gt_name) {
     return get("gtPayloadLists/" + gt_name);
 }
 
-nlohmann::json Backend::getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
+json Backend::getPayloadIOVs(std::string gt_name, long long major_iov, long long minor_iov){
     checkGtExists(gt_name);
     return get("payloadiovs/?gtName=" + gt_name + "&majorIOV=" +
                std::to_string(major_iov) + "&minorIOV=" + std::to_string(minor_iov));
 }
 
 std::vector<std::string> Backend::getGtStatusNames(){
-    return _getItemNames(getGlobalTagStatuses());
+    return getItemNames(getGlobalTagStatuses());
 }
 
 std::vector<std::string> Backend::getGtNames(){
-    return _getItemNames(getGlobalTags());
+    return getItemNames(getGlobalTags());
 }
 
 std::vector<std::string> Backend::getPtNames(){
-    return _getItemNames(getPayloadTypes());
+    return getItemNames(getPayloadTypes());
 }
 
 bool Backend::gtStatusExists(std::string gtStatusName){
@@ -112,8 +111,8 @@ void Backend::checkPlTypeExists(std::string plType){
 }
 
 std::string Backend::getPayloadUrl(std::string gt_name, std::string plType, long long major_iov, long long minor_iov){
-    nlohmann::json j = getPayloadIOVs(gt_name, major_iov, minor_iov);
-    for (nlohmann::json piov : j){
+    json j = getPayloadIOVs(gt_name, major_iov, minor_iov);
+    for (json piov : j){
         if (std::string(piov["payload_type"]) == plType){
             return piov["payload_iov"][0]["payload_url"];
         }
@@ -132,7 +131,7 @@ std::vector<std::string> Backend::getPayloadUrls(std::string gt_name, std::strin
 }
 
 std::string Backend::getPayloadListName(std::string gt_name, std::string plType){
-    nlohmann::json j = getPayloadLists(gt_name);
+    json j = getPayloadLists(gt_name);
     if (!j.contains(plType)){
         std::string msg = "global tag '"+gt_name+"' does not have payload type '"+plType;
         throw BaseException(msg);
@@ -141,7 +140,7 @@ std::string Backend::getPayloadListName(std::string gt_name, std::string plType)
 }
 
 bool Backend::gtHasPlType(std::string gt_name, std::string plType){
-    nlohmann::json j = getPayloadLists(gt_name);
+    json j = getPayloadLists(gt_name);
     if (!j.contains(plType)) return false;
     return true;
 }
@@ -151,52 +150,48 @@ std::string Backend::checkConnection(){
     return "connection is good";
 }
 
-nlohmann::json Backend::getSize(){
+json Backend::getSize(){
     int n_iov_attached = 0;
     int n_gt = 0;
-    nlohmann::json global_tags = getGlobalTags();
+    json global_tags = getGlobalTags();
     for (auto gt : global_tags){
         n_iov_attached += int(gt["payload_iov_count"]);
         n_gt += 1;
     }
-    return nlohmann::json::object({{"n_global_tag", n_gt},
+    return json::object({{"n_global_tag", n_gt},
 	                               {"n_iov_attached", n_iov_attached},
      			                   {"n_pt", getPtNames().size()}});
 }
 
 
 // Writing
-void Backend::createGlobalTagStatus(std::string status){
-    nlohmann::json j;
-    j["name"] = status;
-    post("gtstatus", j);
+void Backend::createGlobalTagStatus(std::string name){
+    post("gtstatus", {{"name", name}});
 }
 
 void Backend::createGlobalTagObject(std::string name, std::string status) {
-    nlohmann::json j;
-    j["status"] = status;
-    j["name"] = name;
-    j["author"] = std::getenv("USER");
+    json j = {
+        {"name", name},
+        {"status", status},
+        {"author", std::getenv("USER")}
+    };
     post("gt", j);
 }
 
-void Backend::createPayloadType(std::string type){
-    nlohmann::json j;
-    j["name"] = type;
-    post("pt", j);
+void Backend::createPayloadType(std::string name){
+    post("pt", {{"name", name}});
 }
 
 std::string Backend::createPayloadList(std::string type){
-    nlohmann::json j;
-    j["payload_type"] = type;
-    nlohmann::json res = post("pl", j);
+    json res = post("pl", {{"payload_type", type}});
     return res["name"];
 }
 
 void Backend::attachPayloadList(std::string gt_name, std::string plName){
-    nlohmann::json j;
-    j["payload_list"] = plName;
-    j["global_tag"] = gt_name;
+    json j = {
+        {"payload_list", plName},
+        {"global_tag", gt_name}
+    };
     put("pl_attach", j);
 }
 
@@ -209,32 +204,35 @@ void Backend::unlockGlobalTag(std::string name){
 }
 
 long long Backend::createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov){
-    nlohmann::json j;
-    j["payload_url"] = pl.remote_url;
-    j["major_iov"] = major_iov;
-    j["minor_iov"] = minor_iov;
-    j["checksum"] = pl.check_sum;
-    nlohmann::json res = post("piov", j);
+    json j = {
+        {"payload_url", pl.remote_url},
+        {"major_iov", major_iov},
+        {"minor_iov", minor_iov},
+        {"checksum", pl.check_sum}
+    };
+    json res = post("piov", j);
     return res["id"];
 }
 
 long long Backend::createPayloadIOV(payload::Payload& pl, long long major_iov, long long minor_iov, long long major_iovEnd, long long minor_iovEnd){
-    nlohmann::json j;
-    j["payload_url"] = pl.remote_url;
-    j["major_iov"] = major_iov;
-    j["minor_iov"] = minor_iov;
-    j["major_iov_end"] = major_iovEnd;
-    j["minor_iov_end"] = minor_iovEnd;
-    j["checksum"] = pl.check_sum;
-    nlohmann::json res = post("piov", j);
+    json j = {
+        {"payload_url", pl.remote_url},
+        {"major_iov", major_iov},
+        {"minor_iov", minor_iov},
+        {"major_iov_end", major_iovEnd},
+        {"minor_iov_end", minor_iovEnd},
+        {"checksum", pl.check_sum}
+    };
+    json res = post("piov", j);
     return res["id"];
 }
 
 void Backend::attachPayloadIOV(std::string plListName, long long plIovId){
-    nlohmann::json j;
-    j["payload_list"] = plListName;
-    j["piov_id"] = plIovId;
-    nlohmann::json res = put("piov_attach", j);
+    json j = {
+        {"payload_list", plListName},
+        {"piov_id", plIovId}
+    };
+    put("piov_attach", j);
 }
 
 void Backend::createGlobalTag(std::string name) {
@@ -268,26 +266,25 @@ void Backend::prepareInsertIov(std::string gt_name, payload::Payload& pl){
 }
 
 void Backend::insertIov(std::string gt_name, payload::Payload& pl,
-               long long major_iovStart, long long minor_iovStart){
-    std::cout << "insertIov()" << std::endl;
+                        long long major_iov_start, long long minor_iov_start){
     std::string remoteUrl = pl.remote_url;
     std::string pllName = getPayloadListName(gt_name, pl.type);
-    long long piovId = createPayloadIOV(pl, major_iovStart, minor_iovStart);
+    long long piovId = createPayloadIOV(pl, major_iov_start, minor_iov_start);
     attachPayloadIOV(pllName, piovId);
 }
 
 void Backend::insertIov(std::string gt_name, payload::Payload& pl,
-               long long major_iovStart, long long minor_iovStart,
-               long long major_iovEnd, long long minor_iovEnd){
+                        long long major_iov_start, long long minor_iov_start,
+                        long long major_iov_end, long long minor_iov_end){
     std::string remoteUrl = pl.remote_url;
     std::string pllName = getPayloadListName(gt_name, pl.type);
-    long long piov_id = createPayloadIOV(pl, major_iovStart, minor_iovStart, major_iovEnd, minor_iovEnd);
+    long long piov_id = createPayloadIOV(pl, major_iov_start, minor_iov_start, major_iov_end, minor_iov_end);
     attachPayloadIOV(pllName, piov_id);
 }
 
-Backend::Backend(const nlohmann::json& config) {
+Backend::Backend(const json& config) {
     std::vector<std::string> read_dir_list_ = config["read_dir_list"];
     use_cache_ = true;
     curlwrapper_ = new CurlWrapper(config);
-    cache_dict_ = nlohmann::json();
+    cache_dict_ = json();
 }

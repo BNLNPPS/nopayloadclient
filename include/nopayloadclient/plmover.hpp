@@ -11,10 +11,11 @@
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/payload.hpp>
 
+using json = nlohmann::json;
 
 class PLMover {
 public:
-    PLMover(const nlohmann::json& config);
+    PLMover(const json& config);
     void compareCheckSums(std::string first_url, std::string second_url);
     void prepareUploadFile(payload::Payload& pl);
     void uploadFile(payload::Payload& pl);
