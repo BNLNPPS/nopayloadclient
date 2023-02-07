@@ -5,6 +5,8 @@ set(source_files
     backend.cpp
     curlwrapper.cpp
     payload.cpp
+    moment.cpp
+    iov.cpp
     plhandler.cpp
     config.cpp
 )

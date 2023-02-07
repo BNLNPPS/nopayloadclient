@@ -101,7 +101,7 @@ json CurlSession::execute(){
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
     curl_easy_cleanup(curl);
     json response = json::parse(ans.readBuffer);
-    std::cout << "response = " << response << std::endl;
+    //std::cout << "response = " << response << std::endl;
     if (ans.httpCode!=200){
         std::string msg;
         if (response.contains("name")) msg = response["name"][0];

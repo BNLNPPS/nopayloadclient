@@ -15,6 +15,7 @@ using json = nlohmann::json;
 
 class CurlWrapper {
 public:
+    CurlWrapper() {};
     CurlWrapper(const json& config);
     // Reading
     json get(std::string url);

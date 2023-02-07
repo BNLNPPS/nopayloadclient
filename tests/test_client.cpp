@@ -38,18 +38,6 @@ long long randLong(long long lower, long long upper) {
 int main()
 {
 
-  /*
-  nopayloadclient::Client client2 = nopayloadclient::Client("my_gt");
-  nopayloadclient::Client client3 = nopayloadclient::Client();
-
-  client3.setGlobalTag("my_gtski");
-
-  std::cout << client2 << std::endl;
-  std::cout << client3 << std::endl;
-
-  return 0;
-  */
-
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
   char my_local_url_2[] = "/tmp/file_2.dat";
@@ -94,20 +82,12 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-
-  // ---------------- TEMP
-  //std::cout << client.getTypeUrlDict("my_gt", major_iov, minor_iov) << std::endl;
-  //return 0;
-  // ---------------- TEMP
-
-
-
   // number of payloads should have increased by one
   int n_pl_1 = getPayloadNumber();
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
 
   // getting the url from the DB again should work
-  resp = client.get("my_pt", major_iov, minor_iov);
+  resp = client.getUrlDict(major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
@@ -160,17 +140,12 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-  // retrieval after deletion should fail
-  resp = client.get("my_pt", major_iov, minor_iov);
+  // retrieval after deletion should fail...
+  resp = client.getUrlDict(major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
 
-
-  // ++++++++++++++++++++++++++++++
-  //    THINGS THAT SHOULD FAIL
-  // ++++++++++++++++++++++++++++++
-
-  // try inserting to a global tag that does not exist should cause an error
+  // ... and inserting to a global tag that does not exist...
   client.setGlobalTag("non_existing_gt");
   resp = client.insertPayload("my_pt", my_local_url, 0, 0);
   std::cout<<resp<<std::endl;
@@ -182,7 +157,7 @@ int main()
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
-  // ... and if the payload file does not exist locally ...
+  // ... and if the payload file does not exist locally...
   resp = client.insertPayload("my_pt", "non_existing_file", 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;

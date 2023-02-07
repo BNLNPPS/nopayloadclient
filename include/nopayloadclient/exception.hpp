@@ -40,6 +40,13 @@ class DataBaseException : public BaseException {
             BaseException(3, "DataBaseException: ", msg) {}
 };
 
+
+class IOVException : public BaseException {
+    public:
+        IOVException(std::string msg) :
+         BaseException(4, "IOVException: ", msg) {}
+};
+
 /*
 class HttpException : public BaseException {
     private:
