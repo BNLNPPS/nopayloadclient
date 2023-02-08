@@ -2,17 +2,17 @@
 
 namespace npc {
 
-IOV::IOV(ll major_start, ll minor_start) {
-        start = Moment(major_start, minor_start);
-        is_open = true;
+IOV::IOV(npc::Moment start_) {
+    start = start_;
+    is_open = true;
 };
 
-IOV::IOV(ll major_start, ll minor_start, ll major_end, ll minor_end) {
-    start = Moment(major_start, minor_start);
-    end = Moment(major_end, minor_end);
-    if (end < start) {
+IOV::IOV(npc::Moment start_, npc::Moment end_) {
+    if (end_ < start_) {
         throw IOVException("End of IOV comes before start");
     }
+    start = start_;
+    end = end_;
     is_open = false;
 };
 

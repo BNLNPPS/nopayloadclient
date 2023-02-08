@@ -239,11 +239,10 @@ json Client::getSuffixDict(npc::Moment& mom) {
 nlohmann::json Client::prependReadDirs(json& suffix_dict) {
     json prepended_dict;
     for (auto& obj : suffix_dict.items()) {
-        std::vector<std::string> urls;
-        for (std::string prefix : config_["read_dir_list"]) {
-            urls.push_back(prefix + (std::string)obj.value());
+        prepended_dict[obj.key()] = std::vector<std::string> {};
+        for (std::string rd : config_["read_dir_list"]) {
+            prepended_dict[obj.key()].push_back(rd + (std::string)obj.value());
         }
-        prepended_dict[obj.key()] = urls;
     }
     return prepended_dict;
 }
