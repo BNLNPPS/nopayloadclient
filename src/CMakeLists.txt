@@ -2,7 +2,7 @@ configure_file(config.h.in config.h @ONLY)
 
 set(source_files
     nopayloadclient.cpp
-    backend.cpp
+    resthandler.cpp
     curlwrapper.cpp
     payload.cpp
     moment.cpp

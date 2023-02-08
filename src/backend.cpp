@@ -1,92 +1,26 @@
 #include <nopayloadclient/backend.hpp>
 
-
-std::vector<std::string> Backend::getItemNames(const json& j) {
-    std::vector<std::string> name_list;
+// Helper
+bool objWithNameExists(const json& j, std::string name) {
     for (const auto& obj: j){
-        name_list.push_back(obj["name"]);
+        if (obj["name"] == name) return true;
     }
-    return name_list;
+    return false;
 }
 
-// Private
-json Backend::get(std::string url) {
-    if (!use_cache_) return curlwrapper_.get(url);
-    if (!cache_dict_.contains(url)) {
-        cache_dict_[url] = curlwrapper_.get(url);
-    }
-    return cache_dict_[url];
-}
-
-json Backend::del(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
-    return curlwrapper_.del(url);
-}
-
-json Backend::put(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
-    return curlwrapper_.put(url);
-}
-
-json Backend::put(std::string url, json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
-    return curlwrapper_.put(url, data);
-}
-
-json Backend::post(std::string url, json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
-    return curlwrapper_.post(url, data);
-}
-
-
-// Reading
-json Backend::getGlobalTags() {
-    return get("globalTags");
-}
-
-json Backend::getGlobalTagStatuses() {
-    return get("gtstatus");
-}
-
-json Backend::getPayloadTypes() {
-    return get("pt");
-}
-
-json Backend::getPayloadLists() {
-    return get("gtPayloadLists/" + global_tag_);
-}
-
-json Backend::getPayloadIOVs(npc::Moment& mom){
-    checkGtExists();
-    return get("payloadiovs/?gtName=" + global_tag_ + "&majorIOV=" +
-               std::to_string(mom.major) + "&minorIOV=" + std::to_string(mom.minor));
-}
-
-std::vector<std::string> Backend::getGtStatusNames(){
-    return getItemNames(getGlobalTagStatuses());
-}
-
-std::vector<std::string> Backend::getGtNames(){
-    return getItemNames(getGlobalTags());
-}
-
-std::vector<std::string> Backend::getPtNames(){
-    return getItemNames(getPayloadTypes());
-}
-
-bool Backend::gtStatusExists(std::string gtStatusName){
-    std::vector<std::string> gtsns = getGtStatusNames();
-    return std::find(gtsns.begin(), gtsns.end(), gtStatusName) != gtsns.end();
+bool Backend::gtStatusExists(std::string name){
+    json j = getGlobalTagStatuses();
+    return objWithNameExists(j, name);
 }
 
 bool Backend::gtExists(){
-    std::vector<std::string> gtns = getGtNames();
-    return std::find(gtns.begin(), gtns.end(), global_tag_) != gtns.end();
+    json j = getGlobalTags();
+    return objWithNameExists(j, global_tag_);
 }
 
 bool Backend::plTypeExists(std::string pl_type){
-    std::vector<std::string> ptns = getPtNames();
-    return std::find(ptns.begin(), ptns.end(), pl_type) != ptns.end();
+    json j = getPayloadTypes();
+    return objWithNameExists(j, pl_type);
 }
 
 void Backend::checkGtStatusExists(std::string name){
@@ -167,8 +101,7 @@ std::string Backend::getPayloadListName(std::string pl_type){
 
 bool Backend::gtHasPlType(std::string pl_type){
     json j = getPayloadLists();
-    if (!j.contains(pl_type)) return false;
-    return true;
+    return (j.contains(pl_type));
 }
 
 std::string Backend::checkConnection(){
@@ -186,70 +119,7 @@ json Backend::getSize(){
     }
     return json {{"n_global_tag", n_gt},
                  {"n_iov_attached", n_iov_attached},
-                 {"n_pt", getPtNames().size()}};
-}
-
-
-// Writing
-void Backend::createGlobalTagStatus(std::string name){
-    post("gtstatus", {{"name", name}});
-}
-
-void Backend::createGlobalTagObject(std::string status) {
-    json j = {
-        {"name", global_tag_},
-        {"status", status},
-        {"author", std::getenv("USER")}
-    };
-    post("gt", j);
-}
-
-void Backend::createPayloadType(std::string name){
-    post("pt", {{"name", name}});
-}
-
-std::string Backend::createPayloadList(std::string type){
-    json res = post("pl", {{"payload_type", type}});
-    return res["name"];
-}
-
-void Backend::attachPayloadList(std::string pl_name){
-    json j = {
-        {"payload_list", pl_name},
-        {"global_tag", global_tag_}
-    };
-    put("pl_attach", j);
-}
-
-void Backend::lockGlobalTag(){
-    put("gt_change_status/" + global_tag_ + "/locked");
-}
-
-void Backend::unlockGlobalTag(){
-    put("gt_change_status/" + global_tag_ + "/unlocked");
-}
-
-ll Backend::createPayloadIOV(payload::Payload& pl, npc::IOV& iov){
-    json j = {
-        {"payload_url", pl.remote_url},
-        {"major_iov", iov.start.major},
-        {"minor_iov", iov.start.minor},
-        {"checksum", pl.check_sum}
-    };
-    if (!iov.is_open){
-        j["major_iov_end"] = iov.end.major;
-        j["minor_iov_end"] = iov.end.minor;
-    }
-    json res = post("piov", j);
-    return res["id"];
-}
-
-void Backend::attachPayloadIOV(std::string pll_name, ll piov_id){
-    json j = {
-        {"payload_list", pll_name},
-        {"piov_id", piov_id}
-    };
-    put("piov_attach", j);
+                 {"n_pt", getPayloadTypes().size()}};
 }
 
 void Backend::createGlobalTag() {
@@ -262,16 +132,12 @@ void Backend::createGlobalTag() {
     createGlobalTagObject("unlocked");
 }
 
-void Backend::deleteGlobalTag() {
-    del("deleteGlobalTag/" + global_tag_);
-}
-
 void Backend::createNewPll(std::string pl_type){
-    std::string pllName = createPayloadList(pl_type);
-    attachPayloadList(pllName);
+    std::string pll_name = createPayloadList(pl_type);
+    attachPayloadList(pll_name);
 }
 
-void Backend::prepareInsertIov(payload::Payload& pl){
+void Backend::prepareInsertIov(payload::Payload& pl, npc::IOV& iov){
     checkGtExists();
     checkPlTypeExists(pl.type);
     if (!gtHasPlType(pl.type)) {
@@ -282,23 +148,7 @@ void Backend::prepareInsertIov(payload::Payload& pl){
 }
 
 void Backend::insertIov(payload::Payload& pl, npc::IOV& iov) {
-    std::string remoteUrl = pl.remote_url;
     std::string pll_name = getPayloadListName(pl.type);
     ll piov_id = createPayloadIOV(pl, iov);
     attachPayloadIOV(pll_name, piov_id);
-}
-
-void Backend::setGlobalTag(std::string name) {
-    global_tag_ = name;
-}
-
-std::string Backend::getGlobalTag() {
-    return global_tag_;
-}
-
-Backend::Backend(const json& config) {
-    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
-    use_cache_ = true;
-    curlwrapper_ = CurlWrapper(config);
-    cache_dict_ = json();
 }

@@ -40,7 +40,6 @@ int main()
 
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
-  char my_local_url_2[] = "/tmp/file_2.dat";
 
   nlohmann::json resp;
   srandom(time(NULL));
@@ -54,16 +53,12 @@ int main()
 
   int n_pl_0 = getPayloadNumber();
 
-  // create random payload files
-  if (createRandomPayload(my_local_url) == 1) return 1;
-  if (createRandomPayload(my_local_url_2) == 1) return 1;
-
   nopayloadclient::Client client = nopayloadclient::Client("my_gt");
 
   resp = client.checkConnection();
   std::cout << resp << std::endl;
 
-  // create the global tag if it does not exist
+  // delete & re-create the global tag
   resp = client.deleteGlobalTag();
   std::cout << resp << std::endl;
 
@@ -75,6 +70,7 @@ int main()
   std::cout << resp << std::endl;
 
   // insert should work
+  if (createRandomPayload(my_local_url) == 1) return 1;
   std::cout << "attempting insertion" << std::endl;
   resp = client.insertPayload("my_pt", my_local_url,
                               major_iov_start, minor_iov_start,
@@ -99,8 +95,7 @@ int main()
   if (resp["code"] != 0) return 1;
 
   // ... but not change the number of payloads
-  int n_pl_2 = getPayloadNumber();
-  if (n_pl_2 != n_pl_1) return 1;
+  if (getPayloadNumber() != n_pl_1) return 1;
 
   // trying to lock the global tag
   resp = client.lockGlobalTag();
@@ -108,16 +103,21 @@ int main()
   if (resp["code"] != 0) return 1;
 
   // should not be able to write to a locked gt ...
+  if (createRandomPayload(my_local_url) == 1) return 1;
   resp = client.insertPayload("my_pt", my_local_url,
                               major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
+
+  // ... and not change the number of payloads ...
+  if (getPayloadNumber() != n_pl_1) return 1;
 
   // ... except if the IOV does not overlap with existing
   resp = client.insertPayload("my_pt", my_local_url,
                               major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
+  if (getPayloadNumber() != n_pl_1 + 1) return 1;
 
   // deletion of locked global tag should fail
   resp = client.deleteGlobalTag();

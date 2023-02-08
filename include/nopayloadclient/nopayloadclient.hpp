@@ -5,7 +5,7 @@
 #include <functional>
 #include <nlohmann/json.hpp>
 
-#include <nopayloadclient/backend.hpp>
+#include <nopayloadclient/resthandler.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
 #include <nopayloadclient/plhandler.hpp>
@@ -40,7 +40,6 @@ public:
     json getGlobalTag();
 
     // Reading
-    json get(std::string pl_type, ll major_iov, ll minor_iov);
     json getUrlDict(ll major_iov, ll minor_iov);
 
     // Writing
@@ -64,13 +63,33 @@ public:
 
 private:
     json config_;
-    Backend backend_;
-    PLHandler plhandler_;
+    RESTHandler rest_handler_;
+    PLHandler pl_handler_;
 
+    // Response creation
     template<typename T>
     json makeResp(T msg);
 
+    // Writing
+    void prepareInsertIov(payload::Payload &pl);
+    void insertIov(payload::Payload& pl, npc::IOV& iov);
     void insertPayload(payload::Payload &pl, npc::IOV &iov);
+    void createNewPll(std::string pl_type);
+    void attachPayloadList(std::string pl_name);
+
+    // Reading
+    bool gtExists();
+    bool gtStatusExists(std::string name);
+    bool plTypeExists(std::string pl_type);
+    bool gtHasPlType(std::string pl_type);
+    void checkGtExists();
+    void checkGtStatusExists(std::string name);
+    void checkPlTypeExists(std::string name);
+    json prependReadDirs(json& suffix_dict);
+    json getSuffixDict(npc::Moment& mom);
+
+    // Helper
+    bool objWithNameExists(const json& j, std::string name);
 };
 
 }

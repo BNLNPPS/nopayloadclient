@@ -19,35 +19,35 @@ CurlWrapper::CurlWrapper(const json& config) {
 }
 
 json CurlWrapper::del(std::string url){
-    std::cout<<"CurlWrapper::del(url="<<url<<")"<<std::endl;
+//    std::cout<<"CurlWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
 }
 
 json CurlWrapper::get(std::string url){
-    std::cout<<"CurlWrapper::get(url="<<url<<")"<<std::endl;
+//    std::cout<<"CurlWrapper::get(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 json CurlWrapper::post(std::string url, json jsonData){
-    std::cout<<"CurlWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+//    std::cout<<"CurlWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePost(jsonData);
     return cm.try_execute();
 }
 
 json CurlWrapper::put(std::string url){
-    std::cout<<"CurlWrapper::put(url="<<url<<")"<<std::endl;
+//    std::cout<<"CurlWrapper::put(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut();
     return cm.try_execute();
 }
 
 json CurlWrapper::put(std::string url, json jsonData){
-    std::cout<<"CurlWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+//    std::cout<<"CurlWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut(jsonData);
     return cm.try_execute();
