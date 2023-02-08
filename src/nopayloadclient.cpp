@@ -43,9 +43,6 @@ json Client::createGlobalTag() {
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
-        if (!gtStatusExists("locked")){
-            rest_handler_.createGlobalTagStatus("locked");
-        }
         rest_handler_.createGlobalTagObject("unlocked");
         return makeResp("successfully created global tag");
     )
@@ -60,6 +57,9 @@ json Client::deleteGlobalTag() {
 
 json Client::lockGlobalTag() {
     TRY(
+        if (!gtStatusExists("locked")){
+            rest_handler_.createGlobalTagStatus("locked");
+        }
         rest_handler_.lockGlobalTag();
         return makeResp("successfully locked global tag");
     )
@@ -67,6 +67,9 @@ json Client::lockGlobalTag() {
 
 json Client::unlockGlobalTag() {
     TRY(
+        if (!gtStatusExists("unlocked")){
+            rest_handler_.createGlobalTagStatus("unlocked");
+        }
         rest_handler_.unlockGlobalTag();
         return makeResp("successfully unlocked global tag");
     )
@@ -234,18 +237,14 @@ json Client::getSuffixDict(npc::Moment& mom) {
 }
 
 nlohmann::json Client::prependReadDirs(json& suffix_dict) {
-    std::cout << "suffix_dict = " << suffix_dict << std::endl;
     json prepended_dict;
     for (auto& obj : suffix_dict.items()) {
-        std::cout << "obj = " << obj << std::endl;
         std::vector<std::string> urls;
         for (std::string prefix : config_["read_dir_list"]) {
-            std::cout << "pushing back prefix: " << prefix << std::endl;
             urls.push_back(prefix + (std::string)obj.value());
         }
         prepended_dict[obj.key()] = urls;
     }
-    std::cout << "prepended_dict = " << prepended_dict << std::endl;
     return prepended_dict;
 }
 
