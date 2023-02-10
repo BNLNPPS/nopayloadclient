@@ -13,13 +13,15 @@
 
 using json = nlohmann::json;
 
+namespace npc {
+
 class PLHandler {
 public:
     PLHandler() {};
     PLHandler(const json& config);
     void compareCheckSums(std::string first_url, std::string second_url);
-    void prepareUploadFile(payload::Payload& pl);
-    void uploadFile(payload::Payload& pl);
+    void prepareUploadFile(Payload& pl);
+    void uploadFile(Payload& pl);
 private:
     std::string write_dir_;
     std::vector<std::string> read_dir_list_;
@@ -29,5 +31,6 @@ private:
     void checkRemoteDirExists();
     void createDirectory(std::string path);
     void copyFile(std::string local_url, std::string remote_url);
-
 };
+
+}

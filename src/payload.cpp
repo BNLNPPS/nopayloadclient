@@ -1,7 +1,7 @@
 #include <nopayloadclient/payload.hpp>
 #include <rsa/md5.hpp>
 
-namespace payload{
+namespace npc {
 
 Payload::Payload(std::string local_url_, std::string type_){
     local_url = local_url_;
@@ -57,7 +57,7 @@ std::string Payload::getBareFileName() {
     return bare_file_name;
 }
 
-std::ostream& operator<<(std::ostream& os, const payload::Payload& pl) {
+std::ostream& operator<<(std::ostream& os, const Payload& pl) {
     os << "Payload instance with following attributes:" << std::endl;
     os << "local_url = " << pl.local_url << std::endl;
     os << "bare_file_name = " << pl.bare_file_name << std::endl;

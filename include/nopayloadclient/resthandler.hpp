@@ -11,6 +11,8 @@
 
 using json = nlohmann::json;
 
+namespace npc {
+
 class RESTHandler {
 public:
     RESTHandler() {};
@@ -37,7 +39,7 @@ public:
     void deleteGlobalTag();
     void attachPayloadIOV(std::string pll_name, long long piov_id);
     std::string createPayloadList(std::string type);
-    long long createPayloadIOV(payload::Payload& pl, npc::IOV& iov);
+    long long createPayloadIOV(Payload& pl, npc::IOV& iov);
 
 private:
     CurlWrapper curlwrapper_;
@@ -51,3 +53,5 @@ private:
     json put(std::string url, json data, bool trash_cache=true);
     json post(std::string url, json data, bool trash_cache=true);
 };
+
+}

@@ -2,6 +2,8 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
+namespace npc {
+
 PLHandler::PLHandler(const json& config) {
     write_dir_ = config["write_dir"];
     std::vector<std::string> read_dir_list_ = config["read_dir_list"];
@@ -53,7 +55,7 @@ void PLHandler::createDirectory(std::string path){
     }
 }
 
-void PLHandler::prepareUploadFile(payload::Payload& pl) {
+void PLHandler::prepareUploadFile(Payload& pl) {
     checkLocalFileExists(pl.local_url);
     //checkRemoteFile(pl.remote_url);
     checkRemoteDirExists();
@@ -65,8 +67,9 @@ void PLHandler::copyFile(std::string local_url, std::string remote_url) {
     }
 }
 
-void PLHandler::uploadFile(payload::Payload& pl){
+void PLHandler::uploadFile(Payload& pl){
     createDirectory(write_dir_ + pl.remote_dir);
     copyFile(pl.local_url, write_dir_ + pl.remote_url);
 }
 
+}

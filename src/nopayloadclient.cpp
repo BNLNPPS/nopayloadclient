@@ -1,9 +1,9 @@
 #include <nopayloadclient/nopayloadclient.hpp>
 
-namespace nopayloadclient {
+namespace npc {
 
 Client::Client() {
-    json config_ = config::getDict();
+    json config_ = getDict();
     rest_handler_ = RESTHandler(config_);
     pl_handler_ = PLHandler(config_);
 }
@@ -85,7 +85,7 @@ json Client::createPayloadType(std::string name) {
 json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start) {
     TRY(
-        payload::Payload pl {file_url, pl_type};
+        Payload pl {file_url, pl_type};
         npc::IOV iov {major_iov_start, minor_iov_start};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
@@ -96,7 +96,7 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
     TRY(
-        payload::Payload pl {file_url, pl_type};
+        Payload pl {file_url, pl_type};
         npc::IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
@@ -144,7 +144,7 @@ json Client::getConfDict(){
     )
 }
 
-std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c) {
+std::ostream& operator<<(std::ostream& os, const Client& c) {
     os << "Client instance with following attributes:" << std::endl;
     os << "config = " << c.config_ << std::endl;
     return os;
@@ -156,14 +156,14 @@ json Client::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
-void Client::insertPayload(payload::Payload &pl, npc::IOV &iov) {
+void Client::insertPayload(Payload &pl, npc::IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
     insertIov(pl, iov);
     pl_handler_.uploadFile(pl);
 }
 
-void Client::prepareInsertIov(payload::Payload &pl) {
+void Client::prepareInsertIov(Payload &pl) {
     checkGtExists();
     checkPlTypeExists(pl.type);
     if (!gtHasPlType(pl.type)) {
@@ -219,7 +219,7 @@ void Client::createNewPll(std::string pl_type){
     rest_handler_.attachPayloadList(pll_name);
 }
 
-void Client::insertIov(payload::Payload& pl, npc::IOV& iov) {
+void Client::insertIov(Payload& pl, npc::IOV& iov) {
     std::string pll_name = rest_handler_.getPayloadLists()[pl.type];
     ll piov_id = rest_handler_.createPayloadIOV(pl, iov);
     rest_handler_.attachPayloadIOV(pll_name, piov_id);

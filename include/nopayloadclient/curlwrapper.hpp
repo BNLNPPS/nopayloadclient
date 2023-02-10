@@ -12,6 +12,7 @@
 
 using json = nlohmann::json;
 
+namespace npc {
 
 class CurlWrapper {
 public:
@@ -55,5 +56,6 @@ class CurlSession{
         std::string jsonStr;
         int n_retries_;
         bool print_time_stamps_;
-
 };
+
+}

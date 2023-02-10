@@ -1,5 +1,7 @@
 #include <nopayloadclient/resthandler.hpp>
 
+namespace npc {
+
 // Config
 RESTHandler::RESTHandler(const json& config) {
     curlwrapper_ = CurlWrapper(config);
@@ -76,7 +78,7 @@ void RESTHandler::unlockGlobalTag(){
     put("gt_change_status/" + global_tag_ + "/unlocked");
 }
 
-ll RESTHandler::createPayloadIOV(payload::Payload& pl, npc::IOV& iov){
+ll RESTHandler::createPayloadIOV(Payload& pl, npc::IOV& iov){
     json j = {
         {"payload_url", pl.remote_url},
         {"major_iov", iov.start.major},
@@ -130,4 +132,6 @@ json RESTHandler::put(std::string url, json data, bool trash_cache) {
 json RESTHandler::post(std::string url, json data, bool trash_cache) {
     if (trash_cache) cache_dict_ = json();
     return curlwrapper_.post(url, data);
+}
+
 }

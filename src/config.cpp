@@ -1,7 +1,7 @@
 #include <nopayloadclient/config.hpp>
 #include "config.h"
 
-namespace config {
+namespace npc {
 
 void _checkKeys(json j){
   std::vector<std::string> keys = {"base_url", "api_res", "n_retries",

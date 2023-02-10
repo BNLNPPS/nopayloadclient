@@ -24,7 +24,7 @@
 using json = nlohmann::json;
 using ll = long long;
 
-namespace nopayloadclient {
+namespace npc {
 
 class Client {
 public:
@@ -59,7 +59,7 @@ public:
     json getGlobalTags();
     json checkConnection();
     json getConfDict();
-    friend std::ostream& operator<<(std::ostream& os, const nopayloadclient::Client& c);
+    friend std::ostream& operator<<(std::ostream& os, const npc::Client& c);
 
 private:
     json config_;
@@ -71,9 +71,9 @@ private:
     json makeResp(T msg);
 
     // Writing
-    void prepareInsertIov(payload::Payload &pl);
-    void insertIov(payload::Payload& pl, npc::IOV& iov);
-    void insertPayload(payload::Payload &pl, npc::IOV &iov);
+    void prepareInsertIov(Payload &pl);
+    void insertIov(Payload& pl, npc::IOV& iov);
+    void insertPayload(Payload &pl, npc::IOV &iov);
     void createNewPll(std::string pl_type);
     void attachPayloadList(std::string pl_name);
 

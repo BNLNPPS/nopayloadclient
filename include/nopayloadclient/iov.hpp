@@ -1,7 +1,5 @@
 #pragma once
 
-#include<iostream>
-
 #include <nopayloadclient/moment.hpp>
 #include <nopayloadclient/exception.hpp>
 

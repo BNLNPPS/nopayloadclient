@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-namespace config {
+namespace npc {
 
     json getDict();
 
