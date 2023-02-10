@@ -30,7 +30,7 @@ json Client::getGlobalTag() {
 json Client::getUrlDict(ll major_iov, ll minor_iov){
     TRY(
         checkGtExists();
-        npc::Moment mom {major_iov, minor_iov};
+        Moment mom {major_iov, minor_iov};
         json url_dict = getSuffixDict(mom);
         prependReadDirs(url_dict);
         return makeResp(url_dict);
@@ -86,7 +86,7 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start) {
     TRY(
         Payload pl {file_url, pl_type};
-        npc::IOV iov {major_iov_start, minor_iov_start};
+        IOV iov {major_iov_start, minor_iov_start};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
     )
@@ -97,7 +97,7 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_end, ll minor_iov_end) {
     TRY(
         Payload pl {file_url, pl_type};
-        npc::IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
+        IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
     )
@@ -156,7 +156,7 @@ json Client::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
-void Client::insertPayload(Payload &pl, npc::IOV &iov) {
+void Client::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
     insertIov(pl, iov);
@@ -219,13 +219,13 @@ void Client::createNewPll(std::string pl_type){
     rest_handler_.attachPayloadList(pll_name);
 }
 
-void Client::insertIov(Payload& pl, npc::IOV& iov) {
+void Client::insertIov(Payload& pl, IOV& iov) {
     std::string pll_name = rest_handler_.getPayloadLists()[pl.type];
     ll piov_id = rest_handler_.createPayloadIOV(pl, iov);
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
-json Client::getSuffixDict(npc::Moment& mom) {
+json Client::getSuffixDict(Moment& mom) {
     json suffix_dict;
     json j = rest_handler_.getPayloadIOVs(mom);
     for (const json& el : j){

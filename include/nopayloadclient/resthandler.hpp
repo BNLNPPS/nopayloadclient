@@ -3,10 +3,10 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-#include <nopayloadclient/config.hpp>
 #include <nopayloadclient/curlwrapper.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
+#include <nopayloadclient/moment.hpp>
 #include <nopayloadclient/exception.hpp>
 
 using json = nlohmann::json;
@@ -27,7 +27,7 @@ public:
     json getGlobalTagStatuses();
     json getPayloadTypes();
     json getPayloadLists();
-    json getPayloadIOVs(npc::Moment& mom);
+    json getPayloadIOVs(Moment& mom);
 
     // Writing
     void createGlobalTagStatus(std::string name);
@@ -39,7 +39,7 @@ public:
     void deleteGlobalTag();
     void attachPayloadIOV(std::string pll_name, long long piov_id);
     std::string createPayloadList(std::string type);
-    long long createPayloadIOV(Payload& pl, npc::IOV& iov);
+    long long createPayloadIOV(Payload& pl, IOV& iov);
 
 private:
     CurlWrapper curlwrapper_;

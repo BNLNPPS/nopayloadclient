@@ -59,7 +59,7 @@ public:
     json getGlobalTags();
     json checkConnection();
     json getConfDict();
-    friend std::ostream& operator<<(std::ostream& os, const npc::Client& c);
+    friend std::ostream& operator<<(std::ostream& os, const Client& c);
 
 private:
     json config_;
@@ -72,8 +72,8 @@ private:
 
     // Writing
     void prepareInsertIov(Payload &pl);
-    void insertIov(Payload& pl, npc::IOV& iov);
-    void insertPayload(Payload &pl, npc::IOV &iov);
+    void insertIov(Payload& pl, IOV& iov);
+    void insertPayload(Payload &pl, IOV &iov);
     void createNewPll(std::string pl_type);
     void attachPayloadList(std::string pl_name);
 
@@ -86,7 +86,7 @@ private:
     void checkGtStatusExists(std::string name);
     void checkPlTypeExists(std::string name);
     json prependReadDirs(json& suffix_dict);
-    json getSuffixDict(npc::Moment& mom);
+    json getSuffixDict(Moment& mom);
 
     // Helper
     bool objWithNameExists(const json& j, std::string name);

@@ -34,7 +34,7 @@ json RESTHandler::getPayloadLists() {
     return get("gtPayloadLists/" + global_tag_);
 }
 
-json RESTHandler::getPayloadIOVs(npc::Moment& mom){
+json RESTHandler::getPayloadIOVs(Moment& mom){
     return get("payloadiovs/?gtName=" + global_tag_ + "&majorIOV=" +
                std::to_string(mom.major) + "&minorIOV=" + std::to_string(mom.minor));
 }
@@ -78,7 +78,7 @@ void RESTHandler::unlockGlobalTag(){
     put("gt_change_status/" + global_tag_ + "/unlocked");
 }
 
-ll RESTHandler::createPayloadIOV(Payload& pl, npc::IOV& iov){
+ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){
     json j = {
         {"payload_url", pl.remote_url},
         {"major_iov", iov.start.major},

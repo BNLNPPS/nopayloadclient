@@ -1,7 +1,5 @@
 #include <nopayloadclient/moment.hpp>
 
-using ll = long long;
-
 namespace npc {
 
 Moment::Moment(ll ma, ll mi) {
@@ -16,7 +14,7 @@ bool Moment::operator< (const Moment& that){
     return (this->minor < that.minor);
 };
 
-std::ostream& operator<< (std::ostream& os, const npc::Moment& m) {
+std::ostream& operator<< (std::ostream& os, const Moment& m) {
     os << "Moment(major=" << m.major << ", minor=" << m.minor << ")" << std::endl;
     return os;
 };

@@ -56,7 +56,7 @@ CurlSession::CurlSession(std::string _url, int n_retries, bool print_time_stamps
     url = _url;
     curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, npc::WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ans.readBuffer);
 }
 

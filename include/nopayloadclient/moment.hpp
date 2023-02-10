@@ -12,7 +12,7 @@ struct Moment {
     Moment() : major(0), minor(0) {};
     Moment(ll ma, ll mi);
     bool operator< (const Moment& that);
-    friend std::ostream& operator<< (std::ostream& os, const npc::Moment& m);
+    friend std::ostream& operator<< (std::ostream& os, const Moment& m);
 };
 
 }
