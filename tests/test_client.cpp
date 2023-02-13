@@ -9,7 +9,7 @@
 namespace fs = std::experimental::filesystem::v1;
 
 int getPayloadNumber() {
-  nlohmann::json conf_dict = npc::getDict();
+  nlohmann::json conf_dict = nopayloadclient::getDict();
   std::cout << "conf_dict = " << conf_dict << std::endl;
   const fs::path pl_path = conf_dict["write_dir"];
   fs::recursive_directory_iterator pl_iterator{pl_path};
@@ -53,7 +53,7 @@ int main()
 
   int n_pl_0 = getPayloadNumber();
 
-  npc::Client client {"my_gt"};
+  nopayloadclient::Client client {"my_gt"};
 
   resp = client.checkConnection();
   std::cout << resp << std::endl;

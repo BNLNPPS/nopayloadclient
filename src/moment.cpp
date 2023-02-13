@@ -1,6 +1,6 @@
 #include <nopayloadclient/moment.hpp>
 
-namespace npc {
+namespace nopayloadclient {
 
 Moment::Moment(ll ma, ll mi) {
     major = ma;

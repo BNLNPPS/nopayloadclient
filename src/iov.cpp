@@ -1,6 +1,6 @@
 #include <nopayloadclient/iov.hpp>
 
-namespace npc {
+namespace nopayloadclient {
 
 IOV::IOV(Moment start_) {
     start = start_;

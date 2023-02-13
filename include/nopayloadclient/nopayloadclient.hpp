@@ -24,7 +24,7 @@
 using json = nlohmann::json;
 using ll = long long;
 
-namespace npc {
+namespace nopayloadclient {
 
 class Client {
 public:

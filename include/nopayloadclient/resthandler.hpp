@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 
 #include <nopayloadclient/curlwrapper.hpp>
+#include <nopayloadclient/cache.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
 #include <nopayloadclient/moment.hpp>
@@ -11,7 +12,7 @@
 
 using json = nlohmann::json;
 
-namespace npc {
+namespace nopayloadclient {
 
 class RESTHandler {
 public:
@@ -43,6 +44,7 @@ public:
 
 private:
     CurlWrapper curlwrapper_;
+    Cache cache_;
     std::string global_tag_;
     bool use_cache_;
     json cache_dict_;

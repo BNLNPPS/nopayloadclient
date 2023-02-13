@@ -8,7 +8,7 @@
 #include <nopayloadclient/exception.hpp>
 
 
-namespace npc {
+namespace nopayloadclient {
 
 class Payload {
 public:

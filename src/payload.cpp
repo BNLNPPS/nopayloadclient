@@ -1,7 +1,7 @@
 #include <nopayloadclient/payload.hpp>
 #include <rsa/md5.hpp>
 
-namespace npc {
+namespace nopayloadclient {
 
 Payload::Payload(std::string local_url_, std::string type_){
     local_url = local_url_;

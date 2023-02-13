@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-namespace npc {
+namespace nopayloadclient {
 
     json getDict();
 

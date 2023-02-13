@@ -4,7 +4,7 @@
 
 using ll = long long;
 
-namespace npc {
+namespace nopayloadclient {
 
 struct Moment {
     ll major;

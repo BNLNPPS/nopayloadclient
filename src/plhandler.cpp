@@ -2,11 +2,10 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
-namespace npc {
+namespace nopayloadclient {
 
 PLHandler::PLHandler(const json& config) {
     write_dir_ = config["write_dir"];
-    std::vector<std::string> read_dir_list_ = config["read_dir_list"];
 }
 
 bool PLHandler::fileExists(std::string url){

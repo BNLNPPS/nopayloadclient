@@ -12,7 +12,7 @@
 
 using json = nlohmann::json;
 
-namespace npc {
+namespace nopayloadclient {
 
 class CurlWrapper {
 public:

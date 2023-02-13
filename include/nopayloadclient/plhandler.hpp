@@ -13,7 +13,7 @@
 
 using json = nlohmann::json;
 
-namespace npc {
+namespace nopayloadclient {
 
 class PLHandler {
 public:
@@ -24,7 +24,6 @@ public:
     void uploadFile(Payload& pl);
 private:
     std::string write_dir_;
-    std::vector<std::string> read_dir_list_;
     bool fileExists(std::string url);
     void checkLocalFileExists(std::string url);
     void checkRemoteFile(std::string url);

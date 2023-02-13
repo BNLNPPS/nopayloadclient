@@ -5,7 +5,7 @@
 
 using ll = long long;
 
-namespace npc {
+namespace nopayloadclient {
 
 struct IOV {
     Moment start;

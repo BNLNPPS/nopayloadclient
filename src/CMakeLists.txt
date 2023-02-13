@@ -9,6 +9,7 @@ set(source_files
     iov.cpp
     plhandler.cpp
     config.cpp
+    cache.cpp
 )
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)

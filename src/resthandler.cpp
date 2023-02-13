@@ -1,10 +1,11 @@
 #include <nopayloadclient/resthandler.hpp>
 
-namespace npc {
+namespace nopayloadclient {
 
 // Config
 RESTHandler::RESTHandler(const json& config) {
     curlwrapper_ = CurlWrapper(config);
+    cache_ = Cache(config);
     use_cache_ = true;
     cache_dict_ = json();
 }

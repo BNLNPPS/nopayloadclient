@@ -3,8 +3,11 @@
 #include <nlohmann/json.hpp>
 #include <time.h>
 #include <experimental/filesystem>
+#include <unistd.h>
+#include <thread>
 
 #include <nopayloadclient/nopayloadclient.hpp>
+#include <nopayloadclient/cache.hpp>
 
 namespace fs = std::experimental::filesystem::v1;
 
@@ -23,28 +26,20 @@ int createRandomPayload(char filename[]) {
 
 int main()
 {
-  char my_local_url[] = "/tmp/file.dat";
-  nlohmann::json resp;
+  json conf {{"cache_life_time", 0.1},
+             {"cache_max_mb", 0.0001}};
+  nopayloadclient::Cache cache {conf};
+  std::cout << "cache = " << cache << std::endl;
+  std::cout << "cache.contains('a') = " << cache.contains("a") << std::endl;
+  json resp1 {"jigga jigga"};
+  json resp2 {{"pl_type_1", "url_1"}, {"pl_type_2", "url_2"}};
+  cache.set("a", resp1);
+  cache.set("b", resp2);
+  cache.set("c", resp2); // this should replace entry for 'a' (max size)
+  std::cout << "cache = \n" << cache << std::endl;
+  std::cout << "cache.contains('c') = " << cache.contains("c") << std::endl; // should be valid
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  std::cout << "cache.contains('c') = " << cache.contains("c") << std::endl; // but not this one
 
-  if (createRandomPayload(my_local_url) == 1) return 1;
-
-  nopayloadclient::Client client = nopayloadclient::Client();
-  resp = client.checkConnection();
-  std::cout << resp << std::endl;
-
-  client.deleteGlobalTag("my_gt");
-  client.createGlobalTag("my_gt");
-  client.createPayloadType("my_pt_1");
-  client.createPayloadType("my_pt_2");
-
-  // insert should work
-  std::cout << client.insertPayload("my_gt", "my_pt_1", my_local_url, 42, 42) << std::endl;
-  std::cout << client.insertPayload("my_gt", "my_pt_2", my_local_url, 42, 42) << std::endl;
-
-  std::cout << "Curlwrapper::get should only be called once here:" << std::endl;
-  resp = client.get("my_gt", "my_pt_1", 43, 43);
-  resp = client.get("my_gt", "my_pt_2", 43, 43);
-  std::cout << resp << std::endl;
-
-  return EXIT_SUCCESS;
+  return 0;
 }

@@ -1,6 +1,6 @@
 #include <nopayloadclient/nopayloadclient.hpp>
 
-namespace npc {
+namespace nopayloadclient {
 
 Client::Client() {
     json config_ = getDict();
