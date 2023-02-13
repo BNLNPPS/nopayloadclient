@@ -47,7 +47,6 @@ private:
     Cache cache_;
     std::string global_tag_;
     bool use_cache_;
-    json cache_dict_;
 
     json get(std::string url);
     json del(std::string url, bool trash_cache=true);

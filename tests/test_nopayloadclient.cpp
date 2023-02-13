@@ -8,9 +8,9 @@
 
 namespace fs = std::experimental::filesystem::v1;
 
-
 int getPayloadNumber() {
-  nlohmann::json conf_dict = nopayloadclient::getConfDict()["msg"];
+  nlohmann::json conf_dict = nopayloadclient::getDict();
+  std::cout << "conf_dict = " << conf_dict << std::endl;
   const fs::path pl_path = conf_dict["write_dir"];
   fs::recursive_directory_iterator pl_iterator{pl_path};
   int n = 0;
@@ -37,9 +37,9 @@ long long randLong(long long lower, long long upper) {
 
 int main()
 {
+
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
-  char my_local_url_2[] = "/tmp/file_2.dat";
 
   nlohmann::json resp;
   srandom(time(NULL));
@@ -53,29 +53,28 @@ int main()
 
   int n_pl_0 = getPayloadNumber();
 
-  // create random payload files
-  if (createRandomPayload(my_local_url) == 1) return 1;
-  if (createRandomPayload(my_local_url_2) == 1) return 1;
+  nopayloadclient::Client client {"my_gt"};
 
-  resp = nopayloadclient::checkConnection();
+  resp = client.checkConnection();
   std::cout << resp << std::endl;
 
-  // create the global tag if it does not exist
-  resp = nopayloadclient::deleteGlobalTag("my_gt");
+  // delete & re-create the global tag
+  resp = client.deleteGlobalTag();
   std::cout << resp << std::endl;
 
-  std::cout << "trying to create global tag" << std::endl;
-  resp = nopayloadclient::createGlobalTag("my_gt");
+  resp = client.createGlobalTag();
   std::cout << resp << std::endl;
 
   // create the payload type if it does not exist
-  resp = nopayloadclient::createPayloadType("my_pt");
+  resp = client.createPayloadType("my_pt");
   std::cout << resp << std::endl;
 
   // insert should work
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov_start, minor_iov_start,
-                                        major_iov_end, minor_iov_end);
+  if (createRandomPayload(my_local_url) == 1) return 1;
+  std::cout << "attempting insertion" << std::endl;
+  resp = client.insertPayload("my_pt", my_local_url,
+                              major_iov_start, minor_iov_start,
+                              major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
@@ -84,81 +83,82 @@ int main()
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
 
   // getting the url from the DB again should work
-  resp = nopayloadclient::get("my_gt", "my_pt", major_iov, minor_iov);
+  resp = client.getUrlDict(major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
   // inserting another iov with the same payload should work...
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov, minor_iov,
-                                        major_iov_end, minor_iov_end);
+  resp = client.insertPayload("my_pt", my_local_url,
+                              major_iov, minor_iov,
+                              major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
   // ... but not change the number of payloads
-  int n_pl_2 = getPayloadNumber();
-  if (n_pl_2 != n_pl_1) return 1;
+  if (getPayloadNumber() != n_pl_1) return 1;
 
   // trying to lock the global tag
-  resp = nopayloadclient::lockGlobalTag("my_gt");
+  resp = client.lockGlobalTag();
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
   // should not be able to write to a locked gt ...
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov, minor_iov);
+  if (createRandomPayload(my_local_url) == 1) return 1;
+  resp = client.insertPayload("my_pt", my_local_url,
+                              major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
 
+  // ... and not change the number of payloads ...
+  if (getPayloadNumber() != n_pl_1) return 1;
+
   // ... except if the IOV does not overlap with existing
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov_end, minor_iov_end);
+  resp = client.insertPayload("my_pt", my_local_url,
+                              major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
+  if (getPayloadNumber() != n_pl_1 + 1) return 1;
 
   // deletion of locked global tag should fail
-  resp = nopayloadclient::deleteGlobalTag("my_gt");
+  resp = client.deleteGlobalTag();
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
 
   // trying to unlock global tag
-  resp = nopayloadclient::unlockGlobalTag("my_gt");
+  resp = client.unlockGlobalTag();
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
   // insertion should work again after unlocking
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", my_local_url,
-                                        major_iov, minor_iov);
+  resp = client.insertPayload("my_pt", my_local_url,
+                              major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
   // deletion of unlocked global tag should work
-  resp = nopayloadclient::deleteGlobalTag("my_gt");
+  resp = client.deleteGlobalTag();
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
-  // retrieval after deletion should fail
-  resp = nopayloadclient::get("my_gt", "my_pt", major_iov, minor_iov);
+  // retrieval after deletion should fail...
+  resp = client.getUrlDict(major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] == 0) return 1;
 
-
-  // ++++++++++++++++++++++++++++++
-  //    THINGS THAT SHOULD FAIL
-  // ++++++++++++++++++++++++++++++
-
-  // try inserting to a global tag that does not exist should cause an error
-  resp = nopayloadclient::insertPayload("non_existing_gt", "my_pt", my_local_url, 0, 0);
+  // ... and inserting to a global tag that does not exist...
+  client.setGlobalTag("non_existing_gt");
+  resp = client.insertPayload("my_pt", my_local_url, 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
+  client.setGlobalTag("my_gt");
 
   // ... same for payload type that does not exist...
-  resp = nopayloadclient::insertPayload("my_gt", "non_existing_type", my_local_url, 0, 0);
+  resp = client.insertPayload("non_existing_type", my_local_url, 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 
-  // ... and if the payload file does not exist locally ...
-  resp = nopayloadclient::insertPayload("my_gt", "my_pt", "non_existing_file", 0, 0);
+  // ... and if the payload file does not exist locally...
+  resp = client.insertPayload("my_pt", "non_existing_file", 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
 

@@ -7,7 +7,6 @@ RESTHandler::RESTHandler(const json& config) {
     curlwrapper_ = CurlWrapper(config);
     cache_ = Cache(config);
     use_cache_ = true;
-    cache_dict_ = json();
 }
 
 void RESTHandler::setGlobalTag(std::string name) {
@@ -109,29 +108,30 @@ void RESTHandler::deleteGlobalTag() {
 // Private
 json RESTHandler::get(std::string url) {
     if (!use_cache_) return curlwrapper_.get(url);
-    if (!cache_dict_.contains(url)) {
-        cache_dict_[url] = curlwrapper_.get(url);
+    if (!cache_.contains(url)) {
+        json resp = curlwrapper_.get(url);
+        cache_.set(url, resp);
     }
-    return cache_dict_[url];
+    return cache_.get(url);
 }
 
 json RESTHandler::del(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
+    if (trash_cache) cache_.trash();
     return curlwrapper_.del(url);
 }
 
 json RESTHandler::put(std::string url, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
+    if (trash_cache) cache_.trash();
     return curlwrapper_.put(url);
 }
 
 json RESTHandler::put(std::string url, json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
+    if (trash_cache) cache_.trash();
     return curlwrapper_.put(url, data);
 }
 
 json RESTHandler::post(std::string url, json data, bool trash_cache) {
-    if (trash_cache) cache_dict_ = json();
+    if (trash_cache) cache_.trash();
     return curlwrapper_.post(url, data);
 }
 

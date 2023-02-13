@@ -14,12 +14,6 @@ void _checkKeys(json j){
   }
 }
 
-std::string getDefaultConfPath() {
-    std::string path = PROJECT_CONFIG_SEARCH_PATHS;
-    path += "default.json";
-    return path;
-}
-
 std::string getFilePath() {
     char* env_char = std::getenv("NOPAYLOADCLIENT_CONF");
     if (env_char==NULL){
