@@ -5,8 +5,14 @@ namespace nopayloadclient {
 
 
 // Reading
+std::string _get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
+    std::string suffix = backend::getPayloadUrl(gt_name, pl_type, major_iov, minor_iov);
+    std::string full_path = plmover::getFirstGoodUrl(suffix);
+    return full_path;
+}
+
 nlohmann::json get(std::string gt_name, std::string pl_type, long long major_iov, long long minor_iov){
-    return makeResponse(backend::getPayloadUrls)(gt_name, pl_type, major_iov, minor_iov);
+    return makeResponse(_get)(gt_name, pl_type, major_iov, minor_iov);
 }
 
 

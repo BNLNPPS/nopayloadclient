@@ -16,5 +16,6 @@ namespace plmover {
     void compareCheckSums(std::string firstFileUrl, std::string secondFileUrl);
     void prepareUploadFile(payload::Payload& pl);
     void uploadFile(payload::Payload& pl);
+    std::string getFirstGoodUrl(std::string payload_suffix);
 
 }

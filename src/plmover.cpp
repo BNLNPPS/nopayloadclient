@@ -66,4 +66,17 @@ void uploadFile(payload::Payload& pl){
     copyFile(pl.local_url, config::write_dir + pl.remote_url);
 }
 
+std::string getFirstGoodUrl(std::string payload_suffix) {
+    for (const auto dir : config::read_dir_list) {
+        std::string full_url = dir + payload_suffix;
+        if (fileExists(full_url)) return full_url;
+    }
+    std::string text = "Could not find payload <" + payload_suffix + "> ";
+    text += "in any of the following read dirs:";
+    for (const auto dir : config::read_dir_list) {
+        text += " " + dir;
+    }
+    throw BaseException(text);
+}
+
 }
