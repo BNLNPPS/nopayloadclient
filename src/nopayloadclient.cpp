@@ -232,7 +232,6 @@ void Client::insertIov(Payload& pl, IOV& iov) {
 }
 
 json Client::getUrlDict(Moment& mom) {
-    std::cout << "nopayloadclient::Client::getUrlDict()" << std::endl;
     json url_dict;
     for (const json& el : rest_handler_.getPayloadIOVs(mom)){
         Payload pl {el};
