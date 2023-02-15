@@ -47,13 +47,18 @@ header and the widely-spread nlohmann json header-only lib
 #include <nlohmann/json.hpp>
 #include <nopayloadclient.hpp>
 ```
+Firstly, create an instance of the client and configure it for a global tag
+```c
+nopayloadclient::Client client;
+client.setGlobalTag(<gt_name>);
+```
 Payloads can be inserted via
 ```c
-nopayloadclient::insertPayload(<gt_name>, <gt_type>, <local_url>, <major_iov>, <minor_iov>);
+client.insertPayload(<pl_type>, <local_url>, <major_iov>, <minor_iov>);
 ```
-and their url can be retrieved via
+and a dictionary mapping each payload type to one url can be retrieved via
 ```c
-nopayloadclient::get(<gt_name>, <gt_type>, <major_iov>, <minor_iov>);
+client.getUrlDict(<major_iov>, <minor_iov>);
 ```
 Every method returns a nlohmann::json object with a response code and a
 message body in the  following format:
@@ -70,17 +75,17 @@ Currently, the following response codes are implemented:
 An example on how to use this tool in a c++ program can be found in
 ```examples/standalone.cpp```. It can be compiled via
 ```
-g++ -std=c++17 standalone.cpp -lnopayloadclient -lcurl
+g++ -std=c++14 standalone.cpp -lnopayloadclient -lcurl
 ```
 
 
 #### Usage through command line interface
-```examples/cli_npc.cpp``` is an implementation of a command line interface.
+```src/cli.cpp``` is an implementation of a command line interface.
 It is compiled along the rest of the project and can be run via
 ```shell
 cli_npc <command> <parameters>
 ```
-The available commands are: get, createGlobalTag, createPayloadType, lockGlobalTag,
+Some available commands are: get, createGlobalTag, createPayloadType, lockGlobalTag,
 unlockGlobalTag, deleteGlobalTag, insertPayload (overloaded), getSize,
 getPayloadTypes, getGlobalTags. Example workflow:
 ```shell
