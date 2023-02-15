@@ -9,6 +9,10 @@ RESTHandler::RESTHandler(const json& config) {
     use_cache_ = true;
 }
 
+void RESTHandler::clearCache() {
+    cache_.trash();
+}
+
 void RESTHandler::setGlobalTag(std::string name) {
     global_tag_ = name;
 }

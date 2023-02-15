@@ -20,6 +20,7 @@ public:
     RESTHandler(const json& config);
 
     // Configuring
+    void clearCache();
     void setGlobalTag(std::string name);
     std::string getGlobalTag();
 

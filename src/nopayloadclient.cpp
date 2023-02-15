@@ -143,6 +143,13 @@ json Client::getConfDict(){
     )
 }
 
+json Client::clearCache() {
+    TRY(
+        rest_handler_.clearCache();
+        return makeResp("successfully cleared cache");
+    )
+}
+
 std::ostream& operator<<(std::ostream& os, const Client& c) {
     os << "Client instance with following attributes:" << std::endl;
     os << "config = " << c.config_ << std::endl;

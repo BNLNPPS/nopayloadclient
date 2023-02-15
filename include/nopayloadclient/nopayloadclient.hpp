@@ -53,12 +53,13 @@ public:
                        ll major_iov_start, ll minor_iov_start,
                        ll major_iov_end, ll minor_iov_end);
 
-    // Helper (Read-only)
+    // Helper
     json getSize();
     json getPayloadTypes();
     json getGlobalTags();
     json checkConnection();
     json getConfDict();
+    json clearCache();
     friend std::ostream& operator<<(std::ostream& os, const Client& c);
     template<typename T>
     json makeResp(T msg);
