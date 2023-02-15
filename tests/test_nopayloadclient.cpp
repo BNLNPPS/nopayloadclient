@@ -55,7 +55,6 @@ int main()
 
   int n_pl_0 = getPayloadNumber(conf_dict["write_dir"]);
 
-  /*
   resp = client.checkConnection();
   std::cout << resp << std::endl;
   std::cout << client.getConfDict() << std::endl;
@@ -83,18 +82,11 @@ int main()
   // number of payloads should have increased by one
   int n_pl_1 = getPayloadNumber(conf_dict["write_dir"]);
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
-  */
 
   // getting the url from the DB again should work
   resp = client.getUrlDict(major_iov, minor_iov);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
-
-
-
-  return 0;
-
-  /*
 
   // inserting another iov with the same payload should work...
   resp = client.insertPayload("my_pt", my_local_url,
@@ -172,5 +164,4 @@ int main()
   if (resp["code"]==0) return 1;
 
   return EXIT_SUCCESS;
-  */
 }

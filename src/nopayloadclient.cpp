@@ -3,7 +3,7 @@
 namespace nopayloadclient {
 
 Client::Client() {
-    json config_ = getDict();
+    config_ = getDict();
     rest_handler_ = RESTHandler(config_);
     pl_handler_ = PLHandler(config_);
 }
