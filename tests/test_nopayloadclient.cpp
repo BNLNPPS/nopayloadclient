@@ -57,7 +57,6 @@ int main()
 
   resp = client.checkConnection();
   std::cout << resp << std::endl;
-  std::cout << client.getConfDict() << std::endl;
 
   // delete & re-create the global tag
   resp = client.deleteGlobalTag();

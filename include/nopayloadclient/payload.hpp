@@ -7,12 +7,14 @@
 
 #include <nopayloadclient/exception.hpp>
 
+using json = nlohmann::json;
 
 namespace nopayloadclient {
 
 class Payload {
 public:
     Payload(std::string local_url_, std::string type_);
+    Payload(const json& raw_response);
     std::string local_url;
     std::string type;
     std::string bare_file_name;

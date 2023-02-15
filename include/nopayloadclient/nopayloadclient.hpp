@@ -32,7 +32,6 @@ public:
     Client(std::string gt_name);
 
     // use return of dict, not old 'get' method
-    // extract cache class: two dicts: {url: cont}, {url: timestamp}, use std::map for sorting
     // use virtual functions in interface
 
     // Configuration
@@ -53,6 +52,7 @@ public:
     json insertPayload(std::string pl_type, std::string file_url,
                        ll major_iov_start, ll minor_iov_start,
                        ll major_iov_end, ll minor_iov_end);
+
     // Helper (Read-only)
     json getSize();
     json getPayloadTypes();
@@ -60,15 +60,13 @@ public:
     json checkConnection();
     json getConfDict();
     friend std::ostream& operator<<(std::ostream& os, const Client& c);
+    template<typename T>
+    json makeResp(T msg);
 
 private:
     json config_;
     RESTHandler rest_handler_;
     PLHandler pl_handler_;
-
-    // Response creation
-    template<typename T>
-    json makeResp(T msg);
 
     // Writing
     void prepareInsertIov(Payload &pl);
@@ -85,8 +83,7 @@ private:
     void checkGtExists();
     void checkGtStatusExists(std::string name);
     void checkPlTypeExists(std::string name);
-    json prependReadDirs(json& suffix_dict);
-    json getSuffixDict(Moment& mom);
+    json getUrlDict(Moment& mom);
 
     // Helper
     bool objWithNameExists(const json& j, std::string name);

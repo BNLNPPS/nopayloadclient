@@ -12,20 +12,26 @@ Payload::Payload(std::string local_url_, std::string type_){
     remote_url = getRemoteUrl();
 }
 
-std::string Payload::getCheckSum(){
-    const int buffer_size = 4096;
-    FILE* filp = fopen(local_url.c_str(), "rb");
-    if (!filp) {
-       throw BaseException("Could not open file " + local_url);
-    }
-    char buffer[buffer_size];
-    MD5 md5 {};
-    while (int bytes = fread(&buffer, sizeof(char), buffer_size, filp)) {
-        md5.update(buffer, bytes);
-    }
-    fclose(filp);
-    md5.finalize();
-    return md5.hexdigest();
+Payload::Payload(const json& raw_response) {
+    type = raw_response["payload_type"];
+    remote_url = raw_response["payload_iov"][0]["payload_url"];
+    check_sum = raw_response["payload_iov"][0]["checksum"];
+}
+
+std::string Payload::getCheckSum() {
+     FILE* filp = fopen(local_url.c_str(), "rb");
+     if (!filp) {
+        throw PayloadException("Could not open file " + local_url);
+     }
+     const int buffer_size = 4096;
+     char buffer[buffer_size];
+     MD5 md5 {};
+     while (int bytes = fread(&buffer, sizeof(char), buffer_size, filp)) {
+         md5.update(buffer, bytes);
+     }
+     fclose(filp);
+     md5.finalize();
+     return md5.hexdigest();
 }
 
 std::string Payload::getRemoteUrl() {

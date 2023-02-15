@@ -31,8 +31,7 @@ json Client::getUrlDict(ll major_iov, ll minor_iov){
     TRY(
         checkGtExists();
         Moment mom {major_iov, minor_iov};
-        json url_dict = getSuffixDict(mom);
-        prependReadDirs(url_dict);
+        json url_dict = getUrlDict(mom);
         return makeResp(url_dict);
     )
 }
@@ -150,12 +149,12 @@ std::ostream& operator<<(std::ostream& os, const Client& c) {
     return os;
 }
 
-// Private
 template<typename T>
 json Client::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
+// Private
 void Client::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
@@ -225,26 +224,13 @@ void Client::insertIov(Payload& pl, IOV& iov) {
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
-json Client::getSuffixDict(Moment& mom) {
-    json suffix_dict;
-    json j = rest_handler_.getPayloadIOVs(mom);
-    for (const json& el : j){
-        std::string pl_type = el["payload_type"];
-        std::string url = el["payload_iov"][0]["payload_url"];
-        suffix_dict[pl_type] = url;
+json Client::getUrlDict(Moment& mom) {
+    json url_dict;
+    for (const json& el : rest_handler_.getPayloadIOVs(mom)){
+        Payload pl {el};
+        url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
     }
-    return suffix_dict;
-}
-
-nlohmann::json Client::prependReadDirs(json& suffix_dict) {
-    json prepended_dict;
-    for (auto& obj : suffix_dict.items()) {
-        prepended_dict[obj.key()] = std::vector<std::string> {};
-        for (std::string rd : config_["read_dir_list"]) {
-            prepended_dict[obj.key()].push_back(rd + (std::string)obj.value());
-        }
-    }
-    return prepended_dict;
+    return url_dict;
 }
 
 bool Client::objWithNameExists(const json& j, std::string name) {
