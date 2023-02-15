@@ -10,6 +10,7 @@ set(source_files
     plhandler.cpp
     config.cpp
     cache.cpp
+    cli.cpp
 )
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
@@ -30,3 +31,8 @@ target_include_directories(nopayloadclient
 
 install(TARGETS nopayloadclient DESTINATION lib)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)
+
+add_executable(cli_npc cli.cpp)
+target_link_libraries(cli_npc nopayloadclient ${_std_cxx_filesystem_lib})
+target_include_directories(cli_npc PRIVATE ${CMAKE_SOURCE_DIR}/include)
+install(TARGETS cli_npc DESTINATION bin)
