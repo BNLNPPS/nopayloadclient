@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sys/stat.h>
 #include <string>
+#include <vector>
 #include <experimental/filesystem>
 #include <fstream>
 #include <unistd.h>
@@ -22,8 +23,10 @@ public:
     void compareCheckSums(std::string first_url, std::string second_url);
     void prepareUploadFile(Payload& pl);
     void uploadFile(Payload& pl);
+    std::string getFirstGoodUrl(Payload& pl);
 private:
     std::string write_dir_;
+    std::vector<std::string> read_dir_list_;
     bool fileExists(std::string url);
     void checkLocalFileExists(std::string url);
     void checkRemoteFile(std::string url);

@@ -6,11 +6,27 @@ namespace nopayloadclient {
 
 PLHandler::PLHandler(const json& config) {
     write_dir_ = config["write_dir"];
+    for (auto dir : config["read_dir_list"]) {
+        read_dir_list_.push_back(dir);
+    }
 }
 
-bool PLHandler::fileExists(std::string url){
+bool PLHandler::fileExists(std::string url) {
     struct stat buffer;
     return (stat (url.c_str(), &buffer) ==0);
+}
+
+std::string PLHandler::getFirstGoodUrl(Payload& pl) {
+     for (const auto dir : read_dir_list_) {
+         std::string full_url = dir + pl.remote_url;
+         if (fileExists(full_url)) return full_url;
+     }
+     std::string text = "Could not find payload <" + pl.remote_url + "> ";
+     text += "in any of the following read dirs:";
+     for (const auto dir : read_dir_list_) {
+         text += " " + dir;
+     }
+     throw BaseException(text);
 }
 
 void PLHandler::compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){

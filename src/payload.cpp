@@ -13,14 +13,19 @@ Payload::Payload(std::string local_url_, std::string type_){
 }
 
 std::string Payload::getCheckSum(){
-    std::ifstream inFile(local_url, std::ifstream::binary);
-    inFile.seekg(0, inFile.end);
-    long length = inFile.tellg();
-    inFile.seekg(0, inFile.beg);
-    char inFileData[length+1];
-    inFile.read(inFileData, length);
-    inFile.close();
-    return md5(inFileData).c_str();
+    const int buffer_size = 4096;
+    FILE* filp = fopen(local_url.c_str(), "rb");
+    if (!filp) {
+       throw BaseException("Could not open file " + local_url);
+    }
+    char buffer[buffer_size];
+    MD5 md5 {};
+    while (int bytes = fread(&buffer, sizeof(char), buffer_size, filp)) {
+        md5.update(buffer, bytes);
+    }
+    fclose(filp);
+    md5.finalize();
+    return md5.hexdigest();
 }
 
 std::string Payload::getRemoteUrl() {
