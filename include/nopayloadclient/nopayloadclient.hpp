@@ -29,8 +29,10 @@ public:
     Client();
     Client(std::string gt_name);
 
-    // use return of dict, not old 'get' method
-    // use virtual functions in interface
+    virtual json add(int a, int b) {
+        std::cout << "Client::add(a=" << a << ", b=" << b << ")" << std::endl;
+        return json {a+b};
+    }
 
     // Configuration
     virtual json setGlobalTag(std::string name);
@@ -81,7 +83,7 @@ private:
     virtual void checkGtExists();
     virtual void checkGtStatusExists(std::string name);
     virtual void checkPlTypeExists(std::string name);
-    virtual json getUrlDict(Moment& mom);
+    virtual json _getUrlDict(Moment& mom);
 
     // Helper
     virtual bool objWithNameExists(const json& j, std::string name);

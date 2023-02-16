@@ -3,122 +3,109 @@
 namespace nopayloadclient {
 
 CLI::CLI() {
-    command_map_["getSize"] = &CLI::getSize;
-    command_map_["getGlobalTags"] = &CLI::getGlobalTags;
-    command_map_["getPayloadTypes"] = &CLI::getPayloadTypes;
-    command_map_["checkConnection"] = &CLI::checkConnection;
-    command_map_["getUrlDict"] = &CLI::getUrlDict;
-    command_map_["createGlobalTag"] = &CLI::createGlobalTag;
-    command_map_["createPayloadType"] = &CLI::createPayloadType;
-    command_map_["lockGlobalTag"] = &CLI::lockGlobalTag;
-    command_map_["unlockGlobalTag"] = &CLI::unlockGlobalTag;
-    command_map_["deleteGlobalTag"] = &CLI::deleteGlobalTag;
-    command_map_["insertPayload"] = &CLI::insertPayload;
+    insert("getSize", &CLI::getSize);
+    insert("createPayloadType", &CLI::createPayloadType);
+    insert("getConfDict", &CLI::getConfDict);
+    insert("getPayloadTypes", &CLI::getPayloadTypes);
+    insert("getGlobalTags", &CLI::getGlobalTags);
+    insert("checkConnection", &CLI::checkConnection);
+    insert("createGlobalTag", &CLI::createGlobalTag);
+    insert("deleteGlobalTag", &CLI::deleteGlobalTag);
+    insert("lockGlobalTag", &CLI::lockGlobalTag);
+    insert("unlockGlobalTag", &CLI::unlockGlobalTag);
+    insert("getUrlDict", &CLI::getUrlDict);
+    insert("insertPayload", &CLI::insertPayload);
 }
 
-
-void CLI::conduct(Client& client, int argc, char *argv[]) {
-    std::string command = argv[1];
-    if (!command_map_.count(command)) {
-        std::cout << "command " << command << " not found." << std::endl;
-        return;
-    }
-    command_map_[command](client, argc, argv);
+json CLI::getSize(Client& c, int& argc, char* argv[]) {
+    return c.getSize();
 }
 
-
-void CLI::getSize(Client& client, int argc, char *argv[]) {
-    std::cout << "nopayloadclient::CLI::getSize()" << std::endl;
-    std::cout << "typeid(client).name = " << typeid(client).name() << std::endl;
-    std::cout << client.getSize() << std::endl;
+json CLI::createPayloadType(Client& c, int& argc, char* argv[]) {
+    std::string name = argv[2];
+    return c.createPayloadType(name);
 }
 
-
-void CLI::getGlobalTags(Client& client, int argc, char *argv[]) {
-    std::cout << client.getGlobalTags() << std::endl;
+json CLI::getConfDict(Client& c, int& argc, char* argv[]) {
+    return c.getConfDict();
 }
 
-
-void CLI::getPayloadTypes(Client& client, int argc, char *argv[]) {
-    std::cout << client.getPayloadTypes() << std::endl;
+json CLI::getPayloadTypes(Client& c, int& argc, char* argv[]) {
+    return c.getPayloadTypes();
 }
 
-
-void CLI::checkConnection(Client& client, int argc, char *argv[]) {
-    std::cout << client.checkConnection() << std::endl;
+json CLI::getGlobalTags(Client& c, int& argc, char* argv[]) {
+    return c.getGlobalTags();
 }
 
+json CLI::checkConnection(Client& c, int& argc, char* argv[]) {
+    return c.checkConnection();
+}
 
-void CLI::getUrlDict(Client& client, int argc, char *argv[]){
-    std::string global_tag = argv[2];
+json CLI::getUrlDict(Client& c, int& argc, char* argv[]) {
+    std::string gt_name = argv[2];
     long long major_iov = std::atoi(argv[3]);
     long long minor_iov = std::atoi(argv[4]);
-    client.setGlobalTag(global_tag);
-    std::cout << client.getUrlDict(major_iov, minor_iov) << std::endl;
+    c.setGlobalTag(gt_name);
+    return c.getUrlDict(major_iov, minor_iov);
 }
 
-
-void CLI::createGlobalTag(Client& client, int argc, char *argv[]) {
-    std::string global_tag = argv[2];
-    client.setGlobalTag(global_tag);
-    std::cout << client.createGlobalTag() << std::endl;
+json CLI::createGlobalTag(Client& c, int& argc, char* argv[]){
+    std::string name = argv[2];
+    c.setGlobalTag(name);
+    return c.createGlobalTag();
 }
 
-
-void CLI::createPayloadType(Client& client, int argc, char *argv[]) {
-    std::string pt = argv[2];
-    std::cout << client.createPayloadType(pt) << std::endl;
+json CLI::deleteGlobalTag(Client& c, int& argc, char* argv[]){
+    std::string name = argv[2];
+    c.setGlobalTag(name);
+    return c.deleteGlobalTag();
 }
 
-
-void CLI::lockGlobalTag(Client& client, int argc, char *argv[]) {
-    std::string global_tag = argv[2];
-    client.setGlobalTag(global_tag);
-    std::cout << client.lockGlobalTag() << std::endl;
+json CLI::lockGlobalTag(Client& c, int& argc, char* argv[]){
+    std::string name = argv[2];
+    c.setGlobalTag(name);
+    return c.lockGlobalTag();
 }
 
-
-void CLI::unlockGlobalTag(Client& client, int argc, char *argv[]) {
-    std::string global_tag = argv[2];
-    client.setGlobalTag(global_tag);
-    std::cout << client.unlockGlobalTag() << std::endl;
+json CLI::unlockGlobalTag(Client& c, int& argc, char* argv[]){
+    std::string name = argv[2];
+    c.setGlobalTag(name);
+    return c.unlockGlobalTag();
 }
 
-
-void CLI::deleteGlobalTag(Client& client, int argc, char *argv[]) {
-    std::string global_tag = argv[2];
-    client.setGlobalTag(global_tag);
-    std::cout << client.deleteGlobalTag() << std::endl;
-}
-
-
-void CLI::insertPayload(Client& client, int argc, char *argv[]) {
-    std::string global_tag = argv[2];
+json CLI::insertPayload(Client& c, int& argc, char* argv[]){
+    std::string gt = argv[2];
     std::string pt = argv[3];
     std::string file_url = argv[4];
     long long major_iov_start = std::atoi(argv[5]);
     long long minor_iov_start = std::atoi(argv[6]);
-    client.setGlobalTag(global_tag);
+    c.setGlobalTag(gt);
     if (argc == 7) {
-      std::cout << client.insertPayload(pt, file_url, major_iov_start, minor_iov_start) << std::endl;
+        return c.insertPayload(pt, file_url, major_iov_start, minor_iov_start);
     }
     else if (argc == 9) {
-      long long major_iov_end = std::atoi(argv[7]);
-      long long minor_iov_end = std::atoi(argv[8]);
-      std::cout << client.insertPayload(pt, file_url, major_iov_start, minor_iov_start,
-                                        major_iov_end, minor_iov_end) << std::endl;
+        long long major_iov_end = std::atoi(argv[7]);
+        long long minor_iov_end = std::atoi(argv[8]);
+        return c.insertPayload(pt, file_url, major_iov_start, minor_iov_start,
+                               major_iov_end, minor_iov_end);
     }
-    else {
-      std::cout << "insertPayload takes 5 or 7 arguments (" << argc-2 << " were given)." << std::endl;
-    }
+    std::string t = "insertPayload takes 5 or 7 arguments (" + std::to_string(argc-2) + " were given).";
+    return BaseException(t).jsonify();
 }
 
 }
 
 int main(int argc, char *argv[])
 {
-    nopayloadclient::Client client;
     nopayloadclient::CLI cli;
-    cli.conduct(client, argc, argv);
+    nopayloadclient::Client client;
+
+//    for (int i=0; i<argc; i++) {
+//        std::cout << "i = " << i << ", argv[i] = " << argv[i] << std::endl;
+//    }
+
+    std::cout << cli.searchAndCall(argv[1], &client, argc, *argv) << std::endl;
+
     return 0;
 }

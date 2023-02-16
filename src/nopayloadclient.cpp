@@ -16,7 +16,7 @@ Client::Client(std::string gt_name) : Client() {
 json Client::setGlobalTag(std::string name) {
     TRY (
         rest_handler_.setGlobalTag(name);
-        return makeResp("successfully changed global tag to " + name);
+        return makeResp("successfully changed global tag to " + (std::string)name);
     )
 }
 
@@ -31,7 +31,7 @@ json Client::getUrlDict(ll major_iov, ll minor_iov){
     TRY(
         checkGtExists();
         Moment mom {major_iov, minor_iov};
-        json url_dict = getUrlDict(mom);
+        json url_dict = _getUrlDict(mom);
         return makeResp(url_dict);
     )
 }
@@ -83,9 +83,12 @@ json Client::createPayloadType(std::string name) {
 
 json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start) {
+    std::cout << "nopayloadclient::Client::insertPayload()" << std::endl;
     TRY(
         Payload pl {file_url, pl_type};
+        std::cout << "successfully created payload..." << std::endl;
         IOV iov {major_iov_start, minor_iov_start};
+        std::cout << "successfully created iov..." << std::endl;
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
     )
@@ -94,6 +97,11 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
 json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
+    std::cout << "nopayloadclient::Client::insertPayload()" << std::endl;
+    std::cout << major_iov_start << std::endl;
+    std::cout << minor_iov_start << std::endl;
+    std::cout << major_iov_end << std::endl;
+    std::cout << minor_iov_end << std::endl;
     TRY(
         Payload pl {file_url, pl_type};
         IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
@@ -151,7 +159,7 @@ json Client::clearCache() {
 }
 
 std::ostream& operator<<(std::ostream& os, const Client& c) {
-    os << "Client instance with following attributes:" << std::endl;
+    os << "nopayloadclient::Client instance with following attributes:" << std::endl;
     os << "config = " << c.config_ << std::endl;
     return os;
 }
@@ -231,7 +239,7 @@ void Client::insertIov(Payload& pl, IOV& iov) {
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
-json Client::getUrlDict(Moment& mom) {
+json Client::_getUrlDict(Moment& mom) {
     json url_dict;
     for (const json& el : rest_handler_.getPayloadIOVs(mom)){
         Payload pl {el};
