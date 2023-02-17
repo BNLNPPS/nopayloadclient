@@ -4,6 +4,7 @@
 * [Setup](#setup)
 * [Testing](#testing)
 * [Usage](#usage)
+* [Configuration](#configuration)
 
 ### Introduction
 This client-side library is meant to communicate with
@@ -78,7 +79,6 @@ An example on how to use this tool in a c++ program can be found in
 g++ -std=c++14 standalone.cpp -lnopayloadclient -lcurl
 ```
 
-
 #### Usage through command line interface
 ```src/cli.cpp``` is an implementation of a command line interface.
 It is compiled along the rest of the project and can be run via
@@ -99,3 +99,54 @@ cli_npc insertPayload example_gt example_pt /tmp/file.dat 7 0
 cli_npc getUrlDict example_gt 11 0
 cli_npc getSize
 ```
+
+### Configuration
+Configuration of the client happens via a ```.json``` file.
+Examples can be found in the ```config/``` dir. The default
+parameters are defined in ```config/default.json```:
+```json
+{
+  "base_url": "localhost:8000",
+  "api_res": "/api/cdb_rest/",
+  "write_dir": "/tmp/remote_pl_store/",
+  "read_dir_list": ["/tmp/remote_pl_store/", "/cvmfs/place/holder/"],
+  "n_retries": 5,
+  "cache_life_time": 10,
+  "cache_max_mb": 1,
+  "print_time_stamps": false,
+  "use_fake_backend": false
+}
+```
+`base_url` and `api_res` together define the url to the rest api
+of the back end. The example above assumes that the service can be
+reached under `localhost:8000/api/cdb_rest/`.
+
+`write_dir` is where the payload files are copied to. To optimise the
+performance of the file system, subdirectories are created based on the 
+checksum of files. The naming is not meant to be human-readable.
+
+`read_dir_list` defines a list of directories that the client will use to
+find a payload file. The directories are checked in the defined order and the
+complete path of the first payload file found will be used as the payload url.
+In the simplest case, `write_dir` would be the only entry in `read_dir_list`.
+
+`n_retries` specifies the number of retries to contact the rest api before
+throwing an error. The waiting time before each retry grows exponentially.
+
+`cache_life_time` is the lifetime of each entry in the cache. Set to `-1`
+for infinite lifetime.
+
+`cache_max_mb` is the maximum (approximated) size in mb that the cache will occupy.
+The oldest entry will be removed until the cache is below the limit again. Set to `-1`
+for unlimited size.
+
+`print_time_stamps`: if set to `true`, print a time stamp before and after
+calling curl. Mainly used for performance evaluation.
+
+`use_fake_backend`: if set to `true`, the client will not contact the actual rest api
+but instead simulate its response assuming a single, minimal global tag. This is useful
+when testing the client's interface (e.g. when integrating into an existing software framework)
+in an environment where the backend is not reachable. Allows only read operations. Some details on the simulated DB content:
+One global tag `ExampleGT`, two payload lists `ExamplePT1` and `ExamplePT2` with one IOV each that is valid after `major_iov=42`
+and `minor_iov=42`. The inserted payload files where called `example_file.dat` and contained
+the string `data`.
