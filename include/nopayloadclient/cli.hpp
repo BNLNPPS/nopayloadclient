@@ -37,22 +37,22 @@ public:
     virtual json insertPayload(Client& c, int& argc, char* argv[]);
 
     template<typename T>
-    void insert(std::string s1, T f1){
-        m1.insert(std::make_pair(s1, (voidFunctionType)f1));
+    void insertCommand(std::string name, T func){
+        command_map_[name] = (voidFunctionType)func;
     }
 
     template<typename... Args>
-    json searchAndCall(std::string s1, Args&&... args){
-        if (!m1.count(s1)) {
-            return BaseException("command <" + s1 + "> not found").jsonify();
+    json callCommand(std::string name, Args&&... args){
+        if (!command_map_.count(name)) {
+            return BaseException("command <" + name + "> not found").jsonify();
         }
-        auto mapVal = m1[s1];
-        auto typeCastedFun = (json (CLI::*)(Args...))mapVal;
-        return (this->*typeCastedFun)(std::forward<Args>(args)...);
+        auto func = command_map_[name];
+        auto casted_func = (json (CLI::*)(Args...))func;
+        return (this->*casted_func)(std::forward<Args>(args)...);
     }
 
 private:
-    std::map<std::string, voidFunctionType> m1;
+    std::map<std::string, voidFunctionType> command_map_;
 
 };
 

@@ -3,18 +3,18 @@
 namespace nopayloadclient {
 
 CLI::CLI() {
-    insert("getSize", &CLI::getSize);
-    insert("createPayloadType", &CLI::createPayloadType);
-    insert("getConfDict", &CLI::getConfDict);
-    insert("getPayloadTypes", &CLI::getPayloadTypes);
-    insert("getGlobalTags", &CLI::getGlobalTags);
-    insert("checkConnection", &CLI::checkConnection);
-    insert("createGlobalTag", &CLI::createGlobalTag);
-    insert("deleteGlobalTag", &CLI::deleteGlobalTag);
-    insert("lockGlobalTag", &CLI::lockGlobalTag);
-    insert("unlockGlobalTag", &CLI::unlockGlobalTag);
-    insert("getUrlDict", &CLI::getUrlDict);
-    insert("insertPayload", &CLI::insertPayload);
+    insertCommand("getSize", &CLI::getSize);
+    insertCommand("createPayloadType", &CLI::createPayloadType);
+    insertCommand("getConfDict", &CLI::getConfDict);
+    insertCommand("getPayloadTypes", &CLI::getPayloadTypes);
+    insertCommand("getGlobalTags", &CLI::getGlobalTags);
+    insertCommand("checkConnection", &CLI::checkConnection);
+    insertCommand("createGlobalTag", &CLI::createGlobalTag);
+    insertCommand("deleteGlobalTag", &CLI::deleteGlobalTag);
+    insertCommand("lockGlobalTag", &CLI::lockGlobalTag);
+    insertCommand("unlockGlobalTag", &CLI::unlockGlobalTag);
+    insertCommand("getUrlDict", &CLI::getUrlDict);
+    insertCommand("insertPayload", &CLI::insertPayload);
 }
 
 json CLI::getSize(Client& c, int& argc, char* argv[]) {
@@ -100,12 +100,6 @@ int main(int argc, char *argv[])
 {
     nopayloadclient::CLI cli;
     nopayloadclient::Client client;
-
-//    for (int i=0; i<argc; i++) {
-//        std::cout << "i = " << i << ", argv[i] = " << argv[i] << std::endl;
-//    }
-
-    std::cout << cli.searchAndCall(argv[1], &client, argc, *argv) << std::endl;
-
+    std::cout << cli.callCommand(argv[1], &client, argc, *argv) << std::endl;
     return 0;
 }
