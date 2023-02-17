@@ -17,6 +17,7 @@ struct IOV {
         IOV(Moment(major_start, minor_start)) {};
     IOV(ll major_start, ll minor_start, ll major_end, ll minor_end) :
         IOV(Moment(major_start, minor_start), Moment(major_end, minor_end)) {};
+    bool contains(Moment& mom);
     friend std::ostream& operator<< (std::ostream& os, const IOV& i);
 };
 

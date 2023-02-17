@@ -16,6 +16,13 @@ IOV::IOV(Moment start_, Moment end_) {
     is_open = false;
 };
 
+bool IOV::contains(Moment& mom) {
+    if (is_open) {
+        return !(mom < start);
+    }
+    return !(mom < start) && (mom < end);
+}
+
 std::ostream& operator<< (std::ostream& os, const IOV& i) {
     os << "IOV(" << std::endl;
     os << "  start = " << i.start;
