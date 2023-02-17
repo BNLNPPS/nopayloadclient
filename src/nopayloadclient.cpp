@@ -83,12 +83,9 @@ json Client::createPayloadType(std::string name) {
 
 json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start) {
-    std::cout << "nopayloadclient::Client::insertPayload()" << std::endl;
     TRY(
         Payload pl {file_url, pl_type};
-        std::cout << "successfully created payload..." << std::endl;
         IOV iov {major_iov_start, minor_iov_start};
-        std::cout << "successfully created iov..." << std::endl;
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
     )
@@ -97,11 +94,6 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
 json Client::insertPayload(std::string pl_type, std::string file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
-    std::cout << "nopayloadclient::Client::insertPayload()" << std::endl;
-    std::cout << major_iov_start << std::endl;
-    std::cout << minor_iov_start << std::endl;
-    std::cout << major_iov_end << std::endl;
-    std::cout << minor_iov_end << std::endl;
     TRY(
         Payload pl {file_url, pl_type};
         IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
