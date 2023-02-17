@@ -19,12 +19,12 @@ public:
     CurlWrapper() {};
     CurlWrapper(const json& config);
     // Reading
-    json get(std::string url);
+    virtual json get(std::string url);
     // Writing
-    json del(std::string url);
-    json put(std::string url);
-    json put(std::string url, json jsonData);
-    json post(std::string url, json jsonData);
+    virtual json del(std::string url);
+    virtual json put(std::string url);
+    virtual json put(std::string url, json jsonData);
+    virtual json post(std::string url, json jsonData);
 private:
     std::string base_url_;
     int n_retries_;

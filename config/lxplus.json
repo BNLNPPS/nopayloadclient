@@ -4,5 +4,8 @@
   "write_dir": "/eos/user/l/ligerlac/remote_pl_store/",
   "read_dir_list": ["/eos/user/l/ligerlac/remote_pl_store/", "/cvmfs/place/holder/"],
   "n_retries": 5,
-  "print_time_stamps": false
+  "cache_life_time": 10,
+  "cache_max_mb": 1,
+  "print_time_stamps": false,
+  "use_fake_backend": false
 }

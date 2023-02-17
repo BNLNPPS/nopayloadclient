@@ -4,7 +4,13 @@ namespace nopayloadclient {
 
 // Config
 RESTHandler::RESTHandler(const json& config) {
-    curlwrapper_ = CurlWrapper(config);
+    //curlwrapper_ = CurlWrapper(config);
+    if (config["use_fake_backend"]) {
+        curlwrapper_.reset(new CurlFaker(config));
+    }
+    else {
+        curlwrapper_.reset(new CurlWrapper(config));
+    }
     cache_ = Cache(config);
     use_cache_ = true;
 }
@@ -111,9 +117,9 @@ void RESTHandler::deleteGlobalTag() {
 
 // Private
 json RESTHandler::get(std::string url) {
-    if (!use_cache_) return curlwrapper_.get(url);
+    if (!use_cache_) return curlwrapper_->get(url);
     if (!cache_.contains(url)) {
-        json resp = curlwrapper_.get(url);
+        json resp = curlwrapper_->get(url);
         cache_.set(url, resp);
     }
     return cache_.get(url);
@@ -121,22 +127,22 @@ json RESTHandler::get(std::string url) {
 
 json RESTHandler::del(std::string url, bool trash_cache) {
     if (trash_cache) cache_.trash();
-    return curlwrapper_.del(url);
+    return curlwrapper_->del(url);
 }
 
 json RESTHandler::put(std::string url, bool trash_cache) {
     if (trash_cache) cache_.trash();
-    return curlwrapper_.put(url);
+    return curlwrapper_->put(url);
 }
 
 json RESTHandler::put(std::string url, json data, bool trash_cache) {
     if (trash_cache) cache_.trash();
-    return curlwrapper_.put(url, data);
+    return curlwrapper_->put(url, data);
 }
 
 json RESTHandler::post(std::string url, json data, bool trash_cache) {
     if (trash_cache) cache_.trash();
-    return curlwrapper_.post(url, data);
+    return curlwrapper_->post(url, data);
 }
 
 }

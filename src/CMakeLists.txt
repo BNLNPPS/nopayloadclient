@@ -4,6 +4,7 @@ set(source_files
     nopayloadclient.cpp
     resthandler.cpp
     curlwrapper.cpp
+    curlfaker.cpp
     payload.cpp
     moment.cpp
     iov.cpp

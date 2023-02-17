@@ -6,5 +6,6 @@
   "n_retries": 5,
   "cache_life_time": 10,
   "cache_max_mb": 1,
-  "print_time_stamps": false
+  "print_time_stamps": false,
+  "use_fake_backend": false
 }

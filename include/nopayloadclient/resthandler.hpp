@@ -1,9 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <nlohmann/json.hpp>
 
 #include <nopayloadclient/curlwrapper.hpp>
+#include <nopayloadclient/curlfaker.hpp>
 #include <nopayloadclient/cache.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
@@ -44,7 +46,8 @@ public:
     long long createPayloadIOV(Payload& pl, IOV& iov);
 
 private:
-    CurlWrapper curlwrapper_;
+    //CurlWrapper curlwrapper_;
+    std::unique_ptr<CurlWrapper> curlwrapper_;
     Cache cache_;
     std::string global_tag_;
     bool use_cache_;
