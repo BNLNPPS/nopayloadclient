@@ -113,7 +113,7 @@ json Client::getSize(){
         }
         json j = {{"n_global_tag", n_gt},
                   {"n_iov_attached", n_iov_attached},
-                  {"n_pt", getPayloadTypes().size()}};
+                  {"n_pt", rest_handler_.getPayloadTypes().size()}};
         return makeResp(j);
     )
 }
