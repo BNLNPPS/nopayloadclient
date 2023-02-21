@@ -41,8 +41,8 @@ private:
     double getSize();
     bool isEmpty();
     long long getNowTs();
-    double life_time_;
-    double max_mb_;
+    unsigned int life_time_;
+    unsigned int max_mb_;
 };
 
 }
