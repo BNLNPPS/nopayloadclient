@@ -8,11 +8,11 @@ using ll = long long;
 namespace nopayloadclient {
 
 struct IOV {
-    Moment start;
-    Moment end;
-    bool is_open;
-    IOV(Moment start_);
-    IOV(Moment start_, Moment end_);
+    Moment start_;
+    Moment end_;
+    bool is_open_;
+    IOV(Moment start);
+    IOV(Moment start, Moment end);
     IOV(ll major_start, ll minor_start) :
         IOV(Moment(major_start, minor_start)) {};
     IOV(ll major_start, ll minor_start, ll major_end, ll minor_end) :
