@@ -2,31 +2,31 @@
 
 namespace nopayloadclient {
 
-IOV::IOV(Moment start_) {
-    start = start_;
-    is_open = true;
+IOV::IOV(Moment start) {
+    start_ = start;
+    is_open_ = true;
 };
 
-IOV::IOV(Moment start_, Moment end_) {
-    if (end_ < start_) {
+IOV::IOV(Moment start, Moment end) {
+    if (end < start) {
         throw IOVException("End of IOV comes before start");
     }
-    start = start_;
-    end = end_;
-    is_open = false;
+    start_ = start;
+    end_ = end;
+    is_open_ = false;
 };
 
 bool IOV::contains(Moment& mom) {
-    if (is_open) {
-        return !(mom < start);
+    if (is_open_) {
+        return !(mom < start_);
     }
-    return !(mom < start) && (mom < end);
+    return !(mom < start_) && (mom < end_);
 }
 
 std::ostream& operator<< (std::ostream& os, const IOV& i) {
     os << "IOV(" << std::endl;
-    os << "  start = " << i.start;
-    os << "  end = " << i.end;
+    os << "  start = " << i.start_;
+    os << "  end = " << i.end_;
     os << ")" << std::endl;
     return os;
 };

@@ -46,7 +46,7 @@ json RESTHandler::getPayloadLists() {
 
 json RESTHandler::getPayloadIOVs(Moment& mom){
     return get("payloadiovs/?gtName=" + global_tag_ + "&majorIOV=" +
-               std::to_string(mom.major) + "&minorIOV=" + std::to_string(mom.minor));
+               std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
 }
 
 // Writing
@@ -91,13 +91,13 @@ void RESTHandler::unlockGlobalTag(){
 ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){
     json j = {
         {"payload_url", pl.remote_url},
-        {"major_iov", iov.start.major},
-        {"minor_iov", iov.start.minor},
+        {"major_iov", iov.start_.major_},
+        {"minor_iov", iov.start_.minor_},
         {"checksum", pl.check_sum}
     };
-    if (!iov.is_open){
-        j["major_iov_end"] = iov.end.major;
-        j["minor_iov_end"] = iov.end.minor;
+    if (!iov.is_open_){
+        j["major_iov_end"] = iov.end_.major_;
+        j["minor_iov_end"] = iov.end_.minor_;
     }
     json res = post("piov", j);
     return res["id"];
