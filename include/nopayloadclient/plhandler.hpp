@@ -24,11 +24,11 @@ public:
     void prepareUploadFile(Payload& pl);
     void uploadFile(Payload& pl);
     std::string getFirstGoodUrl(Payload& pl);
+    void checkFileExists(std::string url);
 private:
     std::string write_dir_;
     std::vector<std::string> read_dir_list_;
     bool fileExists(std::string url);
-    void checkLocalFileExists(std::string url);
     void checkRemoteFile(std::string url);
     void checkRemoteDirExists();
     void createDirectory(std::string path);

@@ -5,6 +5,7 @@ namespace nopayloadclient {
 Cache::Cache(const json& config) {
     life_time_ = config["cache_life_time"];
     max_mb_ = config["cache_max_mb"];
+
 }
 
 bool Cache::contains(std::string url) {

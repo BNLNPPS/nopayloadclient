@@ -37,6 +37,7 @@ public:
     // Configuration
     virtual json setGlobalTag(std::string name);
     virtual json getGlobalTag();
+    virtual json override(std::string pl_type, std::string file_url);
 
     // Reading
     virtual json getUrlDict(ll major_iov, ll minor_iov);
@@ -66,6 +67,7 @@ public:
 
 private:
     json config_;
+    json override_dict_;
     RESTHandler rest_handler_;
     PLHandler pl_handler_;
 

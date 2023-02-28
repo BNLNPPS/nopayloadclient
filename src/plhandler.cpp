@@ -42,9 +42,9 @@ void PLHandler::compareCheckSums(std::string firstFileUrl, std::string secondFil
     */
 }
 
-void PLHandler::checkLocalFileExists(std::string url){
+void PLHandler::checkFileExists(std::string url){
     if (!fileExists(url)){
-        std::string msg = "local payload file does not exist (";
+        std::string msg = "payload file does not exist (";
         msg += url + ")";
         throw BaseException(msg);
     }
@@ -71,7 +71,7 @@ void PLHandler::createDirectory(std::string path){
 }
 
 void PLHandler::prepareUploadFile(Payload& pl) {
-    checkLocalFileExists(pl.local_url);
+    checkFileExists(pl.local_url);
     //checkRemoteFile(pl.remote_url);
     checkRemoteDirExists();
 }

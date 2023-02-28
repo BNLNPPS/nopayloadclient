@@ -26,12 +26,23 @@ json Client::getGlobalTag() {
     )
 }
 
+json Client::override(std::string pl_type, std::string file_url) {
+    TRY (
+        pl_handler_.checkFileExists(file_url);
+        override_dict_[pl_type] = file_url;
+        return makeResp("successfully overrode payload type " + pl_type);
+    )
+}
+
 // Reading
 json Client::getUrlDict(ll major_iov, ll minor_iov){
     TRY(
         checkGtExists();
         Moment mom {major_iov, minor_iov};
         json url_dict = _getUrlDict(mom);
+        for (auto& el : override_dict_.items()) {
+            url_dict[el.key()] = el.value();
+        }
         return makeResp(url_dict);
     )
 }

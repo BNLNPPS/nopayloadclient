@@ -39,6 +39,7 @@ int main()
 
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
+  char my_overriden_url[] = "/tmp/overriden_file.dat";
 
   json resp;
   srandom(time(NULL));
@@ -87,7 +88,26 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
+  // check overriding
+  resp = client.createPayloadType("overriden_pt");
+  std::cout << resp << std::endl;
+  if (createRandomPayload(my_overriden_url) == 1) return 1;
+  resp = client.insertPayload("overriden_pt", my_overriden_url,
+                              major_iov_start, minor_iov_start,
+                              major_iov_end, minor_iov_end);
+  std::cout << resp << std::endl;
+  resp = client.getUrlDict(major_iov, minor_iov);
+  std::cout << resp << std::endl;
+  std::string old_file_name = resp["msg"]["overriden_pt"];
+  client.override("overriden_pt", my_overriden_url);
+  resp = client.getUrlDict(major_iov, minor_iov);
+  std::cout << resp << std::endl;
+  std::string new_file_name = resp["msg"]["overriden_pt"];
+  if (old_file_name == new_file_name) return 1;
+  if (new_file_name != my_overriden_url) return 1;
+
   // inserting another iov with the same payload should work...
+  int n_pl_2 = getPayloadNumber(conf_dict["write_dir"]);
   resp = client.insertPayload("my_pt", my_local_url,
                               major_iov, minor_iov,
                               major_iov_end, minor_iov_end);
@@ -95,7 +115,7 @@ int main()
   if (resp["code"] != 0) return 1;
 
   // ... but not change the number of payloads
-  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_1) return 1;
+  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_2) return 1;
 
   // trying to lock the global tag
   resp = client.lockGlobalTag();
@@ -110,14 +130,14 @@ int main()
   if (resp["code"] == 0) return 1;
 
   // ... and not change the number of payloads ...
-  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_1) return 1;
+  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_2) return 1;
 
   // ... except if the IOV does not overlap with existing
   resp = client.insertPayload("my_pt", my_local_url,
                               major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
-  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_1 + 1) return 1;
+  if (getPayloadNumber(conf_dict["write_dir"]) != n_pl_2 + 1) return 1;
 
   // deletion of locked global tag should fail
   resp = client.deleteGlobalTag();
