@@ -9,20 +9,20 @@ Client::Client() {
 }
 
 Client::Client(std::string gt_name) : Client() {
-    rest_handler_.setGlobalTag(gt_name);
+    global_tag_ = gt_name;
 }
 
 // Configuring
 json Client::setGlobalTag(std::string name) {
     TRY (
-        rest_handler_.setGlobalTag(name);
-        return makeResp("successfully changed global tag to " + (std::string)name);
+        global_tag_ = name;
+        return makeResp("successfully changed global tag to " + name);
     )
 }
 
 json Client::getGlobalTag() {
     TRY (
-        return makeResp(rest_handler_.getGlobalTag());
+        return makeResp(global_tag_);
     )
 }
 
@@ -37,7 +37,7 @@ json Client::override(std::string pl_type, std::string file_url) {
 // Reading
 json Client::getUrlDict(ll major_iov, ll minor_iov){
     TRY(
-        checkGtExists();
+        checkGtExists(global_tag_);
         Moment mom {major_iov, minor_iov};
         json url_dict = _getUrlDict(mom);
         for (auto& el : override_dict_.items()) {
@@ -53,14 +53,14 @@ json Client::createGlobalTag() {
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
-        rest_handler_.createGlobalTagObject("unlocked");
+        rest_handler_.createGlobalTagObject(global_tag_, "unlocked");
         return makeResp("successfully created global tag");
     )
 }
 
 json Client::deleteGlobalTag() {
     TRY(
-        rest_handler_.deleteGlobalTag();
+        rest_handler_.deleteGlobalTag(global_tag_);
         return makeResp("successfully deleted global tag");
     )
 }
@@ -70,7 +70,7 @@ json Client::lockGlobalTag() {
         if (!gtStatusExists("locked")){
             rest_handler_.createGlobalTagStatus("locked");
         }
-        rest_handler_.lockGlobalTag();
+        rest_handler_.lockGlobalTag(global_tag_);
         return makeResp("successfully locked global tag");
     )
 }
@@ -80,8 +80,17 @@ json Client::unlockGlobalTag() {
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
-        rest_handler_.unlockGlobalTag();
+        rest_handler_.unlockGlobalTag(global_tag_);
         return makeResp("successfully unlocked global tag");
+    )
+}
+
+json Client::cloneGlobalTag(std::string target) {
+    TRY(
+        checkGtExists(global_tag_);
+        checkGtDoesNotExist(target);
+        rest_handler_.cloneGlobalTag(global_tag_, target);
+        return makeResp("successfully cloned global tag");
     )
 }
 
@@ -181,10 +190,10 @@ void Client::insertPayload(Payload &pl, IOV &iov) {
 }
 
 void Client::prepareInsertIov(Payload &pl) {
-    checkGtExists();
+    checkGtExists(global_tag_);
     checkPlTypeExists(pl.type);
     if (!gtHasPlType(pl.type)) {
-        std::cout << "gt " << rest_handler_.getGlobalTag() << " has no pl type " << pl.type << std::endl;
+        std::cout << "gt " << global_tag_ << " has no pl type " << pl.type << std::endl;
         std::cout << "attempting to attach it..." << std::endl;
         createNewPll(pl.type);
     }
@@ -195,9 +204,9 @@ bool Client::gtStatusExists(std::string name){
     return objWithNameExists(j, name);
 }
 
-bool Client::gtExists(){
+bool Client::gtExists(std::string name){
     json j = rest_handler_.getGlobalTags();
-    return objWithNameExists(j, rest_handler_.getGlobalTag());
+    return objWithNameExists(j, name);
 }
 
 bool Client::plTypeExists(std::string pl_type){
@@ -212,9 +221,16 @@ void Client::checkGtStatusExists(std::string name){
     }
 }
 
-void Client::checkGtExists(){
-    if (!gtExists()){
-        std::string msg = "no global tag with name '"+rest_handler_.getGlobalTag()+"' exists";
+void Client::checkGtExists(std::string name){
+    if (!gtExists(name)){
+        std::string msg = "no global tag with name '"+name+"' exists";
+        throw BaseException(msg);
+    }
+}
+
+void Client::checkGtDoesNotExist(std::string name){
+    if (gtExists(name)){
+        std::string msg = "global tag with name '"+name+"' already exists";
         throw BaseException(msg);
     }
 }
@@ -227,24 +243,24 @@ void Client::checkPlTypeExists(std::string pl_type){
 }
 
 bool Client::gtHasPlType(std::string pl_type){
-    json j = rest_handler_.getPayloadLists();
+    json j = rest_handler_.getPayloadLists(global_tag_);
     return (j.contains(pl_type));
 }
 
 void Client::createNewPll(std::string pl_type){
     std::string pll_name = rest_handler_.createPayloadList(pl_type);
-    rest_handler_.attachPayloadList(pll_name);
+    rest_handler_.attachPayloadList(global_tag_, pll_name);
 }
 
 void Client::insertIov(Payload& pl, IOV& iov) {
-    std::string pll_name = rest_handler_.getPayloadLists()[pl.type];
+    std::string pll_name = rest_handler_.getPayloadLists(global_tag_)[pl.type];
     ll piov_id = rest_handler_.createPayloadIOV(pl, iov);
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
 json Client::_getUrlDict(Moment& mom) {
     json url_dict;
-    for (const json& el : rest_handler_.getPayloadIOVs(mom)){
+    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)){
         Payload pl {el};
         url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
     }

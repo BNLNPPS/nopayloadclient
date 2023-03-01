@@ -23,24 +23,23 @@ public:
 
     // Configuring
     void clearCache();
-    void setGlobalTag(std::string name);
-    std::string getGlobalTag();
 
     // Reading
     json getGlobalTags();
     json getGlobalTagStatuses();
     json getPayloadTypes();
-    json getPayloadLists();
-    json getPayloadIOVs(Moment& mom);
+    json getPayloadLists(std::string global_tag);
+    json getPayloadIOVs(std::string global_tag, Moment& mom);
 
     // Writing
     void createGlobalTagStatus(std::string name);
-    void createGlobalTagObject(std::string status);
+    void createGlobalTagObject(std::string name, std::string status);
     void createPayloadType(std::string name);
-    void attachPayloadList(std::string pl_name);
-    void lockGlobalTag();
-    void unlockGlobalTag();
-    void deleteGlobalTag();
+    void attachPayloadList(std::string global_tag, std::string pl_name);
+    void lockGlobalTag(std::string name);
+    void unlockGlobalTag(std::string name);
+    void deleteGlobalTag(std::string name);
+    void cloneGlobalTag(std::string source, std::string target);
     void attachPayloadIOV(std::string pll_name, long long piov_id);
     std::string createPayloadList(std::string type);
     long long createPayloadIOV(Payload& pl, IOV& iov);
@@ -49,7 +48,6 @@ private:
     //CurlWrapper curlwrapper_;
     std::unique_ptr<CurlWrapper> curlwrapper_;
     Cache cache_;
-    std::string global_tag_;
     bool use_cache_;
 
     json get(std::string url);

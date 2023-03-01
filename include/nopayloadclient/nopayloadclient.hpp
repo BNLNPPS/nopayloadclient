@@ -48,6 +48,7 @@ public:
     virtual json deleteGlobalTag();
     virtual json lockGlobalTag();
     virtual json unlockGlobalTag();
+    virtual json cloneGlobalTag(std::string target);
     virtual json insertPayload(std::string pl_type, std::string file_url,
                        ll major_iov_start, ll minor_iov_start);
     virtual json insertPayload(std::string pl_type, std::string file_url,
@@ -68,6 +69,7 @@ public:
 private:
     json config_;
     json override_dict_;
+    std::string global_tag_;
     RESTHandler rest_handler_;
     PLHandler pl_handler_;
 
@@ -78,11 +80,12 @@ private:
     virtual void createNewPll(std::string pl_type);
 
     // Reading
-    virtual bool gtExists();
+    virtual bool gtExists(std::string name);
     virtual bool gtStatusExists(std::string name);
     virtual bool plTypeExists(std::string pl_type);
     virtual bool gtHasPlType(std::string pl_type);
-    virtual void checkGtExists();
+    virtual void checkGtExists(std::string name);
+    virtual void checkGtDoesNotExist(std::string name);
     virtual void checkGtStatusExists(std::string name);
     virtual void checkPlTypeExists(std::string name);
     virtual json _getUrlDict(Moment& mom);

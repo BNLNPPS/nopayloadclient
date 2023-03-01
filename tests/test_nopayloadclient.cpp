@@ -88,6 +88,17 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
+  // check cloning
+  std::cout << "CHECK CLONING" << std::endl;
+  json my_url_dict = resp["msg"];
+  resp = client.cloneGlobalTag("cloned_gt");
+  std::cout << resp << std::endl;
+  client.setGlobalTag("cloned_gt");
+  json cloned_url_dict = client.getUrlDict(major_iov, minor_iov)["msg"];
+  if (my_url_dict != cloned_url_dict) return 1;
+  client.deleteGlobalTag();
+  client.setGlobalTag("my_gt");
+
   // check overriding
   resp = client.createPayloadType("overriden_pt");
   std::cout << resp << std::endl;

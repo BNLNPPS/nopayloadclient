@@ -19,14 +19,6 @@ void RESTHandler::clearCache() {
     cache_.trash();
 }
 
-void RESTHandler::setGlobalTag(std::string name) {
-    global_tag_ = name;
-}
-
-std::string RESTHandler::getGlobalTag() {
-    return global_tag_;
-}
-
 // Reading
 json RESTHandler::getGlobalTags() {
     return get("globalTags");
@@ -40,12 +32,12 @@ json RESTHandler::getPayloadTypes() {
     return get("pt");
 }
 
-json RESTHandler::getPayloadLists() {
-    return get("gtPayloadLists/" + global_tag_);
+json RESTHandler::getPayloadLists(std::string global_tag) {
+    return get("gtPayloadLists/" + global_tag);
 }
 
-json RESTHandler::getPayloadIOVs(Moment& mom){
-    return get("payloadiovs/?gtName=" + global_tag_ + "&majorIOV=" +
+json RESTHandler::getPayloadIOVs(std::string global_tag, Moment& mom){
+    return get("payloadiovs/?gtName=" + global_tag + "&majorIOV=" +
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
 }
 
@@ -54,9 +46,9 @@ void RESTHandler::createGlobalTagStatus(std::string name){
     post("gtstatus", {{"name", name}});
 }
 
-void RESTHandler::createGlobalTagObject(std::string status) {
+void RESTHandler::createGlobalTagObject(std::string name, std::string status) {
     json j = {
-        {"name", global_tag_},
+        {"name", name},
         {"status", status},
         {"author", std::getenv("USER")}
     };
@@ -67,25 +59,41 @@ void RESTHandler::createPayloadType(std::string name){
     post("pt", {{"name", name}});
 }
 
-std::string RESTHandler::createPayloadList(std::string type){
+std::string RESTHandler::createPayloadList(std::string type) {
     json res = post("pl", {{"payload_type", type}});
     return res["name"];
 }
 
-void RESTHandler::attachPayloadList(std::string pl_name){
+void RESTHandler::attachPayloadList(std::string global_tag, std::string pl_name) {
     json j = {
         {"payload_list", pl_name},
-        {"global_tag", global_tag_}
+        {"global_tag", global_tag}
     };
     put("pl_attach", j);
 }
 
-void RESTHandler::lockGlobalTag(){
-    put("gt_change_status/" + global_tag_ + "/locked");
+void RESTHandler::lockGlobalTag(std::string name) {
+    put("gt_change_status/" + name + "/locked");
 }
 
-void RESTHandler::unlockGlobalTag(){
-    put("gt_change_status/" + global_tag_ + "/unlocked");
+void RESTHandler::unlockGlobalTag(std::string name){
+    put("gt_change_status/" + name + "/unlocked");
+}
+
+void RESTHandler::cloneGlobalTag(std::string source, std::string target) {
+    std::cout << "cloneGlobalTag(source=" << source << ", target=" << target << ")" << std::endl;
+    /*
+    json j = {
+        {"globalTagName", source},
+        {"cloneName", target}
+    };
+    */
+    //std::cout << "j = " << j << std::endl;
+    //post("cloneGlobalTag", {{"globalTagName", source}, {"cloneName", target}});
+    std::string url = "cloneGlobalTag/" + source + "/" + target;
+    std::cout << "url = " << url << std::endl;
+    post(url, {});
+    std::cout << "... done." << std::endl;
 }
 
 ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){
@@ -111,8 +119,8 @@ void RESTHandler::attachPayloadIOV(std::string pll_name, ll piov_id){
     put("piov_attach", j);
 }
 
-void RESTHandler::deleteGlobalTag() {
-    del("deleteGlobalTag/" + global_tag_);
+void RESTHandler::deleteGlobalTag(std::string name) {
+    del("deleteGlobalTag/" + name);
 }
 
 // Private
