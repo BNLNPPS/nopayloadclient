@@ -41,6 +41,7 @@ public:
 
     // Reading
     virtual json getUrlDict(ll major_iov, ll minor_iov);
+    virtual json getUrlDictSQL(ll major_iov, ll minor_iov);
 
     // Writing
     virtual json createPayloadType(std::string pl_type);
@@ -89,6 +90,7 @@ private:
     virtual void checkGtStatusExists(std::string name);
     virtual void checkPlTypeExists(std::string name);
     virtual json _getUrlDict(Moment& mom);
+    virtual json _getUrlDictSQL(Moment& mom);
 
     // Helper
     virtual bool objWithNameExists(const json& j, std::string name);

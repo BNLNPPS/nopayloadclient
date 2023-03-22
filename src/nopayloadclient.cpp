@@ -47,6 +47,18 @@ json Client::getUrlDict(ll major_iov, ll minor_iov){
     )
 }
 
+json Client::getUrlDictSQL(ll major_iov, ll minor_iov){
+    TRY(
+        checkGtExists(global_tag_);
+        Moment mom {major_iov, minor_iov};
+        json url_dict = _getUrlDictSQL(mom);
+        for (auto& el : override_dict_.items()) {
+            url_dict[el.key()] = el.value();
+        }
+        return makeResp(url_dict);
+    )
+}
+
 // Writing
 json Client::createGlobalTag() {
     TRY(
@@ -261,6 +273,15 @@ void Client::insertIov(Payload& pl, IOV& iov) {
 json Client::_getUrlDict(Moment& mom) {
     json url_dict;
     for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)){
+        Payload pl {el};
+        url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
+    }
+    return url_dict;
+}
+
+json Client::_getUrlDictSQL(Moment& mom) {
+    json url_dict;
+    for (const json& el : rest_handler_.getPayloadIOVsSQL(global_tag_, mom)){
         Payload pl {el};
         url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
     }

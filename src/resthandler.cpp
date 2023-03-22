@@ -41,6 +41,11 @@ json RESTHandler::getPayloadIOVs(std::string global_tag, Moment& mom){
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
 }
 
+json RESTHandler::getPayloadIOVsSQL(std::string global_tag, Moment& mom){
+    return get("payloadiovssql/?gtName=" + global_tag + "&majorIOV=" +
+               std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
+}
+
 // Writing
 void RESTHandler::createGlobalTagStatus(std::string name){
     post("gtstatus", {{"name", name}});
@@ -81,19 +86,8 @@ void RESTHandler::unlockGlobalTag(std::string name){
 }
 
 void RESTHandler::cloneGlobalTag(std::string source, std::string target) {
-    std::cout << "cloneGlobalTag(source=" << source << ", target=" << target << ")" << std::endl;
-    /*
-    json j = {
-        {"globalTagName", source},
-        {"cloneName", target}
-    };
-    */
-    //std::cout << "j = " << j << std::endl;
-    //post("cloneGlobalTag", {{"globalTagName", source}, {"cloneName", target}});
     std::string url = "cloneGlobalTag/" + source + "/" + target;
-    std::cout << "url = " << url << std::endl;
     post(url, {});
-    std::cout << "... done." << std::endl;
 }
 
 ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){

@@ -30,6 +30,7 @@ public:
     json getPayloadTypes();
     json getPayloadLists(std::string global_tag);
     json getPayloadIOVs(std::string global_tag, Moment& mom);
+    json getPayloadIOVsSQL(std::string global_tag, Moment& mom);
 
     // Writing
     void createGlobalTagStatus(std::string name);

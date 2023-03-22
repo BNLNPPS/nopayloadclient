@@ -13,9 +13,16 @@ Payload::Payload(std::string local_url_, std::string type_){
 }
 
 Payload::Payload(const json& raw_response) {
-    type = raw_response["payload_type"];
-    remote_url = raw_response["payload_iov"][0]["payload_url"];
-    check_sum = raw_response["payload_iov"][0]["checksum"];
+    if (raw_response.type()==json::value_t::array) {
+        type = raw_response[0];
+        remote_url = raw_response[1];
+        check_sum = raw_response[2];
+    }
+    else {
+        type = raw_response["payload_type"];
+        remote_url = raw_response["payload_iov"][0]["payload_url"];
+        check_sum = raw_response["payload_iov"][0]["checksum"];
+    }
 }
 
 std::string Payload::getCheckSum() {
