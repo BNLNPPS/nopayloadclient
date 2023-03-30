@@ -100,6 +100,6 @@ int main(int argc, char *argv[])
 {
     nopayloadclient::CLI cli;
     nopayloadclient::Client client;
-    std::cout << cli.callCommand(argv[1], &client, argc, *argv) << std::endl;
+    std::cout << cli.callCommand(argv[1], &client, argc, *argv).dump(4) << std::endl;
     return 0;
 }
