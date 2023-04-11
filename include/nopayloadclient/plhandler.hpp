@@ -12,9 +12,10 @@
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/payload.hpp>
 
-using json = nlohmann::json;
 
 namespace nopayloadclient {
+
+using nlohmann::json;
 
 class PLHandler {
 public:

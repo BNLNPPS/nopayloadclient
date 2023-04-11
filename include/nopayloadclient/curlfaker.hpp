@@ -8,9 +8,10 @@
 #include <vector>
 #include <sstream>
 
-using json = nlohmann::json;
 
 namespace nopayloadclient {
+
+using nlohmann::json;
 
 class CurlFaker : public CurlWrapper {
 

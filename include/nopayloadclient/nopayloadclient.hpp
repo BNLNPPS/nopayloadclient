@@ -19,10 +19,10 @@
     }                           \
 }                               \
 
-using json = nlohmann::json;
-using ll = long long;
-
 namespace nopayloadclient {
+
+using nlohmann::json;
+using ll = long long;
 
 class Client {
 public:

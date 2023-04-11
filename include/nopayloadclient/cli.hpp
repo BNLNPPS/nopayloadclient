@@ -18,6 +18,7 @@
 
 namespace nopayloadclient {
 
+using nlohmann::json;
 
 class CLI {
 typedef json (CLI::*voidFunctionType) ();

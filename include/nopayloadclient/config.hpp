@@ -5,10 +5,11 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
 
 namespace nopayloadclient {
 
-    json getDict();
+using nlohmann::json;
+
+json getDict();
 
 }

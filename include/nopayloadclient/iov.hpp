@@ -3,9 +3,10 @@
 #include <nopayloadclient/moment.hpp>
 #include <nopayloadclient/exception.hpp>
 
-using ll = long long;
 
 namespace nopayloadclient {
+
+using ll = long long;
 
 struct IOV {
     Moment start_;

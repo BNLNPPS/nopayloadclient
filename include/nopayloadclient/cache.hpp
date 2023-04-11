@@ -8,9 +8,10 @@
 
 #include <nopayloadclient/exception.hpp>
 
-using json = nlohmann::json;
 
 namespace nopayloadclient {
+
+using nlohmann::json;
 
 class Cache {
 public:

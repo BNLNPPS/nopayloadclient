@@ -2,9 +2,10 @@
 
 #include <nopayloadclient/exception.hpp>
 
-using ll = long long;
 
 namespace nopayloadclient {
+
+using ll = long long;
 
 struct Moment {
     ll major_;

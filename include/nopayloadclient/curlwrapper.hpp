@@ -10,9 +10,10 @@
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
 
-using json = nlohmann::json;
 
 namespace nopayloadclient {
+
+using nlohmann::json;
 
 class CurlWrapper {
 public:
