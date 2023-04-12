@@ -20,6 +20,7 @@ class CurlWrapper {
 public:
     CurlWrapper() {};
     CurlWrapper(const json& config);
+  virtual ~CurlWrapper() = default;
     // Reading
     virtual json get(const string& url);
     // Writing

@@ -22,16 +22,16 @@ public:
     // Reading
     json get(const string& url);
     // Writing
-    json del(const string& url) {
+  json del(const string& /* url */) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json put(const string& url) {
+  json put(const string& /* url */) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json put(const string& url, json jsonData) {
+  json put(const string& /* url */, json /* jsonData */) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json post(const string& url, json jsonData) {
+  json post(const string& /* url */, json /* jsonData */) {
         throw BaseException("no writing implemented in fake backend");
     };
 

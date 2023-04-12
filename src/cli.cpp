@@ -17,32 +17,32 @@ CLI::CLI() {
     insertCommand("insertPayload", &CLI::insertPayload);
 }
 
-json CLI::getSize(Client& c, int& argc, char* argv[]) {
+json CLI::getSize(Client& c, int& /* argc */, char* /* argv[] */) {
     return c.getSize();
 }
 
-json CLI::createPayloadType(Client& c, int& argc, char* argv[]) {
+  json CLI::createPayloadType(Client& c, int& /* argc */, char* argv[]) {
     std::string name = argv[2];
     return c.createPayloadType(name);
 }
 
-json CLI::getConfDict(Client& c, int& argc, char* argv[]) {
+json CLI::getConfDict(Client& c, int& /* argc */, char* /* argv[] */) {
     return c.getConfDict();
 }
 
-json CLI::getPayloadTypes(Client& c, int& argc, char* argv[]) {
+json CLI::getPayloadTypes(Client& c, int& /* argc */, char* /* argv[] */) {
     return c.getPayloadTypes();
 }
 
-json CLI::getGlobalTags(Client& c, int& argc, char* argv[]) {
+json CLI::getGlobalTags(Client& c, int& /* argc */, char* /* argv[] */) {
     return c.getGlobalTags();
 }
 
-json CLI::checkConnection(Client& c, int& argc, char* argv[]) {
+json CLI::checkConnection(Client& c, int& /* argc */, char* /* argv[] */) {
     return c.checkConnection();
 }
 
-json CLI::getUrlDict(Client& c, int& argc, char* argv[]) {
+json CLI::getUrlDict(Client& c, int& /* argc */, char* argv[]) {
     std::string gt_name = argv[2];
     long long major_iov = std::atoi(argv[3]);
     long long minor_iov = std::atoi(argv[4]);
@@ -50,25 +50,25 @@ json CLI::getUrlDict(Client& c, int& argc, char* argv[]) {
     return c.getUrlDict(major_iov, minor_iov);
 }
 
-json CLI::createGlobalTag(Client& c, int& argc, char* argv[]){
+json CLI::createGlobalTag(Client& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.createGlobalTag();
 }
 
-json CLI::deleteGlobalTag(Client& c, int& argc, char* argv[]){
+json CLI::deleteGlobalTag(Client& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.deleteGlobalTag();
 }
 
-json CLI::lockGlobalTag(Client& c, int& argc, char* argv[]){
+json CLI::lockGlobalTag(Client& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.lockGlobalTag();
 }
 
-json CLI::unlockGlobalTag(Client& c, int& argc, char* argv[]){
+json CLI::unlockGlobalTag(Client& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.unlockGlobalTag();

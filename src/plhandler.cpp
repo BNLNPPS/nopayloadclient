@@ -17,19 +17,19 @@ bool PLHandler::fileExists(const string& url) {
 }
 
 string PLHandler::getFirstGoodUrl(Payload& pl) {
-     for (const auto dir : read_dir_list_) {
+     for (const auto &dir : read_dir_list_) {
          string full_url = dir + pl.remote_url;
          if (fileExists(full_url)) return full_url;
      }
      string text = "Could not find payload <" + pl.remote_url + "> ";
      text += "in any of the following read dirs:";
-     for (const auto dir : read_dir_list_) {
+     for (const auto &dir : read_dir_list_) {
          text += " " + dir;
      }
      throw BaseException(text);
 }
 
-void PLHandler::compareCheckSums(const string& firstFileUrl, const string& secondFileUrl){
+  void PLHandler::compareCheckSums(const string& /* firstFileUrl */, const string& /* secondFileUrl */){
     /*
     string firstCheckSum = getCheckSum(firstFileUrl);
     string secondCheckSum = getCheckSum(secondFileUrl);

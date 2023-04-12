@@ -42,12 +42,12 @@ string Payload::getCheckSum() {
 }
 
 string Payload::getRemoteUrl() {
-    string remote_url = remote_dir;
-    remote_url += "/" + check_sum + "_" + bare_file_name;
-    while ( remote_url.find("//") != string::npos ) {
-        remote_url.replace(remote_url.find("//"), 2, "/");
+  string local_remote_url = remote_dir;
+    local_remote_url += "/" + check_sum + "_" + bare_file_name;
+    while ( local_remote_url.find("//") != string::npos ) {
+        local_remote_url.replace(local_remote_url.find("//"), 2, "/");
     }
-    return remote_url;
+    return local_remote_url;
 }
 
 string Payload::getDirsFromChecksum() {
@@ -58,21 +58,21 @@ string Payload::getDirsFromChecksum() {
 }
 
 string Payload::getRemoteDir() {
-    string remote_dir = type;
-    remote_dir += "/" + getDirsFromChecksum();
-    while ( remote_dir.find("//") != string::npos ) {
-        remote_dir.replace(remote_dir.find("//"), 2, "/");
+    string local_remote_dir = type;
+    local_remote_dir += "/" + getDirsFromChecksum();
+    while ( local_remote_dir.find("//") != string::npos ) {
+        local_remote_dir.replace(local_remote_dir.find("//"), 2, "/");
     }
-    return remote_dir;
+    return local_remote_dir;
 }
 
 string Payload::getBareFileName() {
     std::stringstream ss(local_url);
-    string bare_file_name;
+    string local_bare_file_name;
     while (!ss.eof()) {
-        getline(ss, bare_file_name, '/');
+        getline(ss, local_bare_file_name, '/');
     }
-    return bare_file_name;
+    return local_bare_file_name;
 }
 
 std::ostream& operator<<(std::ostream& os, const Payload& pl) {
