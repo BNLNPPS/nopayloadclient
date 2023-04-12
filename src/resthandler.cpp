@@ -32,26 +32,26 @@ json RESTHandler::getPayloadTypes() {
     return get("pt");
 }
 
-json RESTHandler::getPayloadLists(std::string global_tag) {
+json RESTHandler::getPayloadLists(const string& global_tag) {
     return get("gtPayloadLists/" + global_tag);
 }
 
-json RESTHandler::getPayloadIOVs(std::string global_tag, Moment& mom){
+json RESTHandler::getPayloadIOVs(const string& global_tag, Moment& mom){
     return get("payloadiovs/?gtName=" + global_tag + "&majorIOV=" +
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
 }
 
-json RESTHandler::getPayloadIOVsSQL(std::string global_tag, Moment& mom){
+json RESTHandler::getPayloadIOVsSQL(const string& global_tag, Moment& mom){
     return get("payloadiovssql/?gtName=" + global_tag + "&majorIOV=" +
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
 }
 
 // Writing
-void RESTHandler::createGlobalTagStatus(std::string name){
+void RESTHandler::createGlobalTagStatus(const string& name){
     post("gtstatus", {{"name", name}});
 }
 
-void RESTHandler::createGlobalTagObject(std::string name, std::string status) {
+void RESTHandler::createGlobalTagObject(const string& name, const string& status) {
     json j = {
         {"name", name},
         {"status", status},
@@ -60,16 +60,16 @@ void RESTHandler::createGlobalTagObject(std::string name, std::string status) {
     post("gt", j);
 }
 
-void RESTHandler::createPayloadType(std::string name){
+void RESTHandler::createPayloadType(const string& name){
     post("pt", {{"name", name}});
 }
 
-std::string RESTHandler::createPayloadList(std::string type) {
+string RESTHandler::createPayloadList(const string& type) {
     json res = post("pl", {{"payload_type", type}});
     return res["name"];
 }
 
-void RESTHandler::attachPayloadList(std::string global_tag, std::string pl_name) {
+void RESTHandler::attachPayloadList(const string& global_tag, const string& pl_name) {
     json j = {
         {"payload_list", pl_name},
         {"global_tag", global_tag}
@@ -77,16 +77,16 @@ void RESTHandler::attachPayloadList(std::string global_tag, std::string pl_name)
     put("pl_attach", j);
 }
 
-void RESTHandler::lockGlobalTag(std::string name) {
+void RESTHandler::lockGlobalTag(const string& name) {
     put("gt_change_status/" + name + "/locked");
 }
 
-void RESTHandler::unlockGlobalTag(std::string name){
+void RESTHandler::unlockGlobalTag(const string& name){
     put("gt_change_status/" + name + "/unlocked");
 }
 
-void RESTHandler::cloneGlobalTag(std::string source, std::string target) {
-    std::string url = "cloneGlobalTag/" + source + "/" + target;
+void RESTHandler::cloneGlobalTag(const string& source, const string& target) {
+    string url = "cloneGlobalTag/" + source + "/" + target;
     post(url, {});
 }
 
@@ -105,7 +105,7 @@ ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){
     return res["id"];
 }
 
-void RESTHandler::attachPayloadIOV(std::string pll_name, ll piov_id){
+void RESTHandler::attachPayloadIOV(const string& pll_name, ll piov_id){
     json j = {
         {"payload_list", pll_name},
         {"piov_id", piov_id}
@@ -113,12 +113,12 @@ void RESTHandler::attachPayloadIOV(std::string pll_name, ll piov_id){
     put("piov_attach", j);
 }
 
-void RESTHandler::deleteGlobalTag(std::string name) {
+void RESTHandler::deleteGlobalTag(const string& name) {
     del("deleteGlobalTag/" + name);
 }
 
 // Private
-json RESTHandler::get(std::string url) {
+json RESTHandler::get(const string& url) {
     if (!use_cache_) return curlwrapper_->get(url);
     if (!cache_.contains(url)) {
         json resp = curlwrapper_->get(url);
@@ -127,22 +127,22 @@ json RESTHandler::get(std::string url) {
     return cache_.get(url);
 }
 
-json RESTHandler::del(std::string url, bool trash_cache) {
+json RESTHandler::del(const string& url, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->del(url);
 }
 
-json RESTHandler::put(std::string url, bool trash_cache) {
+json RESTHandler::put(const string& url, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->put(url);
 }
 
-json RESTHandler::put(std::string url, json data, bool trash_cache) {
+json RESTHandler::put(const string& url, json data, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->put(url, data);
 }
 
-json RESTHandler::post(std::string url, json data, bool trash_cache) {
+json RESTHandler::post(const string& url, json data, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->post(url, data);
 }

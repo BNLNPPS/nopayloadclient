@@ -16,24 +16,25 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class PLHandler {
 public:
     PLHandler() {};
     PLHandler(const json& config);
-    void compareCheckSums(std::string first_url, std::string second_url);
+    void compareCheckSums(const string& first_url, const string& second_url);
     void prepareUploadFile(Payload& pl);
     void uploadFile(Payload& pl);
-    std::string getFirstGoodUrl(Payload& pl);
-    void checkFileExists(std::string url);
+    string getFirstGoodUrl(Payload& pl);
+    void checkFileExists(const string& url);
 private:
-    std::string write_dir_;
-    std::vector<std::string> read_dir_list_;
-    bool fileExists(std::string url);
-    void checkRemoteFile(std::string url);
+    string write_dir_;
+    std::vector<string> read_dir_list_;
+    bool fileExists(const string& url);
+    void checkRemoteFile(const string& url);
     void checkRemoteDirExists();
-    void createDirectory(std::string path);
-    void copyFile(std::string local_url, std::string remote_url);
+    void createDirectory(const string& path);
+    void copyFile(const string& local_url, const string& remote_url);
 };
 
 }

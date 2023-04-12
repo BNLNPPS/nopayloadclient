@@ -11,17 +11,17 @@ PLHandler::PLHandler(const json& config) {
     }
 }
 
-bool PLHandler::fileExists(std::string url) {
+bool PLHandler::fileExists(const string& url) {
     struct stat buffer;
     return (stat (url.c_str(), &buffer) ==0);
 }
 
-std::string PLHandler::getFirstGoodUrl(Payload& pl) {
+string PLHandler::getFirstGoodUrl(Payload& pl) {
      for (const auto dir : read_dir_list_) {
-         std::string full_url = dir + pl.remote_url;
+         string full_url = dir + pl.remote_url;
          if (fileExists(full_url)) return full_url;
      }
-     std::string text = "Could not find payload <" + pl.remote_url + "> ";
+     string text = "Could not find payload <" + pl.remote_url + "> ";
      text += "in any of the following read dirs:";
      for (const auto dir : read_dir_list_) {
          text += " " + dir;
@@ -29,12 +29,12 @@ std::string PLHandler::getFirstGoodUrl(Payload& pl) {
      throw BaseException(text);
 }
 
-void PLHandler::compareCheckSums(std::string firstFileUrl, std::string secondFileUrl){
+void PLHandler::compareCheckSums(const string& firstFileUrl, const string& secondFileUrl){
     /*
-    std::string firstCheckSum = getCheckSum(firstFileUrl);
-    std::string secondCheckSum = getCheckSum(secondFileUrl);
+    string firstCheckSum = getCheckSum(firstFileUrl);
+    string secondCheckSum = getCheckSum(secondFileUrl);
     if (firstCheckSum != secondCheckSum){
-        std::string msg = "checksums of the following two files differ: ";
+        string msg = "checksums of the following two files differ: ";
         msg += firstFileUrl + ", ";
         msg += secondFileUrl;
         throw BaseException(msg);
@@ -42,17 +42,17 @@ void PLHandler::compareCheckSums(std::string firstFileUrl, std::string secondFil
     */
 }
 
-void PLHandler::checkFileExists(std::string url){
+void PLHandler::checkFileExists(const string& url){
     if (!fileExists(url)){
-        std::string msg = "payload file does not exist (";
+        string msg = "payload file does not exist (";
         msg += url + ")";
         throw BaseException(msg);
     }
 }
 
-void PLHandler::checkRemoteFile(std::string url){
+void PLHandler::checkRemoteFile(const string& url){
     if (fileExists(url)){
-        std::string msg = "remote payload file already exists (";
+        string msg = "remote payload file already exists (";
         msg += url + ")";
         throw BaseException(msg);
     }
@@ -64,7 +64,7 @@ void PLHandler::checkRemoteDirExists() {
     }
 }
 
-void PLHandler::createDirectory(std::string path){
+void PLHandler::createDirectory(const string& path){
     if (!fs::is_directory(path) || !fs::exists(path)) {
         fs::create_directories(path);
     }
@@ -76,7 +76,7 @@ void PLHandler::prepareUploadFile(Payload& pl) {
     checkRemoteDirExists();
 }
 
-void PLHandler::copyFile(std::string local_url, std::string remote_url) {
+void PLHandler::copyFile(const string& local_url, const string& remote_url) {
     if (!fs::exists(remote_url)) {
         fs::copy_file(local_url, remote_url);
     }

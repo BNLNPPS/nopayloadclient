@@ -14,33 +14,34 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class CurlWrapper {
 public:
     CurlWrapper() {};
     CurlWrapper(const json& config);
     // Reading
-    virtual json get(std::string url);
+    virtual json get(const string& url);
     // Writing
-    virtual json del(std::string url);
-    virtual json put(std::string url);
-    virtual json put(std::string url, json jsonData);
-    virtual json post(std::string url, json jsonData);
+    virtual json del(const string& url);
+    virtual json put(const string& url);
+    virtual json put(const string& url, json jsonData);
+    virtual json post(const string& url, json jsonData);
 private:
-    std::string base_url_;
+    string base_url_;
     int n_retries_;
     bool print_time_stamps_;
 };
 
 struct Answer {
   CURLcode res;
-  std::string readBuffer;
+  string readBuffer;
   long httpCode = 0;
 };
 
 class CurlSession{
     public:
-        CurlSession(std::string _url, int n_retries, bool print_time_stamps);
+        CurlSession(const string& _url, int n_retries, bool print_time_stamps);
         void printResults();
         json try_execute();
         json execute();
@@ -52,9 +53,9 @@ class CurlSession{
     private:
         Answer ans;
         CURL *curl;
-        std::string url;
+        string url;
         struct curl_slist *slist1 = NULL;
-        std::string jsonStr;
+        string jsonStr;
         int n_retries_;
         bool print_time_stamps_;
 };

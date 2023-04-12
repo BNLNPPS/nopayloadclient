@@ -8,7 +8,7 @@ Cache::Cache(const json& config) {
 
 }
 
-bool Cache::contains(std::string url) {
+bool Cache::contains(const string& url) {
     if (!response_dict_.contains(url)) {
         return false;
     }
@@ -16,11 +16,11 @@ bool Cache::contains(std::string url) {
     return ((getNowTs() - ts) < life_time_ * 1e6);
 }
 
-json Cache::get(std::string url) {
+json Cache::get(const string& url) {
     return response_dict_[url];
 }
 
-void Cache::set(std::string url, json& response) {
+void Cache::set(const string& url, json& response) {
     response_dict_[url] = response;
     time_stamp_dict_[url] = getNowTs();
     insertion_order_.push(url);
@@ -30,7 +30,7 @@ void Cache::set(std::string url, json& response) {
 }
 
 void Cache::removeOldestEntry() {
-    std::string oldest_url = insertion_order_.front();
+    string oldest_url = insertion_order_.front();
     insertion_order_.pop();
     time_stamp_dict_.erase(oldest_url);
     response_dict_.erase(oldest_url);
@@ -51,7 +51,7 @@ double Cache::getSize() {
 void Cache::trash() {
     response_dict_.clear();
     time_stamp_dict_.clear();
-    insertion_order_ = std::queue<std::string>();
+    insertion_order_ = std::queue<string>();
 }
 
 long long Cache::getNowTs() {

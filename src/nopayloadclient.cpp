@@ -8,12 +8,12 @@ Client::Client() {
     pl_handler_ = PLHandler(config_);
 }
 
-Client::Client(std::string gt_name) : Client() {
+Client::Client(const string& gt_name) : Client() {
     global_tag_ = gt_name;
 }
 
 // Configuring
-json Client::setGlobalTag(std::string name) {
+json Client::setGlobalTag(const string& name) {
     TRY (
         global_tag_ = name;
         return makeResp("successfully changed global tag to " + name);
@@ -26,7 +26,7 @@ json Client::getGlobalTag() {
     )
 }
 
-json Client::override(std::string pl_type, std::string file_url) {
+json Client::override(const string& pl_type, const string& file_url) {
     TRY (
         pl_handler_.checkFileExists(file_url);
         override_dict_[pl_type] = file_url;
@@ -97,7 +97,7 @@ json Client::unlockGlobalTag() {
     )
 }
 
-json Client::cloneGlobalTag(std::string target) {
+json Client::cloneGlobalTag(const string& target) {
     TRY(
         checkGtExists(global_tag_);
         checkGtDoesNotExist(target);
@@ -106,14 +106,14 @@ json Client::cloneGlobalTag(std::string target) {
     )
 }
 
-json Client::createPayloadType(std::string name) {
+json Client::createPayloadType(const string& name) {
     TRY(
         rest_handler_.createPayloadType(name);
         return makeResp("successfully created payload type");
     )
 }
 
-json Client::insertPayload(std::string pl_type, std::string file_url,
+json Client::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start) {
     TRY(
         Payload pl {file_url, pl_type};
@@ -123,7 +123,7 @@ json Client::insertPayload(std::string pl_type, std::string file_url,
     )
 }
 
-json Client::insertPayload(std::string pl_type, std::string file_url,
+json Client::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
     TRY(
@@ -211,55 +211,55 @@ void Client::prepareInsertIov(Payload &pl) {
     }
 }
 
-bool Client::gtStatusExists(std::string name){
+bool Client::gtStatusExists(const string& name){
     json j = rest_handler_.getGlobalTagStatuses();
     return objWithNameExists(j, name);
 }
 
-bool Client::gtExists(std::string name){
+bool Client::gtExists(const string& name){
     json j = rest_handler_.getGlobalTags();
     return objWithNameExists(j, name);
 }
 
-bool Client::plTypeExists(std::string pl_type){
+bool Client::plTypeExists(const string& pl_type){
     json j = rest_handler_.getPayloadTypes();
     return objWithNameExists(j, pl_type);
 }
 
-void Client::checkGtStatusExists(std::string name){
+void Client::checkGtStatusExists(const string& name){
     if (!gtStatusExists(name)){
         std::string msg = "no global tag status with name '"+name+"' exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkGtExists(std::string name){
+void Client::checkGtExists(const string& name){
     if (!gtExists(name)){
         std::string msg = "no global tag with name '"+name+"' exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkGtDoesNotExist(std::string name){
+void Client::checkGtDoesNotExist(const string& name){
     if (gtExists(name)){
         std::string msg = "global tag with name '"+name+"' already exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkPlTypeExists(std::string pl_type){
+void Client::checkPlTypeExists(const string& pl_type){
     if (!plTypeExists(pl_type)){
         std::string msg = "no payload type with name '"+pl_type+"' exists";
         throw BaseException(msg);
     }
 }
 
-bool Client::gtHasPlType(std::string pl_type){
+bool Client::gtHasPlType(const string& pl_type){
     json j = rest_handler_.getPayloadLists(global_tag_);
     return (j.contains(pl_type));
 }
 
-void Client::createNewPll(std::string pl_type){
+void Client::createNewPll(const string& pl_type){
     std::string pll_name = rest_handler_.createPayloadList(pl_type);
     rest_handler_.attachPayloadList(global_tag_, pll_name);
 }
@@ -288,7 +288,7 @@ json Client::_getUrlDictSQL(Moment& mom) {
     return url_dict;
 }
 
-bool Client::objWithNameExists(const json& j, std::string name) {
+bool Client::objWithNameExists(const json& j, const string& name) {
     for (const auto& obj: j){
         if (obj["name"] == name) return true;
     }

@@ -22,12 +22,13 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 using ll = long long;
 
 class Client {
 public:
     Client();
-    Client(std::string gt_name);
+    Client(const string& gt_name);
 
     virtual json add(int a, int b) {
         std::cout << "Client::add(a=" << a << ", b=" << b << ")" << std::endl;
@@ -35,24 +36,24 @@ public:
     }
 
     // Configuration
-    virtual json setGlobalTag(std::string name);
+    virtual json setGlobalTag(const string& name);
     virtual json getGlobalTag();
-    virtual json override(std::string pl_type, std::string file_url);
+    virtual json override(const string& pl_type, const string& file_url);
 
     // Reading
     virtual json getUrlDict(ll major_iov, ll minor_iov);
     virtual json getUrlDictSQL(ll major_iov, ll minor_iov);
 
     // Writing
-    virtual json createPayloadType(std::string pl_type);
+    virtual json createPayloadType(const string& pl_type);
     virtual json createGlobalTag();
     virtual json deleteGlobalTag();
     virtual json lockGlobalTag();
     virtual json unlockGlobalTag();
-    virtual json cloneGlobalTag(std::string target);
-    virtual json insertPayload(std::string pl_type, std::string file_url,
+    virtual json cloneGlobalTag(const string& target);
+    virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start);
-    virtual json insertPayload(std::string pl_type, std::string file_url,
+    virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start,
                        ll major_iov_end, ll minor_iov_end);
 
@@ -70,7 +71,7 @@ public:
 private:
     json config_;
     json override_dict_;
-    std::string global_tag_;
+    string global_tag_;
     RESTHandler rest_handler_;
     PLHandler pl_handler_;
 
@@ -78,22 +79,22 @@ private:
     virtual void prepareInsertIov(Payload &pl);
     virtual void insertIov(Payload& pl, IOV& iov);
     virtual void insertPayload(Payload &pl, IOV &iov);
-    virtual void createNewPll(std::string pl_type);
+    virtual void createNewPll(const string& pl_type);
 
     // Reading
-    virtual bool gtExists(std::string name);
-    virtual bool gtStatusExists(std::string name);
-    virtual bool plTypeExists(std::string pl_type);
-    virtual bool gtHasPlType(std::string pl_type);
-    virtual void checkGtExists(std::string name);
-    virtual void checkGtDoesNotExist(std::string name);
-    virtual void checkGtStatusExists(std::string name);
-    virtual void checkPlTypeExists(std::string name);
+    virtual bool gtExists(const string& name);
+    virtual bool gtStatusExists(const string& name);
+    virtual bool plTypeExists(const string& pl_type);
+    virtual bool gtHasPlType(const string& pl_type);
+    virtual void checkGtExists(const string& name);
+    virtual void checkGtDoesNotExist(const string& name);
+    virtual void checkGtStatusExists(const string& name);
+    virtual void checkPlTypeExists(const string& name);
     virtual json _getUrlDict(Moment& mom);
     virtual json _getUrlDictSQL(Moment& mom);
 
     // Helper
-    virtual bool objWithNameExists(const json& j, std::string name);
+    virtual bool objWithNameExists(const json& j, const string& name);
 };
 
 }

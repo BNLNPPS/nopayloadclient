@@ -12,6 +12,7 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class Cache {
 public:
@@ -20,13 +21,13 @@ public:
 
     /// should check if it exists AND
     /// entry is less than life time old
-    bool contains(std::string url);
+    bool contains(const string& url);
 
-    json get(std::string url);
+    json get(const string& url);
 
     /// put in first, then removed oldest entry
     /// until size is under max size again
-    void set(std::string url, json& response);
+    void set(const string& url, json& response);
     void trash();
     friend std::ostream& operator<< (std::ostream& os, const Cache& c);
 
@@ -36,7 +37,7 @@ private:
     /// of the form {url_1: ts_1, url_2: ts_2, ...}
     json time_stamp_dict_;
     /// to find oldest element quickly
-    std::queue<std::string> insertion_order_;
+    std::queue<string> insertion_order_;
     void removeOldestEntry();
     bool isAboveMaxSize();
     double getSize();

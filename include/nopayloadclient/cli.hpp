@@ -19,6 +19,7 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class CLI {
 typedef json (CLI::*voidFunctionType) ();
@@ -38,12 +39,12 @@ public:
     virtual json insertPayload(Client& c, int& argc, char* argv[]);
 
     template<typename T>
-    void insertCommand(std::string name, T func){
+    void insertCommand(const string& name, T func){
         command_map_[name] = (voidFunctionType)func;
     }
 
     template<typename... Args>
-    json callCommand(std::string name, Args&&... args){
+    json callCommand(const string& name, Args&&... args){
         if (!command_map_.count(name)) {
             return BaseException("command <" + name + "> not found").jsonify();
         }
@@ -53,7 +54,7 @@ public:
     }
 
 private:
-    std::map<std::string, voidFunctionType> command_map_;
+    std::map<string, voidFunctionType> command_map_;
 
 };
 

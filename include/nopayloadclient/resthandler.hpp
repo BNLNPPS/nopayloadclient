@@ -16,6 +16,7 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class RESTHandler {
 public:
@@ -29,21 +30,21 @@ public:
     json getGlobalTags();
     json getGlobalTagStatuses();
     json getPayloadTypes();
-    json getPayloadLists(std::string global_tag);
-    json getPayloadIOVs(std::string global_tag, Moment& mom);
-    json getPayloadIOVsSQL(std::string global_tag, Moment& mom);
+    json getPayloadLists(const string& global_tag);
+    json getPayloadIOVs(const string& global_tag, Moment& mom);
+    json getPayloadIOVsSQL(const string& global_tag, Moment& mom);
 
     // Writing
-    void createGlobalTagStatus(std::string name);
-    void createGlobalTagObject(std::string name, std::string status);
-    void createPayloadType(std::string name);
-    void attachPayloadList(std::string global_tag, std::string pl_name);
-    void lockGlobalTag(std::string name);
-    void unlockGlobalTag(std::string name);
-    void deleteGlobalTag(std::string name);
-    void cloneGlobalTag(std::string source, std::string target);
-    void attachPayloadIOV(std::string pll_name, long long piov_id);
-    std::string createPayloadList(std::string type);
+    void createGlobalTagStatus(const string& name);
+    void createGlobalTagObject(const string& name, const string& status);
+    void createPayloadType(const string& name);
+    void attachPayloadList(const string& global_tag, const string& pl_name);
+    void lockGlobalTag(const string& name);
+    void unlockGlobalTag(const string& name);
+    void deleteGlobalTag(const string& name);
+    void cloneGlobalTag(const string& source, const string& target);
+    void attachPayloadIOV(const string& pll_name, long long piov_id);
+    string createPayloadList(const string& type);
     long long createPayloadIOV(Payload& pl, IOV& iov);
 
 private:
@@ -52,11 +53,11 @@ private:
     Cache cache_;
     bool use_cache_;
 
-    json get(std::string url);
-    json del(std::string url, bool trash_cache=true);
-    json put(std::string url, bool trash_cache=true);
-    json put(std::string url, json data, bool trash_cache=true);
-    json post(std::string url, json data, bool trash_cache=true);
+    json get(const string& url);
+    json del(const string& url, bool trash_cache=true);
+    json put(const string& url, bool trash_cache=true);
+    json put(const string& url, json data, bool trash_cache=true);
+    json post(const string& url, json data, bool trash_cache=true);
 };
 
 }

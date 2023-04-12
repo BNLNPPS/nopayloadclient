@@ -12,6 +12,7 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class CurlFaker : public CurlWrapper {
 
@@ -19,23 +20,23 @@ public:
     CurlFaker() : CurlWrapper() {};
     CurlFaker(const json& config) : CurlWrapper(config) {};
     // Reading
-    json get(std::string url);
+    json get(const string& url);
     // Writing
-    json del(std::string url) {
+    json del(const string& url) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json put(std::string url) {
+    json put(const string& url) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json put(std::string url, json jsonData) {
+    json put(const string& url, json jsonData) {
         throw BaseException("no writing implemented in fake backend");
     };
-    json post(std::string url, json jsonData) {
+    json post(const string& url, json jsonData) {
         throw BaseException("no writing implemented in fake backend");
     };
 
 private:
-    std::vector<std::string> splitString(std::string input, const char splitter);
+    std::vector<string> splitString(const string& input, const char splitter);
     IOV FAKE_IOV {42, 42};
     json FAKE_GLOBAL_TAGS = json{{
                    {"id", 162},

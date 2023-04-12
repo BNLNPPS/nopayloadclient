@@ -2,8 +2,8 @@
 
 namespace nopayloadclient {
 
-json CurlFaker::get(std::string url) {
-    std::string end_point = splitString(url, '/')[0];
+json CurlFaker::get(const string& url) {
+    string end_point = splitString(url, '/')[0];
     if (end_point == "globalTags") {
         return FAKE_DATABASE["globalTags"];
     }
@@ -23,10 +23,10 @@ json CurlFaker::get(std::string url) {
     return FAKE_DATABASE[end_point];
 }
 
-std::vector<std::string> CurlFaker::splitString(std::string input, const char splitter) {
+std::vector<string> CurlFaker::splitString(const string& input, const char splitter) {
     std::stringstream stream(input);
-    std::string segment;
-    std::vector<std::string> seg_list;
+    string segment;
+    std::vector<string> seg_list;
     while(std::getline(stream, segment, splitter)) {
        seg_list.push_back(segment);
     }

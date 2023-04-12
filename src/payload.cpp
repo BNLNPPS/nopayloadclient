@@ -3,7 +3,7 @@
 
 namespace nopayloadclient {
 
-Payload::Payload(std::string local_url_, std::string type_){
+Payload::Payload(const string& local_url_, const string& type_){
     local_url = local_url_;
     type = type_;
     bare_file_name = getBareFileName();
@@ -25,7 +25,7 @@ Payload::Payload(const json& raw_response) {
     }
 }
 
-std::string Payload::getCheckSum() {
+string Payload::getCheckSum() {
      FILE* filp = fopen(local_url.c_str(), "rb");
      if (!filp) {
         throw PayloadException("Could not open file " + local_url);
@@ -41,34 +41,34 @@ std::string Payload::getCheckSum() {
      return md5.hexdigest();
 }
 
-std::string Payload::getRemoteUrl() {
-    std::string remote_url = remote_dir;
+string Payload::getRemoteUrl() {
+    string remote_url = remote_dir;
     remote_url += "/" + check_sum + "_" + bare_file_name;
-    while ( remote_url.find("//") != std::string::npos ) {
+    while ( remote_url.find("//") != string::npos ) {
         remote_url.replace(remote_url.find("//"), 2, "/");
     }
     return remote_url;
 }
 
-std::string Payload::getDirsFromChecksum() {
-    std::string first_dir = {check_sum[0], check_sum[1]};
-    std::string second_dir = {check_sum[2], check_sum[3]};
-    std::string dirs = first_dir + "/" + second_dir;
+string Payload::getDirsFromChecksum() {
+    string first_dir = {check_sum[0], check_sum[1]};
+    string second_dir = {check_sum[2], check_sum[3]};
+    string dirs = first_dir + "/" + second_dir;
     return dirs;
 }
 
-std::string Payload::getRemoteDir() {
-    std::string remote_dir = type;
+string Payload::getRemoteDir() {
+    string remote_dir = type;
     remote_dir += "/" + getDirsFromChecksum();
-    while ( remote_dir.find("//") != std::string::npos ) {
+    while ( remote_dir.find("//") != string::npos ) {
         remote_dir.replace(remote_dir.find("//"), 2, "/");
     }
     return remote_dir;
 }
 
-std::string Payload::getBareFileName() {
+string Payload::getBareFileName() {
     std::stringstream ss(local_url);
-    std::string bare_file_name;
+    string bare_file_name;
     while (!ss.eof()) {
         getline(ss, bare_file_name, '/');
     }

@@ -2,6 +2,7 @@
 
 #include <nlohmann/json.hpp>
 
+namespace nopayloadclient {
 
 class BaseException : public std::exception {
     private:
@@ -62,3 +63,4 @@ class HttpException : public BaseException {
         }
 };
 */
+}

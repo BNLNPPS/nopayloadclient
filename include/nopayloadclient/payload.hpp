@@ -11,24 +11,25 @@
 namespace nopayloadclient {
 
 using nlohmann::json;
+using std::string;
 
 class Payload {
 public:
-    Payload(std::string local_url_, std::string type_);
+    Payload(const string& local_url_, const string& type_);
     Payload(const json& raw_response);
-    std::string local_url;
-    std::string type;
-    std::string bare_file_name;
-    std::string check_sum;
-    std::string remote_dir;
-    std::string remote_url;
+    string local_url;
+    string type;
+    string bare_file_name;
+    string check_sum;
+    string remote_dir;
+    string remote_url;
     friend std::ostream& operator<<(std::ostream& os, const Payload& pl);
 private:
-    std::string getCheckSum();
-    std::string getDirsFromChecksum();
-    std::string getRemoteDir();
-    std::string getRemoteUrl();
-    std::string getBareFileName();
+    string getCheckSum();
+    string getDirsFromChecksum();
+    string getRemoteDir();
+    string getRemoteUrl();
+    string getBareFileName();
 };
 
 }
