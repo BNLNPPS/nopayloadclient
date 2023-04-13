@@ -10,6 +10,7 @@ class BaseException : public std::exception {
         std::string pretext_ = "BaseException: ";
         std::string message_;
     public:
+  using std::exception::what;
         BaseException(std::string msg) : message_(msg) {}
         BaseException(int code, std::string pretext, std::string msg) {
             code_ = code;
@@ -35,7 +36,7 @@ class PayloadException : public BaseException {
 
 class DataBaseException : public BaseException {
     private:
-        int http_code_;
+//        int http_code_;
     public:
         DataBaseException(std::string msg) :
             BaseException(3, "DataBaseException: ", msg) {}
