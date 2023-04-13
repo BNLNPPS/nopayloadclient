@@ -30,8 +30,7 @@ std::string getFilePath() {
 json getDict(){
     std::string file_path = getFilePath();
     std::ifstream conf_file(file_path, std::ifstream::binary);
-    json j;
-    conf_file >> j;
+    json j = json::parse(conf_file);
     _checkKeys(j);
     return j;
 }
