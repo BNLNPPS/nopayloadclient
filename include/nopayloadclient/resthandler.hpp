@@ -5,7 +5,8 @@
 #include <nlohmann/json.hpp>
 
 #include <nopayloadclient/curlwrapper.hpp>
-#include <nopayloadclient/curlfaker.hpp>
+#include <nopayloadclient/realwrapper.hpp>
+#include <nopayloadclient/fakewrapper.hpp>
 #include <nopayloadclient/cache.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
@@ -45,7 +46,7 @@ public:
     void cloneGlobalTag(const string& source, const string& target);
     void attachPayloadIOV(const string& pll_name, long long piov_id);
     string createPayloadList(const string& type);
-    long long createPayloadIOV(Payload& pl, IOV& iov);
+    long long createPayloadIOV(const Payload& pl, IOV& iov);
 
 private:
     //CurlWrapper curlwrapper_;
@@ -56,8 +57,8 @@ private:
     json get(const string& url);
     json del(const string& url, bool trash_cache=true);
     json put(const string& url, bool trash_cache=true);
-    json put(const string& url, json data, bool trash_cache=true);
-    json post(const string& url, json data, bool trash_cache=true);
+    json put(const string& url, const json& data, bool trash_cache=true);
+    json post(const string& url, const json& data, bool trash_cache=true);
 };
 
 }

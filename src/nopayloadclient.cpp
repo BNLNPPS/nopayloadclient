@@ -3,7 +3,7 @@
 namespace nopayloadclient {
 
 Client::Client() {
-    config_ = getDict();
+    config_ = config::getDict();
     rest_handler_ = RESTHandler(config_);
     pl_handler_ = PLHandler(config_);
 }
@@ -11,6 +11,9 @@ Client::Client() {
 Client::Client(const string& gt_name) : Client() {
     global_tag_ = gt_name;
 }
+//Client::Client(string gt_name) : Client() {
+//    global_tag_ = gt_name;
+//}
 
 // Configuring
 json Client::setGlobalTag(const string& name) {

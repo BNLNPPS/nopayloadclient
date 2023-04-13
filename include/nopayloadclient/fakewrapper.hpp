@@ -1,12 +1,13 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <nopayloadclient/exception.hpp>
-#include <nopayloadclient/curlwrapper.hpp>
-#include <nopayloadclient/iov.hpp>
 #include <string>
 #include <vector>
 #include <sstream>
+#include <nlohmann/json.hpp>
+
+#include <nopayloadclient/exception.hpp>
+#include <nopayloadclient/curlwrapper.hpp>
+#include <nopayloadclient/iov.hpp>
 
 
 namespace nopayloadclient {
@@ -14,26 +15,27 @@ namespace nopayloadclient {
 using nlohmann::json;
 using std::string;
 
-class CurlFaker : public CurlWrapper {
+class FakeWrapper : public CurlWrapper {
 
 public:
-    CurlFaker() : CurlWrapper() {};
-    CurlFaker(const json& config) : CurlWrapper(config) {};
-    // Reading
+    FakeWrapper() : CurlWrapper() {};
+    FakeWrapper(const json& config) : CurlWrapper(config) {};
+
     json get(const string& url);
-    // Writing
-  json del(const string& /* url */) {
+
+    json del(const string& /* url */) {
         throw BaseException("no writing implemented in fake backend");
     };
-  json put(const string& /* url */) {
+    json put(const string& /* url */) {
         throw BaseException("no writing implemented in fake backend");
     };
-  json put(const string& /* url */, json /* jsonData */) {
+    json put(const string& /* url */, const json& /* data */) {
         throw BaseException("no writing implemented in fake backend");
     };
-  json post(const string& /* url */, json /* jsonData */) {
+    json post(const string& /* url */, const json& /* data */) {
         throw BaseException("no writing implemented in fake backend");
     };
+
 
 private:
     std::vector<string> splitString(const string& input, const char splitter);

@@ -17,28 +17,28 @@ CLI::CLI() {
     insertCommand("insertPayload", &CLI::insertPayload);
 }
 
-json CLI::getSize(Client& c, int& /* argc */, char* /* argv[] */) {
+json CLI::getSize(Client& c) {
     return c.getSize();
 }
 
-  json CLI::createPayloadType(Client& c, int& /* argc */, char* argv[]) {
+json CLI::createPayloadType(Client& c, int& /* argc */, char* argv[]) {
     std::string name = argv[2];
     return c.createPayloadType(name);
 }
 
-json CLI::getConfDict(Client& c, int& /* argc */, char* /* argv[] */) {
+json CLI::getConfDict(Client& c) {
     return c.getConfDict();
 }
 
-json CLI::getPayloadTypes(Client& c, int& /* argc */, char* /* argv[] */) {
+json CLI::getPayloadTypes(Client& c) {
     return c.getPayloadTypes();
 }
 
-json CLI::getGlobalTags(Client& c, int& /* argc */, char* /* argv[] */) {
+json CLI::getGlobalTags(Client& c) {
     return c.getGlobalTags();
 }
 
-json CLI::checkConnection(Client& c, int& /* argc */, char* /* argv[] */) {
+json CLI::checkConnection(Client& c) {
     return c.checkConnection();
 }
 

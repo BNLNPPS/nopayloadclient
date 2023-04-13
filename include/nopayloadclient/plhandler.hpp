@@ -22,10 +22,10 @@ class PLHandler {
 public:
     PLHandler() {};
     PLHandler(const json& config);
-    void compareCheckSums(const string& first_url, const string& second_url);
-    void prepareUploadFile(Payload& pl);
-    void uploadFile(Payload& pl);
-    string getFirstGoodUrl(Payload& pl);
+    //void compareCheckSums(const string& first_url, const string& second_url);
+    void prepareUploadFile(const Payload& pl);
+    void uploadFile(const Payload& pl);
+    string getFirstGoodUrl(const Payload& pl);
     void checkFileExists(const string& url);
 private:
     string write_dir_;

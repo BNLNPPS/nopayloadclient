@@ -7,12 +7,14 @@ int main () {
     // ++++++++++++++++++++++++++++++
     //         PREPARATION
     // ++++++++++++++++++++++++++++++
-
     std::cout << "beginning of standalone..." << std::endl;
 
     // create an instance of the client
-    nopayloadclient::Client client {"ExampleGT"};
+    nopayloadclient::Client client("ExampleGT");
+    //nopayloadclient::Client client {};
+    //client.setGlobalTag("ExampleGT");
 
+    /*
     std::cout << client.createGlobalTag() << std::endl;
     std::cout << client.createPayloadType("ExamplePT") << std::endl;;
 
@@ -43,5 +45,8 @@ int main () {
 
     resp = client.getUrlDict(42, 0);
     std::cout << resp << std::endl;
+
+    */
     return 0;
+
 }

@@ -25,11 +25,11 @@ class CLI {
 typedef json (CLI::*voidFunctionType) ();
 public:
     CLI();
-  virtual json getSize(Client& c, int& /* argc */, char* /* argv[] */);
-    virtual json getConfDict(Client& c, int& /* argv[] */, char* /* argv[] */);
-    virtual json getPayloadTypes(Client& c, int& /* argv[] */, char* /* argv[] */);
-    virtual json getGlobalTags(Client& c, int& /* argv[] */, char* /* argv[] */);
-    virtual json checkConnection(Client& c, int& /* argv[] */, char* /* argv[] */);
+    virtual json getSize(Client& c);
+    virtual json getConfDict(Client& c);
+    virtual json getPayloadTypes(Client& c);
+    virtual json getGlobalTags(Client& c);
+    virtual json checkConnection(Client& c);
     virtual json createPayloadType(Client& c, int& argc, char* argv[]);
     virtual json createGlobalTag(Client& c, int& argc, char* argv[]);
     virtual json deleteGlobalTag(Client& c, int& argc, char* argv[]);

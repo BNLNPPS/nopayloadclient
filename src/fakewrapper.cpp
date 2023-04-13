@@ -1,8 +1,8 @@
-#include <nopayloadclient/curlfaker.hpp>
+#include <nopayloadclient/fakewrapper.hpp>
 
 namespace nopayloadclient {
 
-json CurlFaker::get(const string& url) {
+json FakeWrapper::get(const string& url) {
     string end_point = splitString(url, '/')[0];
     if (end_point == "globalTags") {
         return FAKE_DATABASE["globalTags"];
@@ -23,7 +23,7 @@ json CurlFaker::get(const string& url) {
     return FAKE_DATABASE[end_point];
 }
 
-std::vector<string> CurlFaker::splitString(const string& input, const char splitter) {
+std::vector<string> FakeWrapper::splitString(const string& input, const char splitter) {
     std::stringstream stream(input);
     string segment;
     std::vector<string> seg_list;

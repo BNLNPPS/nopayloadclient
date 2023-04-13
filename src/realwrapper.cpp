@@ -1,4 +1,4 @@
-#include <nopayloadclient/curlwrapper.hpp>
+#include <nopayloadclient/realwrapper.hpp>
 
 namespace nopayloadclient {
 
@@ -7,7 +7,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-CurlWrapper::CurlWrapper(const json& config) {
+RealWrapper::RealWrapper(const json& config) {
     base_url_ = "http://";
     base_url_ += config["base_url"];
     base_url_ += config["api_res"];
@@ -15,38 +15,38 @@ CurlWrapper::CurlWrapper(const json& config) {
     print_time_stamps_ = config["print_time_stamps"];
 }
 
-json CurlWrapper::del(const string& url){
-//    std::cout<<"CurlWrapper::del(url="<<url<<")"<<std::endl;
+json RealWrapper::del(const string& url){
+//    std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
 }
 
-json CurlWrapper::get(const string& url){
-//    std::cout<<"CurlWrapper::get(url="<<url<<")"<<std::endl;
+json RealWrapper::get(const string& url){
+//    std::cout<<"RealWrapper::get(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareGet();
     return cm.try_execute();
 }
 
-json CurlWrapper::post(const string& url, json jsonData){
-//    std::cout<<"CurlWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+json RealWrapper::post(const string& url, const json& data){
+//    std::cout<<"RealWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
-    cm.preparePost(jsonData);
+    cm.preparePost(data);
     return cm.try_execute();
 }
 
-json CurlWrapper::put(const string& url){
-//    std::cout<<"CurlWrapper::put(url="<<url<<")"<<std::endl;
+json RealWrapper::put(const string& url){
+//    std::cout<<"RealWrapper::put(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut();
     return cm.try_execute();
 }
 
-json CurlWrapper::put(const string& url, json jsonData){
-//    std::cout<<"CurlWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+json RealWrapper::put(const string& url, const json& data){
+//    std::cout<<"RealWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
-    cm.preparePut(jsonData);
+    cm.preparePut(data);
     return cm.try_execute();
 }
 
@@ -121,17 +121,17 @@ void CurlSession::preparePut(){
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
 }
 
-void CurlSession::preparePost(json jsonData){
+void CurlSession::preparePost(const json& data){
     slist1 = curl_slist_append(slist1, "Content-Type: application/json");
-    jsonStr = jsonData.dump();
-    //std::cout<<"jsonStr = "<<jsonStr<<std::endl;
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonStr.c_str());
+    json_str = data.dump();
+    //std::cout<<"json_str = "<<json_str<<std::endl;
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_str.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
 }
 
-void CurlSession::preparePut(json jsonData){
+void CurlSession::preparePut(const json& data){
     preparePut();
-    preparePost(jsonData);
+    preparePost(data);
 }
 
 }

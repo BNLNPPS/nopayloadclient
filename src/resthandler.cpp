@@ -6,10 +6,10 @@ namespace nopayloadclient {
 RESTHandler::RESTHandler(const json& config) {
     //curlwrapper_ = CurlWrapper(config);
     if (config["use_fake_backend"]) {
-        curlwrapper_.reset(new CurlFaker(config));
+        curlwrapper_.reset(new FakeWrapper(config));
     }
     else {
-        curlwrapper_.reset(new CurlWrapper(config));
+        curlwrapper_.reset(new RealWrapper(config));
     }
     cache_ = Cache(config);
     use_cache_ = true;
@@ -90,7 +90,7 @@ void RESTHandler::cloneGlobalTag(const string& source, const string& target) {
     post(url, {});
 }
 
-ll RESTHandler::createPayloadIOV(Payload& pl, IOV& iov){
+ll RESTHandler::createPayloadIOV(const Payload& pl, IOV& iov){
     json j = {
         {"payload_url", pl.remote_url},
         {"major_iov", iov.start_.major_},
@@ -137,12 +137,12 @@ json RESTHandler::put(const string& url, bool trash_cache) {
     return curlwrapper_->put(url);
 }
 
-json RESTHandler::put(const string& url, json data, bool trash_cache) {
+json RESTHandler::put(const string& url, const json& data, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->put(url, data);
 }
 
-json RESTHandler::post(const string& url, json data, bool trash_cache) {
+json RESTHandler::post(const string& url, const json& data, bool trash_cache) {
     if (trash_cache) cache_.trash();
     return curlwrapper_->post(url, data);
 }

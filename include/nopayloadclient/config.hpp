@@ -10,6 +10,10 @@ namespace nopayloadclient {
 
 using nlohmann::json;
 
-json getDict();
+namespace config {
+
+    json getDict();
+
+}
 
 }

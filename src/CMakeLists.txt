@@ -3,8 +3,8 @@ configure_file(config.h.in config.h @ONLY)
 set(source_files
     nopayloadclient.cpp
     resthandler.cpp
-    curlwrapper.cpp
-    curlfaker.cpp
+    fakewrapper.cpp
+    realwrapper.cpp
     payload.cpp
     moment.cpp
     iov.cpp
@@ -37,3 +37,5 @@ add_executable(cli_npc cli.cpp)
 target_link_libraries(cli_npc nopayloadclient ${_std_cxx_filesystem_lib})
 target_include_directories(cli_npc PRIVATE ${CMAKE_SOURCE_DIR}/include)
 install(TARGETS cli_npc DESTINATION bin)
+
+#target_compile_options(nopayloadclient PRIVATE -Wall -Wextra -Wpedantic -Werror)

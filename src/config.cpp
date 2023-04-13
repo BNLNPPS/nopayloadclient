@@ -3,6 +3,8 @@
 
 namespace nopayloadclient {
 
+namespace config {
+
 void _checkKeys(json j){
   std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
                                    "write_dir", "read_dir_list",
@@ -36,6 +38,7 @@ json getDict(){
 
 }
 
+}
 
 
 

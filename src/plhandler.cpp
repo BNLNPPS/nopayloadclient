@@ -16,21 +16,21 @@ bool PLHandler::fileExists(const string& url) {
     return (stat (url.c_str(), &buffer) ==0);
 }
 
-string PLHandler::getFirstGoodUrl(Payload& pl) {
-     for (const auto &dir : read_dir_list_) {
+string PLHandler::getFirstGoodUrl(const Payload& pl) {
+     for (const auto& dir : read_dir_list_) {
          string full_url = dir + pl.remote_url;
          if (fileExists(full_url)) return full_url;
      }
      string text = "Could not find payload <" + pl.remote_url + "> ";
      text += "in any of the following read dirs:";
-     for (const auto &dir : read_dir_list_) {
+     for (const auto& dir : read_dir_list_) {
          text += " " + dir;
      }
      throw BaseException(text);
 }
 
-  void PLHandler::compareCheckSums(const string& /* firstFileUrl */, const string& /* secondFileUrl */){
-    /*
+/*
+void PLHandler::compareCheckSums(const string& firstFileUrl, const string& secondFileUrl){
     string firstCheckSum = getCheckSum(firstFileUrl);
     string secondCheckSum = getCheckSum(secondFileUrl);
     if (firstCheckSum != secondCheckSum){
@@ -39,8 +39,8 @@ string PLHandler::getFirstGoodUrl(Payload& pl) {
         msg += secondFileUrl;
         throw BaseException(msg);
     }
-    */
 }
+*/
 
 void PLHandler::checkFileExists(const string& url){
     if (!fileExists(url)){
@@ -70,7 +70,7 @@ void PLHandler::createDirectory(const string& path){
     }
 }
 
-void PLHandler::prepareUploadFile(Payload& pl) {
+void PLHandler::prepareUploadFile(const Payload& pl) {
     checkFileExists(pl.local_url);
     //checkRemoteFile(pl.remote_url);
     checkRemoteDirExists();
@@ -82,7 +82,7 @@ void PLHandler::copyFile(const string& local_url, const string& remote_url) {
     }
 }
 
-void PLHandler::uploadFile(Payload& pl){
+void PLHandler::uploadFile(const Payload& pl){
     createDirectory(write_dir_ + pl.remote_dir);
     copyFile(pl.local_url, write_dir_ + pl.remote_url);
 }
