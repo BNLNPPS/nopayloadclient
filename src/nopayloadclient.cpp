@@ -17,20 +17,20 @@ Client::Client(const string& gt_name) : Client() {
 
 // Configuring
 json Client::setGlobalTag(const string& name) {
-    TRY (
+    NOPAYLOADCLIENT_TRY (
         global_tag_ = name;
         return makeResp("successfully changed global tag to " + name);
     )
 }
 
 json Client::getGlobalTag() {
-    TRY (
+    NOPAYLOADCLIENT_TRY (
         return makeResp(global_tag_);
     )
 }
 
 json Client::override(const string& pl_type, const string& file_url) {
-    TRY (
+    NOPAYLOADCLIENT_TRY (
         pl_handler_.checkFileExists(file_url);
         override_dict_[pl_type] = file_url;
         return makeResp("successfully overrode payload type " + pl_type);
@@ -39,7 +39,7 @@ json Client::override(const string& pl_type, const string& file_url) {
 
 // Reading
 json Client::getUrlDict(ll major_iov, ll minor_iov){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         checkGtExists(global_tag_);
         Moment mom {major_iov, minor_iov};
         json url_dict = _getUrlDict(mom);
@@ -51,7 +51,7 @@ json Client::getUrlDict(ll major_iov, ll minor_iov){
 }
 
 json Client::getUrlDictSQL(ll major_iov, ll minor_iov){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         checkGtExists(global_tag_);
         Moment mom {major_iov, minor_iov};
         json url_dict = _getUrlDictSQL(mom);
@@ -64,7 +64,7 @@ json Client::getUrlDictSQL(ll major_iov, ll minor_iov){
 
 // Writing
 json Client::createGlobalTag() {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
@@ -74,14 +74,14 @@ json Client::createGlobalTag() {
 }
 
 json Client::deleteGlobalTag() {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         rest_handler_.deleteGlobalTag(global_tag_);
         return makeResp("successfully deleted global tag");
     )
 }
 
 json Client::lockGlobalTag() {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("locked")){
             rest_handler_.createGlobalTagStatus("locked");
         }
@@ -91,7 +91,7 @@ json Client::lockGlobalTag() {
 }
 
 json Client::unlockGlobalTag() {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
@@ -101,7 +101,7 @@ json Client::unlockGlobalTag() {
 }
 
 json Client::cloneGlobalTag(const string& target) {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         checkGtExists(global_tag_);
         checkGtDoesNotExist(target);
         rest_handler_.cloneGlobalTag(global_tag_, target);
@@ -110,7 +110,7 @@ json Client::cloneGlobalTag(const string& target) {
 }
 
 json Client::createPayloadType(const string& name) {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         rest_handler_.createPayloadType(name);
         return makeResp("successfully created payload type");
     )
@@ -118,7 +118,7 @@ json Client::createPayloadType(const string& name) {
 
 json Client::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start) {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         Payload pl {file_url, pl_type};
         IOV iov {major_iov_start, minor_iov_start};
         insertPayload(pl, iov);
@@ -129,7 +129,7 @@ json Client::insertPayload(const string& pl_type, const string& file_url,
 json Client::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         Payload pl {file_url, pl_type};
         IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
         insertPayload(pl, iov);
@@ -139,7 +139,7 @@ json Client::insertPayload(const string& pl_type, const string& file_url,
 
 // Helper
 json Client::getSize(){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         int n_iov_attached = 0;
         int n_gt = 0;
         for (auto gt : rest_handler_.getGlobalTags()){
@@ -154,32 +154,32 @@ json Client::getSize(){
 }
 
 json Client::getPayloadTypes(){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         return makeResp(rest_handler_.getPayloadTypes());
     )
 }
 
 json Client::getGlobalTags(){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         return makeResp(rest_handler_.getGlobalTags());
     )
 }
 
 json Client::checkConnection(){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         rest_handler_.getGlobalTags();
         return makeResp("connection is good");
     )
 }
 
 json Client::getConfDict(){
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         return makeResp(config_);
     )
 }
 
 json Client::clearCache() {
-    TRY(
+    NOPAYLOADCLIENT_TRY(
         rest_handler_.clearCache();
         return makeResp("successfully cleared cache");
     )
