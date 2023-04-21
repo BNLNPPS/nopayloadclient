@@ -12,18 +12,25 @@ Payload::Payload(const string& local_url_, const string& type_){
     remote_url = getRemoteUrl();
 }
 
-Payload::Payload(const json& raw_response) {
-    if (raw_response.type()==json::value_t::array) {
-        type = raw_response[0];
-        remote_url = raw_response[1];
-        check_sum = raw_response[2];
+/*
+Payload::Payload(const json& resp) {
+    if (resp.type()==json::value_t::array) {
+        type = resp[0];
+        remote_url = resp[1];
+        check_sum = resp[2];
+        iov = IOV(resp[3], resp[4], resp[5], resp[6]);
     }
     else {
-        type = raw_response["payload_type"];
-        remote_url = raw_response["payload_iov"][0]["payload_url"];
-        check_sum = raw_response["payload_iov"][0]["checksum"];
+        type = resp["payload_type"];
+        remote_url = resp["payload_iov"][0]["payload_url"];
+        check_sum = resp["payload_iov"][0]["checksum"];
+        iov = IOV(resp["payload_iov"][0]["major_iov_start"],
+                  resp["payload_iov"][0]["minor_iov_start"],
+                  resp["payload_iov"][0]["major_iov_end"],
+                  resp["payload_iov"][0]["minor_iov_end"]);
     }
 }
+*/
 
 string Payload::getCheckSum() {
      FILE* filp = fopen(local_url.c_str(), "rb");
@@ -42,7 +49,7 @@ string Payload::getCheckSum() {
 }
 
 string Payload::getRemoteUrl() {
-  string local_remote_url = remote_dir;
+    string local_remote_url = remote_dir;
     local_remote_url += "/" + check_sum + "_" + bare_file_name;
     while ( local_remote_url.find("//") != string::npos ) {
         local_remote_url.replace(local_remote_url.find("//"), 2, "/");

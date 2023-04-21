@@ -6,6 +6,7 @@
 #include <cstdio>
 
 #include <nopayloadclient/exception.hpp>
+#include <nopayloadclient/iov.hpp>
 
 
 namespace nopayloadclient {
@@ -15,14 +16,15 @@ using std::string;
 
 class Payload {
 public:
+    Payload() {};
     Payload(const string& local_url_, const string& type_);
-    Payload(const json& raw_response);
     string local_url;
     string type;
     string bare_file_name;
     string check_sum;
     string remote_dir;
     string remote_url;
+    //IOV iov {0, 0};
     friend std::ostream& operator<<(std::ostream& os, const Payload& pl);
 private:
     string getCheckSum();

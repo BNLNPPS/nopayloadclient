@@ -17,11 +17,15 @@ bool PLHandler::fileExists(const string& url) {
 }
 
 string PLHandler::getFirstGoodUrl(const Payload& pl) {
+    return getFirstGoodUrl(pl.remote_url);
+}
+
+string PLHandler::getFirstGoodUrl(const string& remote_url) {
      for (const auto& dir : read_dir_list_) {
-         string full_url = dir + pl.remote_url;
+         string full_url = dir + remote_url;
          if (fileExists(full_url)) return full_url;
      }
-     string text = "Could not find payload <" + pl.remote_url + "> ";
+     string text = "Could not find payload <" + remote_url + "> ";
      text += "in any of the following read dirs:";
      for (const auto& dir : read_dir_list_) {
          text += " " + dir;

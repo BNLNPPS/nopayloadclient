@@ -12,6 +12,7 @@ struct IOV {
     Moment start_;
     Moment end_;
     bool is_open_;
+    IOV() {};
     IOV(Moment start);
     IOV(Moment start, Moment end);
     IOV(ll major_start, ll minor_start) :

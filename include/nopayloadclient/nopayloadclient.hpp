@@ -6,6 +6,7 @@
 #include <nopayloadclient/resthandler.hpp>
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
+//#include <nopayloadclient/payloadiov.hpp>
 #include <nopayloadclient/plhandler.hpp>
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
@@ -46,7 +47,8 @@ public:
 
     // Reading
     virtual json getUrlDict(ll major_iov, ll minor_iov);
-    virtual json getUrlDictSQL(ll major_iov, ll minor_iov);
+    //virtual std::vector<PayloadIOV> getPayloadIOVs(ll major_iov, ll minor_iov);
+    virtual json getPayloadIOVs(ll major_iov, ll minor_iov);
 
     // Writing
     virtual json createPayloadType(const string& pl_type);
@@ -72,6 +74,8 @@ public:
     template<typename T>
     json makeResp(T msg);
 
+
+
 private:
     json config_;
     json override_dict_;
@@ -94,8 +98,8 @@ private:
     virtual void checkGtDoesNotExist(const string& name);
     virtual void checkGtStatusExists(const string& name);
     virtual void checkPlTypeExists(const string& name);
-    virtual json _getUrlDict(Moment& mom);
-    virtual json _getUrlDictSQL(Moment& mom);
+    //virtual json getUrlDict(const std::vector<PayloadIOV>& payload_iovs);
+    virtual json getUrlDict(const json& payload_iovs);
 
     // Helper
     virtual bool objWithNameExists(const json& j, const string& name);
