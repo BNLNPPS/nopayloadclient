@@ -79,6 +79,13 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
+  ////////////////////////////////////
+  std::cout << "testing new getPayloads method" << std::endl;
+  for (auto el : client.getPayloadIOVs(major_iov, minor_iov)) {
+    std::cout << el << std::endl;
+  }
+  ////////////////////////////////////
+
   // number of payloads should have increased by one
   int n_pl_1 = getPayloadNumber(conf_dict["write_dir"]);
   if (n_pl_1 != (n_pl_0 + 1)) return 1;
@@ -192,6 +199,7 @@ int main()
   resp = client.insertPayload("my_pt", "non_existing_file", 0, 0);
   std::cout<<resp<<std::endl;
   if (resp["code"]==0) return 1;
+
 
   return EXIT_SUCCESS;
 }

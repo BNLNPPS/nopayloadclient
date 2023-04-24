@@ -26,6 +26,7 @@ public:
     void prepareUploadFile(const Payload& pl);
     void uploadFile(const Payload& pl);
     string getFirstGoodUrl(const Payload& pl);
+    string getFirstGoodUrl(const string& remote_url);
     void checkFileExists(const string& url);
 private:
     string write_dir_;

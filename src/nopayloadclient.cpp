@@ -40,24 +40,15 @@ json Client::override(const string& pl_type, const string& file_url) {
 // Reading
 json Client::getUrlDict(ll major_iov, ll minor_iov){
     NOPAYLOADCLIENT_TRY(
-        checkGtExists(global_tag_);
-        Moment mom {major_iov, minor_iov};
-        json url_dict = _getUrlDict(mom);
-        for (auto& el : override_dict_.items()) {
-            url_dict[el.key()] = el.value();
+        json payload_iovs;
+        for (const json& piov : getPayloadIOVs(major_iov, minor_iov)) {
+            // example filter
+            if (piov["major_iov_end"] < 0) {
+                continue;
+            }
+            payload_iovs.push_back(piov);
         }
-        return makeResp(url_dict);
-    )
-}
-
-json Client::getUrlDictSQL(ll major_iov, ll minor_iov){
-    NOPAYLOADCLIENT_TRY(
-        checkGtExists(global_tag_);
-        Moment mom {major_iov, minor_iov};
-        json url_dict = _getUrlDictSQL(mom);
-        for (auto& el : override_dict_.items()) {
-            url_dict[el.key()] = el.value();
-        }
+        json url_dict = getUrlDict(payload_iovs);
         return makeResp(url_dict);
     )
 }
@@ -273,23 +264,76 @@ void Client::insertIov(Payload& pl, IOV& iov) {
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
-json Client::_getUrlDict(Moment& mom) {
+json Client::getPayloadIOVs(ll major_iov, ll minor_iov) {
+    checkGtExists(global_tag_);
+    Moment mom {major_iov, minor_iov};
+    json payload_iovs = json::array();
+    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)) {
+        if (el.type()==json::value_t::array) {
+            payload_iovs.push_back({
+                {"type", el[0]},
+                {"payload_url", el[1]},
+                {"checksum", el[2]},
+                {"major_iov_start", el[3]},
+                {"minor_iov_start", el[4]},
+                {"major_iov_end", el[5]},
+                {"minor_iov_end", el[6]},
+            });
+        }
+        else {
+            payload_iovs.push_back({
+                {"type", el["payload_type"]},
+                {"payload_url", el["payload_iov"][0]["payload_url"]},
+                {"checksum", el["payload_iov"][0]["checksum"]},
+                {"major_iov_start", el["payload_iov"][0]["major_iov"]},
+                {"minor_iov_start", el["payload_iov"][0]["minor_iov"]},
+                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]},
+                {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]},
+            });
+        }
+    }
+    return payload_iovs;
+}
+
+/*
+std::vector<PayloadIOV> Client::getPayloadIOVs(ll major_iov, ll minor_iov) {
+    checkGtExists(global_tag_);
+    Moment mom {major_iov, minor_iov};
+    std::vector<PayloadIOV> payload_iovs;
+    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)) {
+        payload_iovs.push_back(PayloadIOV(el));
+    }
+    return payload_iovs;
+}
+*/
+/*
+json Client::getUrlDict(const std::vector<PayloadIOV>& payload_iovs) {
     json url_dict;
-    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)){
-        Payload pl {el};
+    for (const PayloadIOV& piov : payload_iovs) {
+        Payload pl = piov.payload_;
+        if (override_dict_.contains(pl.type)) {
+            url_dict[pl.type] = override_dict_[pl.type];
+            continue;
+        }
         url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
+    }
+    return url_dict;
+}
+*/
+
+json Client::getUrlDict(const json& payload_iovs) {
+    json url_dict;
+    for (const auto& piov : payload_iovs) {
+        string type = piov["type"];
+        if (override_dict_.contains(type)) {
+            url_dict[type] = override_dict_[type];
+            continue;
+        }
+        url_dict[type] = pl_handler_.getFirstGoodUrl(piov["payload_url"]);
     }
     return url_dict;
 }
 
-json Client::_getUrlDictSQL(Moment& mom) {
-    json url_dict;
-    for (const json& el : rest_handler_.getPayloadIOVsSQL(global_tag_, mom)){
-        Payload pl {el};
-        url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
-    }
-    return url_dict;
-}
 
 bool Client::objWithNameExists(const json& j, const string& name) {
     for (const auto& obj: j){

@@ -8,6 +8,7 @@ set(source_files
     payload.cpp
     moment.cpp
     iov.cpp
+#    payloadiov.cpp
     plhandler.cpp
     config.cpp
     cache.cpp

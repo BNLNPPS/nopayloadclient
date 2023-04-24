@@ -16,35 +16,35 @@ RealWrapper::RealWrapper(const json& config) {
 }
 
 json RealWrapper::del(const string& url){
-//    std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
+    //std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
 }
 
 json RealWrapper::get(const string& url){
-//    std::cout<<"RealWrapper::get(url="<<url<<")"<<std::endl;
+    //std::cout<<"RealWrapper::get(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 json RealWrapper::post(const string& url, const json& data){
-//    std::cout<<"RealWrapper::post(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"RealWrapper::post(url="<<url<<", data="<<data<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePost(data);
     return cm.try_execute();
 }
 
 json RealWrapper::put(const string& url){
-//    std::cout<<"RealWrapper::put(url="<<url<<")"<<std::endl;
+    //std::cout<<"RealWrapper::put(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut();
     return cm.try_execute();
 }
 
 json RealWrapper::put(const string& url, const json& data){
-//    std::cout<<"RealWrapper::put(url="<<url<<", jsonData="<<jsonData<<")"<<std::endl;
+    //std::cout<<"RealWrapper::put(url="<<url<<", data="<<data<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.preparePut(data);
     return cm.try_execute();
