@@ -11,11 +11,7 @@
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
 
-#ifdef TRY
-#undef TRY
-#endif
-
-#define TRY(...) {              \
+#define NOPAYLOADCLIENT_TRY(...) {              \
     try {                       \
         __VA_ARGS__             \
     }                           \
