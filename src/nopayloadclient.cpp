@@ -54,50 +54,70 @@ json Client::getUrlDict(ll major_iov, ll minor_iov){
 }
 
 // Writing
-json Client::createGlobalTag() {
+json Client::createGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
-        rest_handler_.createGlobalTagObject(global_tag_, "unlocked");
+        rest_handler_.createGlobalTagObject(name, "unlocked");
         return makeResp("successfully created global tag");
     )
 }
 
-json Client::deleteGlobalTag() {
+json Client::createGlobalTag() {
+    return createGlobalTag(global_tag_);
+}
+
+json Client::deleteGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
-        rest_handler_.deleteGlobalTag(global_tag_);
+        rest_handler_.deleteGlobalTag(name);
         return makeResp("successfully deleted global tag");
     )
 }
 
-json Client::lockGlobalTag() {
+json Client::deleteGlobalTag() {
+    return deleteGlobalTag(global_tag_);
+}
+
+json Client::lockGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("locked")){
             rest_handler_.createGlobalTagStatus("locked");
         }
-        rest_handler_.lockGlobalTag(global_tag_);
+        rest_handler_.lockGlobalTag(name);
         return makeResp("successfully locked global tag");
     )
 }
 
-json Client::unlockGlobalTag() {
+json Client::lockGlobalTag() {
+    return lockGlobalTag(global_tag_);
+}
+
+json Client::unlockGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
         }
-        rest_handler_.unlockGlobalTag(global_tag_);
+        rest_handler_.unlockGlobalTag(name);
         return makeResp("successfully unlocked global tag");
     )
 }
 
-json Client::cloneGlobalTag(const string& target) {
+json Client::unlockGlobalTag() {
+    return unlockGlobalTag(global_tag_);
+}
+
+json Client::cloneGlobalTag(const string& source, const string& target) {
     NOPAYLOADCLIENT_TRY(
-        checkGtExists(global_tag_);
+        checkGtExists(source);
         checkGtDoesNotExist(target);
-        rest_handler_.cloneGlobalTag(global_tag_, target);
+        rest_handler_.cloneGlobalTag(source, target);
         return makeResp("successfully cloned global tag");
     )
+}
+
+json Client::cloneGlobalTag(const string& target) {
+    return cloneGlobalTag(global_tag_, target);
 }
 
 json Client::createPayloadType(const string& name) {

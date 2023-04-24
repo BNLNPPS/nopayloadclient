@@ -48,10 +48,15 @@ public:
 
     // Writing
     virtual json createPayloadType(const string& pl_type);
+    virtual json createGlobalTag(const string& name);
     virtual json createGlobalTag();
+    virtual json deleteGlobalTag(const string& name);
     virtual json deleteGlobalTag();
+    virtual json lockGlobalTag(const string& name);
     virtual json lockGlobalTag();
+    virtual json unlockGlobalTag(const string& name);
     virtual json unlockGlobalTag();
+    virtual json cloneGlobalTag(const string& source, const string& target);
     virtual json cloneGlobalTag(const string& target);
     virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start);
