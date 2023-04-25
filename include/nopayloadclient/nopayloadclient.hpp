@@ -85,25 +85,25 @@ private:
     PLHandler pl_handler_;
 
     // Writing
-    virtual void prepareInsertIov(Payload &pl);
-    virtual void insertIov(Payload& pl, IOV& iov);
-    virtual void insertPayload(Payload &pl, IOV &iov);
-    virtual void createNewPll(const string& pl_type);
+    void prepareInsertIov(Payload &pl);
+    void insertIov(Payload& pl, IOV& iov);
+    void insertPayload(Payload &pl, IOV &iov);
+    void createNewPll(const string& pl_type);
 
     // Reading
-    virtual bool gtExists(const string& name);
-    virtual bool gtStatusExists(const string& name);
-    virtual bool plTypeExists(const string& pl_type);
-    virtual bool gtHasPlType(const string& pl_type);
-    virtual void checkGtExists(const string& name);
-    virtual void checkGtDoesNotExist(const string& name);
-    virtual void checkGtStatusExists(const string& name);
-    virtual void checkPlTypeExists(const string& name);
+    bool gtExists(const string& name);
+    bool gtStatusExists(const string& name);
+    bool plTypeExists(const string& pl_type);
+    bool gtHasPlType(const string& pl_type);
+    void checkGtExists(const string& name);
+    void checkGtDoesNotExist(const string& name);
+    void checkGtStatusExists(const string& name);
+    void checkPlTypeExists(const string& name);
     //virtual json getUrlDict(const std::vector<PayloadIOV>& payload_iovs);
     json getUrlDict(const json& payload_iovs);
 
     // Helper
-    virtual bool objWithNameExists(const json& j, const string& name);
+    bool objWithNameExists(const json& j, const string& name);
 };
 
 }
