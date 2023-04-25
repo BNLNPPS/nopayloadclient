@@ -100,7 +100,7 @@ private:
     virtual void checkGtStatusExists(const string& name);
     virtual void checkPlTypeExists(const string& name);
     //virtual json getUrlDict(const std::vector<PayloadIOV>& payload_iovs);
-    virtual json getUrlDict(const json& payload_iovs);
+    json getUrlDict(const json& payload_iovs);
 
     // Helper
     virtual bool objWithNameExists(const json& j, const string& name);
