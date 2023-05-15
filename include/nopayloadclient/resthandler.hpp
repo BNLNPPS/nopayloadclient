@@ -33,7 +33,6 @@ public:
     json getPayloadTypes();
     json getPayloadLists(const string& global_tag);
     json getPayloadIOVs(const string& global_tag, Moment& mom);
-    json getPayloadIOVsSQL(const string& global_tag, Moment& mom);
 
     // Writing
     void createGlobalTagStatus(const string& name);
@@ -59,6 +58,9 @@ private:
     json put(const string& url, bool trash_cache=true);
     json put(const string& url, const json& data, bool trash_cache=true);
     json post(const string& url, const json& data, bool trash_cache=true);
+
+    json get_piov_array(const json& raw_response);
+
 };
 
 }

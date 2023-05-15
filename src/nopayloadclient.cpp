@@ -171,6 +171,7 @@ json Client::getPayloadTypes(){
 }
 
 json Client::getGlobalTags(){
+    std::cout << "nopayloadclient::getGlobalTags" << std::endl;
     NOPAYLOADCLIENT_TRY(
         return makeResp(rest_handler_.getGlobalTags());
     )
@@ -287,32 +288,7 @@ void Client::insertIov(Payload& pl, IOV& iov) {
 json Client::getPayloadIOVs(ll major_iov, ll minor_iov) {
     checkGtExists(global_tag_);
     Moment mom {major_iov, minor_iov};
-    json payload_iovs = json::array();
-    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)) {
-        if (el.type()==json::value_t::array) {
-            payload_iovs.push_back({
-                {"type", el[0]},
-                {"payload_url", el[1]},
-                {"checksum", el[2]},
-                {"major_iov_start", el[3]},
-                {"minor_iov_start", el[4]},
-                {"major_iov_end", el[5]},
-                {"minor_iov_end", el[6]},
-            });
-        }
-        else {
-            payload_iovs.push_back({
-                {"type", el["payload_type"]},
-                {"payload_url", el["payload_iov"][0]["payload_url"]},
-                {"checksum", el["payload_iov"][0]["checksum"]},
-                {"major_iov_start", el["payload_iov"][0]["major_iov"]},
-                {"minor_iov_start", el["payload_iov"][0]["minor_iov"]},
-                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]},
-                {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]},
-            });
-        }
-    }
-    return payload_iovs;
+    return rest_handler_.getPayloadIOVs(global_tag_, mom);
 }
 
 /*

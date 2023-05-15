@@ -76,7 +76,6 @@ public:
     json makeResp(T msg);
 
 
-
 private:
     json config_;
     json override_dict_;
