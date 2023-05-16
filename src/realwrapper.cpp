@@ -97,7 +97,7 @@ json CurlSession::execute(){
     }
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
     curl_easy_cleanup(curl);
-    //printResults();
+    // printResults();
     json response = json::parse(ans.readBuffer);
     if (ans.httpCode!=200){
         std::string msg;

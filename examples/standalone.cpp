@@ -11,10 +11,7 @@ int main () {
 
     // create an instance of the client
     nopayloadclient::Client client("ExampleGT");
-    //nopayloadclient::Client client {};
-    //client.setGlobalTag("ExampleGT");
 
-    /*
     std::cout << client.createGlobalTag() << std::endl;
     std::cout << client.createPayloadType("ExamplePT") << std::endl;;
 
@@ -26,7 +23,7 @@ int main () {
     // ++++++++++++++++++++++++++++++
 
     // try inserting payload
-    resp = client.insertPayload("ExamplePT", "/tmp/file.dat", 7, 0);
+    resp = client.insertPayload("ExamplePT", "file_1.txt", 1, 1);
 
     // analyse response: code==0 -> OK, code!=0 -> Not OK!
     if (resp["code"]!=0) {
@@ -37,16 +34,18 @@ int main () {
     }
 
     // w/o error handling, inserting a payload is a one-liner:
-    std::cout << client.insertPayload("ExamplePT", "/tmp/file.dat", 8, 0) << std::endl;
+    std::cout << client.insertPayload("ExamplePT", "file_2.txt", 2, 2) << std::endl;
 
     // ++++++++++++++++++++++++++++++
     //          RETRIEVAL
     // ++++++++++++++++++++++++++++++
 
-    resp = client.getUrlDict(42, 0);
+    resp = client.getUrlDict(1, 0);
     std::cout << resp << std::endl;
 
-    */
+    resp = client.getUrlDict(2, 0);
+    std::cout << resp << std::endl;
+
     return 0;
 
 }

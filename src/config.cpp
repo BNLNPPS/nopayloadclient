@@ -18,6 +18,11 @@ void _checkKeys(json j){
   }
 }
 
+bool fileExists(const std::string& url) {
+    struct stat buffer;
+    return (stat (url.c_str(), &buffer) ==0);
+}
+
 std::string getFilePath() {
     char* env_char = std::getenv("NOPAYLOADCLIENT_CONF");
     if (env_char==NULL){
@@ -29,6 +34,10 @@ std::string getFilePath() {
 
 json getDict(){
     std::string file_path = getFilePath();
+    if (!fileExists(file_path)) {
+        std::cerr << "config file does not exist: " << file_path << std::endl;
+        exit(1);
+    }
     std::ifstream conf_file(file_path, std::ifstream::binary);
     json j = json::parse(conf_file);
     _checkKeys(j);

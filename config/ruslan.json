@@ -1,5 +1,5 @@
 {
-  "base_url": "helm-test1.apps.rcf.bnl.gov",
+  "base_url": "nopayloaddb.apps.rcf.bnl.gov",
   "api_res":  "/api/cdb_rest/",
   "write_dir": "/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/",
   "read_dir_list": ["/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/"],
