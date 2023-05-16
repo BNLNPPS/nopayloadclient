@@ -24,6 +24,7 @@ public:
     string check_sum;
     string remote_dir;
     string remote_url;
+    string full_remote_url;
     //IOV iov {0, 0};
     friend std::ostream& operator<<(std::ostream& os, const Payload& pl);
 private:

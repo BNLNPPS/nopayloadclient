@@ -25,18 +25,18 @@ class CLI {
 typedef json (CLI::*voidFunctionType) ();
 public:
     CLI();
-    virtual json getSize(Client& c);
-    virtual json getConfDict(Client& c);
-    virtual json getPayloadTypes(Client& c);
-    virtual json getGlobalTags(Client& c);
-    virtual json checkConnection(Client& c);
-    virtual json createPayloadType(Client& c, int& argc, char* argv[]);
-    virtual json createGlobalTag(Client& c, int& argc, char* argv[]);
-    virtual json deleteGlobalTag(Client& c, int& argc, char* argv[]);
-    virtual json lockGlobalTag(Client& c, int& argc, char* argv[]);
-    virtual json unlockGlobalTag(Client& c, int& argc, char* argv[]);
-    virtual json getUrlDict(Client& c, int& argc, char* argv[]);
-    virtual json insertPayload(Client& c, int& argc, char* argv[]);
+    virtual json getSize(NoPayloadClient& c);
+    virtual json getConfDict(NoPayloadClient& c);
+    virtual json getPayloadTypes(NoPayloadClient& c);
+    virtual json getGlobalTags(NoPayloadClient& c);
+    virtual json checkConnection(NoPayloadClient& c);
+    virtual json createPayloadType(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json createGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json deleteGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json lockGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json unlockGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json getUrlDict(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json insertPayload(NoPayloadClient& c, int& argc, char* argv[]);
 
     template<typename T>
     void insertCommand(const string& name, T func){

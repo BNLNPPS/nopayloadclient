@@ -2,34 +2,34 @@
 
 namespace nopayloadclient {
 
-Client::Client() {
+NoPayloadClient::NoPayloadClient() {
     config_ = config::getDict();
     rest_handler_ = RESTHandler(config_);
     pl_handler_ = PLHandler(config_);
 }
 
-Client::Client(const string& gt_name) : Client() {
+NoPayloadClient::NoPayloadClient(const string& gt_name) : NoPayloadClient() {
     global_tag_ = gt_name;
 }
-//Client::Client(string gt_name) : Client() {
+//NoPayloadClient::NoPayloadClient(string gt_name) : NoPayloadClient() {
 //    global_tag_ = gt_name;
 //}
 
 // Configuring
-json Client::setGlobalTag(const string& name) {
+json NoPayloadClient::setGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY (
         global_tag_ = name;
         return makeResp("successfully changed global tag to " + name);
     )
 }
 
-json Client::getGlobalTag() {
+json NoPayloadClient::getGlobalTag() {
     NOPAYLOADCLIENT_TRY (
         return makeResp(global_tag_);
     )
 }
 
-json Client::override(const string& pl_type, const string& file_url) {
+json NoPayloadClient::override(const string& pl_type, const string& file_url) {
     NOPAYLOADCLIENT_TRY (
         pl_handler_.checkFileExists(file_url);
         override_dict_[pl_type] = file_url;
@@ -38,23 +38,34 @@ json Client::override(const string& pl_type, const string& file_url) {
 }
 
 // Reading
-json Client::getUrlDict(ll major_iov, ll minor_iov){
-    NOPAYLOADCLIENT_TRY(
-        json payload_iovs;
-        for (const json& piov : getPayloadIOVs(major_iov, minor_iov)) {
-            // example filter
-            if (piov["major_iov_end"] < 0) {
-                continue;
-            }
-            payload_iovs.push_back(piov);
+json NoPayloadClient::getUrlDict(ll major_iov, ll minor_iov){
+    json resp = getPayloadIOVs(major_iov, minor_iov);
+    if (resp["code"] != 0) return resp;
+    for (auto it = resp["msg"].begin(); it != resp["msg"].end();) {
+        if (it.value()["major_iov_end"] < major_iov) {
+            it = resp["msg"].erase(it);
         }
-        json url_dict = getUrlDict(payload_iovs);
-        return makeResp(url_dict);
+        else ++it;
+    }
+    for (auto& piov : resp["msg"].items()) {
+        piov.value() = piov.value()["payload_url"];
+    }
+    return resp;
+}
+
+json NoPayloadClient::getPayloadIOVs(ll major_iov, ll minor_iov) {
+    NOPAYLOADCLIENT_TRY(
+        checkGtExists(global_tag_);
+        Moment mom {major_iov, minor_iov};
+        json payload_iovs = rest_handler_.getPayloadIOVs(global_tag_, mom);
+        pl_handler_.decoratePrefixes(payload_iovs);
+        applyOverriding(payload_iovs);
+        return makeResp(payload_iovs);
     )
 }
 
 // Writing
-json Client::createGlobalTag(const string& name) {
+json NoPayloadClient::createGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
@@ -64,22 +75,22 @@ json Client::createGlobalTag(const string& name) {
     )
 }
 
-json Client::createGlobalTag() {
+json NoPayloadClient::createGlobalTag() {
     return createGlobalTag(global_tag_);
 }
 
-json Client::deleteGlobalTag(const string& name) {
+json NoPayloadClient::deleteGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         rest_handler_.deleteGlobalTag(name);
         return makeResp("successfully deleted global tag");
     )
 }
 
-json Client::deleteGlobalTag() {
+json NoPayloadClient::deleteGlobalTag() {
     return deleteGlobalTag(global_tag_);
 }
 
-json Client::lockGlobalTag(const string& name) {
+json NoPayloadClient::lockGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("locked")){
             rest_handler_.createGlobalTagStatus("locked");
@@ -89,11 +100,11 @@ json Client::lockGlobalTag(const string& name) {
     )
 }
 
-json Client::lockGlobalTag() {
+json NoPayloadClient::lockGlobalTag() {
     return lockGlobalTag(global_tag_);
 }
 
-json Client::unlockGlobalTag(const string& name) {
+json NoPayloadClient::unlockGlobalTag(const string& name) {
     NOPAYLOADCLIENT_TRY(
         if (!gtStatusExists("unlocked")){
             rest_handler_.createGlobalTagStatus("unlocked");
@@ -103,11 +114,11 @@ json Client::unlockGlobalTag(const string& name) {
     )
 }
 
-json Client::unlockGlobalTag() {
+json NoPayloadClient::unlockGlobalTag() {
     return unlockGlobalTag(global_tag_);
 }
 
-json Client::cloneGlobalTag(const string& source, const string& target) {
+json NoPayloadClient::cloneGlobalTag(const string& source, const string& target) {
     NOPAYLOADCLIENT_TRY(
         checkGtExists(source);
         checkGtDoesNotExist(target);
@@ -116,18 +127,18 @@ json Client::cloneGlobalTag(const string& source, const string& target) {
     )
 }
 
-json Client::cloneGlobalTag(const string& target) {
+json NoPayloadClient::cloneGlobalTag(const string& target) {
     return cloneGlobalTag(global_tag_, target);
 }
 
-json Client::createPayloadType(const string& name) {
+json NoPayloadClient::createPayloadType(const string& name) {
     NOPAYLOADCLIENT_TRY(
         rest_handler_.createPayloadType(name);
         return makeResp("successfully created payload type");
     )
 }
 
-json Client::insertPayload(const string& pl_type, const string& file_url,
+json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start) {
     NOPAYLOADCLIENT_TRY(
         Payload pl {file_url, pl_type};
@@ -137,7 +148,7 @@ json Client::insertPayload(const string& pl_type, const string& file_url,
     )
 }
 
-json Client::insertPayload(const string& pl_type, const string& file_url,
+json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
     NOPAYLOADCLIENT_TRY(
@@ -149,7 +160,7 @@ json Client::insertPayload(const string& pl_type, const string& file_url,
 }
 
 // Helper
-json Client::getSize(){
+json NoPayloadClient::getSize(){
     NOPAYLOADCLIENT_TRY(
         int n_iov_attached = 0;
         int n_gt = 0;
@@ -164,59 +175,58 @@ json Client::getSize(){
     )
 }
 
-json Client::getPayloadTypes(){
+json NoPayloadClient::getPayloadTypes(){
     NOPAYLOADCLIENT_TRY(
         return makeResp(rest_handler_.getPayloadTypes());
     )
 }
 
-json Client::getGlobalTags(){
-    std::cout << "nopayloadclient::getGlobalTags" << std::endl;
+json NoPayloadClient::getGlobalTags(){
     NOPAYLOADCLIENT_TRY(
         return makeResp(rest_handler_.getGlobalTags());
     )
 }
 
-json Client::checkConnection(){
+json NoPayloadClient::checkConnection(){
     NOPAYLOADCLIENT_TRY(
         rest_handler_.getGlobalTags();
         return makeResp("connection is good");
     )
 }
 
-json Client::getConfDict(){
+json NoPayloadClient::getConfDict(){
     NOPAYLOADCLIENT_TRY(
         return makeResp(config_);
     )
 }
 
-json Client::clearCache() {
+json NoPayloadClient::clearCache() {
     NOPAYLOADCLIENT_TRY(
         rest_handler_.clearCache();
         return makeResp("successfully cleared cache");
     )
 }
 
-std::ostream& operator<<(std::ostream& os, const Client& c) {
-    os << "nopayloadclient::Client instance with following attributes:" << std::endl;
+std::ostream& operator<<(std::ostream& os, const NoPayloadClient& c) {
+    os << "nopayloadclient::NoPayloadClient instance with following attributes:" << std::endl;
     os << "config = " << c.config_ << std::endl;
     return os;
 }
 
 template<typename T>
-json Client::makeResp(T msg) {
+json NoPayloadClient::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
 // Private
-void Client::insertPayload(Payload &pl, IOV &iov) {
+void NoPayloadClient::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
     insertIov(pl, iov);
     pl_handler_.uploadFile(pl);
 }
 
-void Client::prepareInsertIov(Payload &pl) {
+void NoPayloadClient::prepareInsertIov(Payload &pl) {
     checkGtExists(global_tag_);
     checkPlTypeExists(pl.type);
     if (!gtHasPlType(pl.type)) {
@@ -226,112 +236,79 @@ void Client::prepareInsertIov(Payload &pl) {
     }
 }
 
-bool Client::gtStatusExists(const string& name){
+bool NoPayloadClient::gtStatusExists(const string& name){
     json j = rest_handler_.getGlobalTagStatuses();
     return objWithNameExists(j, name);
 }
 
-bool Client::gtExists(const string& name){
+bool NoPayloadClient::gtExists(const string& name){
     json j = rest_handler_.getGlobalTags();
     return objWithNameExists(j, name);
 }
 
-bool Client::plTypeExists(const string& pl_type){
+bool NoPayloadClient::plTypeExists(const string& pl_type){
     json j = rest_handler_.getPayloadTypes();
     return objWithNameExists(j, pl_type);
 }
 
-void Client::checkGtStatusExists(const string& name){
+void NoPayloadClient::checkGtStatusExists(const string& name){
     if (!gtStatusExists(name)){
         std::string msg = "no global tag status with name '"+name+"' exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkGtExists(const string& name){
+void NoPayloadClient::checkGtExists(const string& name){
     if (!gtExists(name)){
         std::string msg = "no global tag with name '"+name+"' exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkGtDoesNotExist(const string& name){
+void NoPayloadClient::checkGtDoesNotExist(const string& name){
     if (gtExists(name)){
         std::string msg = "global tag with name '"+name+"' already exists";
         throw BaseException(msg);
     }
 }
 
-void Client::checkPlTypeExists(const string& pl_type){
+void NoPayloadClient::checkPlTypeExists(const string& pl_type){
     if (!plTypeExists(pl_type)){
         std::string msg = "no payload type with name '"+pl_type+"' exists";
         throw BaseException(msg);
     }
 }
 
-bool Client::gtHasPlType(const string& pl_type){
+bool NoPayloadClient::gtHasPlType(const string& pl_type){
     json j = rest_handler_.getPayloadLists(global_tag_);
     return (j.contains(pl_type));
 }
 
-void Client::createNewPll(const string& pl_type){
+void NoPayloadClient::createNewPll(const string& pl_type){
     std::string pll_name = rest_handler_.createPayloadList(pl_type);
     rest_handler_.attachPayloadList(global_tag_, pll_name);
 }
 
-void Client::insertIov(Payload& pl, IOV& iov) {
+void NoPayloadClient::insertIov(Payload& pl, IOV& iov) {
     std::string pll_name = rest_handler_.getPayloadLists(global_tag_)[pl.type];
     ll piov_id = rest_handler_.createPayloadIOV(pl, iov);
     rest_handler_.attachPayloadIOV(pll_name, piov_id);
 }
 
-json Client::getPayloadIOVs(ll major_iov, ll minor_iov) {
-    checkGtExists(global_tag_);
-    Moment mom {major_iov, minor_iov};
-    return rest_handler_.getPayloadIOVs(global_tag_, mom);
-}
-
-/*
-std::vector<PayloadIOV> Client::getPayloadIOVs(ll major_iov, ll minor_iov) {
-    checkGtExists(global_tag_);
-    Moment mom {major_iov, minor_iov};
-    std::vector<PayloadIOV> payload_iovs;
-    for (const json& el : rest_handler_.getPayloadIOVs(global_tag_, mom)) {
-        payload_iovs.push_back(PayloadIOV(el));
-    }
-    return payload_iovs;
-}
-*/
-/*
-json Client::getUrlDict(const std::vector<PayloadIOV>& payload_iovs) {
-    json url_dict;
-    for (const PayloadIOV& piov : payload_iovs) {
-        Payload pl = piov.payload_;
-        if (override_dict_.contains(pl.type)) {
-            url_dict[pl.type] = override_dict_[pl.type];
-            continue;
-        }
-        url_dict[pl.type] = pl_handler_.getFirstGoodUrl(pl);
-    }
-    return url_dict;
-}
-*/
-
-json Client::getUrlDict(const json& payload_iovs) {
-    json url_dict;
-    for (const auto& piov : payload_iovs) {
-        string type = piov["type"];
+void NoPayloadClient::applyOverriding(json& payload_iovs) {
+    for (auto& el : payload_iovs.items()) {
+        string type = el.key();
         if (override_dict_.contains(type)) {
-            url_dict[type] = override_dict_[type];
-            continue;
+            el.value()["payload_url"] = override_dict_[type];
+            el.value()["major_iov_start"] = 0;
+            el.value()["minor_iov_start"] = 0;
+            el.value()["major_iov_end"] = std::numeric_limits<long long>::max();
+            el.value()["minor_iov_end"] = std::numeric_limits<long long>::max();
         }
-        url_dict[type] = pl_handler_.getFirstGoodUrl(piov["payload_url"]);
     }
-    return url_dict;
 }
 
-
-bool Client::objWithNameExists(const json& j, const string& name) {
+bool NoPayloadClient::objWithNameExists(const json& j, const string& name) {
     for (const auto& obj: j){
         if (obj["name"] == name) return true;
     }

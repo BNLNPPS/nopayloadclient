@@ -17,32 +17,32 @@ CLI::CLI() {
     insertCommand("insertPayload", &CLI::insertPayload);
 }
 
-json CLI::getSize(Client& c) {
+json CLI::getSize(NoPayloadClient& c) {
     return c.getSize();
 }
 
-json CLI::createPayloadType(Client& c, int& /* argc */, char* argv[]) {
+json CLI::createPayloadType(NoPayloadClient& c, int& /* argc */, char* argv[]) {
     std::string name = argv[2];
     return c.createPayloadType(name);
 }
 
-json CLI::getConfDict(Client& c) {
+json CLI::getConfDict(NoPayloadClient& c) {
     return c.getConfDict();
 }
 
-json CLI::getPayloadTypes(Client& c) {
+json CLI::getPayloadTypes(NoPayloadClient& c) {
     return c.getPayloadTypes();
 }
 
-json CLI::getGlobalTags(Client& c) {
+json CLI::getGlobalTags(NoPayloadClient& c) {
     return c.getGlobalTags();
 }
 
-json CLI::checkConnection(Client& c) {
+json CLI::checkConnection(NoPayloadClient& c) {
     return c.checkConnection();
 }
 
-json CLI::getUrlDict(Client& c, int& /* argc */, char* argv[]) {
+json CLI::getUrlDict(NoPayloadClient& c, int& /* argc */, char* argv[]) {
     std::string gt_name = argv[2];
     long long major_iov = std::atoi(argv[3]);
     long long minor_iov = std::atoi(argv[4]);
@@ -50,31 +50,31 @@ json CLI::getUrlDict(Client& c, int& /* argc */, char* argv[]) {
     return c.getUrlDict(major_iov, minor_iov);
 }
 
-json CLI::createGlobalTag(Client& c, int& /* argc */, char* argv[]){
+json CLI::createGlobalTag(NoPayloadClient& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.createGlobalTag();
 }
 
-json CLI::deleteGlobalTag(Client& c, int& /* argc */, char* argv[]){
+json CLI::deleteGlobalTag(NoPayloadClient& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.deleteGlobalTag();
 }
 
-json CLI::lockGlobalTag(Client& c, int& /* argc */, char* argv[]){
+json CLI::lockGlobalTag(NoPayloadClient& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.lockGlobalTag();
 }
 
-json CLI::unlockGlobalTag(Client& c, int& /* argc */, char* argv[]){
+json CLI::unlockGlobalTag(NoPayloadClient& c, int& /* argc */, char* argv[]){
     std::string name = argv[2];
     c.setGlobalTag(name);
     return c.unlockGlobalTag();
 }
 
-json CLI::insertPayload(Client& c, int& argc, char* argv[]){
+json CLI::insertPayload(NoPayloadClient& c, int& argc, char* argv[]){
     std::string gt = argv[2];
     std::string pt = argv[3];
     std::string file_url = argv[4];
@@ -98,8 +98,9 @@ json CLI::insertPayload(Client& c, int& argc, char* argv[]){
 
 int main(int argc, char *argv[])
 {
+    std::cout << "CLI::main()" << std::endl;
     nopayloadclient::CLI cli;
-    nopayloadclient::Client client;
+    nopayloadclient::NoPayloadClient client;
     std::cout << cli.callCommand(argv[1], &client, argc, *argv).dump(4) << std::endl;
     return 0;
 }

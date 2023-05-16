@@ -11,6 +11,7 @@
 #include <nopayloadclient/payload.hpp>
 #include <nopayloadclient/iov.hpp>
 #include <nopayloadclient/moment.hpp>
+#include <nopayloadclient/payloadiov.hpp>
 #include <nopayloadclient/exception.hpp>
 
 
@@ -59,7 +60,8 @@ private:
     json put(const string& url, const json& data, bool trash_cache=true);
     json post(const string& url, const json& data, bool trash_cache=true);
 
-    json get_piov_array(const json& raw_response);
+    //json get_piov_array(const json& raw_response);
+    json get_piov_dict(const json& raw_response);
 
 };
 

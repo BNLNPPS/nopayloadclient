@@ -16,10 +16,6 @@ bool PLHandler::fileExists(const string& url) {
     return (stat (url.c_str(), &buffer) ==0);
 }
 
-string PLHandler::getFirstGoodUrl(const Payload& pl) {
-    return getFirstGoodUrl(pl.remote_url);
-}
-
 string PLHandler::getFirstGoodUrl(const string& remote_url) {
      for (const auto& dir : read_dir_list_) {
          string full_url = dir + remote_url;
@@ -32,6 +28,13 @@ string PLHandler::getFirstGoodUrl(const string& remote_url) {
      }
      throw BaseException(text);
 }
+
+void PLHandler::decoratePrefixes(json& payload_iovs) {
+    for(json& el: payload_iovs) {
+        el["payload_url"] = getFirstGoodUrl(el["payload_url"]);
+    }
+}
+
 
 /*
 void PLHandler::compareCheckSums(const string& firstFileUrl, const string& secondFileUrl){

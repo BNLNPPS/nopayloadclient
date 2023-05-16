@@ -51,7 +51,7 @@ int main()
   long long major_iov = randLong(major_iov_start, major_iov_end);
   long long minor_iov = randLong(minor_iov_start, minor_iov_end);
 
-  nopayloadclient::Client client {"my_gt"};
+  nopayloadclient::NoPayloadClient client {"my_gt"};
   json conf_dict = client.getConfDict()["msg"];
 
   int n_pl_0 = getPayloadNumber(conf_dict["write_dir"]);
@@ -107,6 +107,7 @@ int main()
   client.setGlobalTag("my_gt");
 
   // check overriding
+  std::cout << "CHECK OVERRIDING" << std::endl;
   resp = client.createPayloadType("overriden_pt");
   std::cout << resp << std::endl;
   if (createRandomPayload(my_overriden_url) == 1) return 1;
@@ -119,7 +120,6 @@ int main()
   std::string old_file_name = resp["msg"]["overriden_pt"];
   client.override("overriden_pt", my_overriden_url);
   resp = client.getUrlDict(major_iov, minor_iov);
-  std::cout << resp << std::endl;
   std::string new_file_name = resp["msg"]["overriden_pt"];
   if (old_file_name == new_file_name) return 1;
   if (new_file_name != my_overriden_url) return 1;

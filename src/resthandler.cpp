@@ -37,13 +37,52 @@ json RESTHandler::getPayloadLists(const string& global_tag) {
 }
 
 json RESTHandler::getPayloadIOVs(const string& global_tag, Moment& mom){
-    return get("payloadiovs/?gtName=" + global_tag + "&majorIOV=" +
+    json raw_response = get("payloadiovs/?gtName=" + global_tag + "&majorIOV=" +
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
+    return get_piov_dict(raw_response);
 }
 
-json RESTHandler::getPayloadIOVsSQL(const string& global_tag, Moment& mom){
-    return get("payloadiovssql/?gtName=" + global_tag + "&majorIOV=" +
-               std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
+//json RESTHandler::get_piov_array(const json& raw_response) {
+//    json piov_array = json::array();
+//    for (const json& el : raw_response) {
+//        if (el.type()==json::value_t::array) {
+//            piov_array.push_back({
+//                {"type", el[0]}, {"payload_url", el[1]}, {"checksum", el[2]},
+//                {"major_iov_start", el[3]}, {"minor_iov_start", el[4]},
+//                {"major_iov_end", el[5]}, {"minor_iov_end", el[6]},
+//            });
+//        }
+//        else {
+//            piov_array.push_back({
+//                {"type", el["payload_type"]}, {"payload_url", el["payload_iov"][0]["payload_url"]}, {"checksum", el["payload_iov"][0]["checksum"]},
+//                {"major_iov_start", el["payload_iov"][0]["major_iov"]}, {"minor_iov_start", el["payload_iov"][0]["minor_iov"]},
+//                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]}, {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]},
+//            });
+//        }
+//    }
+//    return piov_array;
+//}
+
+json RESTHandler::get_piov_dict(const json& raw_response) {
+    json piov_dict;
+    string type;
+    for (const json& el : raw_response) {
+        if (el.type()==json::value_t::array) {
+            type = el[0];
+            piov_dict[type] = {
+                {"payload_url", el[1]}, {"checksum", el[2]},
+                {"major_iov_start", el[3]}, {"minor_iov_start", el[4]},
+                {"major_iov_end", el[5]}, {"minor_iov_end", el[6]}};
+        }
+        else {
+            type = el["payload_type"];
+            piov_dict[type] = {
+                {"payload_url", el["payload_iov"][0]["payload_url"]}, {"checksum", el["payload_iov"][0]["checksum"]},
+                {"major_iov_start", el["payload_iov"][0]["major_iov"]}, {"minor_iov_start", el["payload_iov"][0]["minor_iov"]},
+                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]}, {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]}};
+        }
+    }
+    return piov_dict;
 }
 
 // Writing

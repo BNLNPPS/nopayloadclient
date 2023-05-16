@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <limits>
 #include <nlohmann/json.hpp>
 
 #include <nopayloadclient/resthandler.hpp>
@@ -26,13 +27,13 @@ using nlohmann::json;
 using std::string;
 using ll = long long;
 
-class Client {
+class NoPayloadClient {
 public:
-    Client();
-    Client(const string& gt_name);
+    NoPayloadClient();
+    NoPayloadClient(const string& gt_name);
 
     virtual json add(int a, int b) {
-        std::cout << "Client::add(a=" << a << ", b=" << b << ")" << std::endl;
+        std::cout << "NoPayloadClient::add(a=" << a << ", b=" << b << ")" << std::endl;
         return json {a+b};
     }
 
@@ -71,7 +72,7 @@ public:
     virtual json checkConnection();
     virtual json getConfDict();
     virtual json clearCache();
-    friend std::ostream& operator<<(std::ostream& os, const Client& c);
+    friend std::ostream& operator<<(std::ostream& os, const NoPayloadClient& c);
     template<typename T>
     json makeResp(T msg);
 
@@ -98,6 +99,7 @@ private:
     void checkGtDoesNotExist(const string& name);
     void checkGtStatusExists(const string& name);
     void checkPlTypeExists(const string& name);
+    void applyOverriding(json& payload_iovs);
     //virtual json getUrlDict(const std::vector<PayloadIOV>& payload_iovs);
     json getUrlDict(const json& payload_iovs);
 

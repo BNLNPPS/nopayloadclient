@@ -11,6 +11,7 @@
 #include <nopayloadclient/exception.hpp>
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/payload.hpp>
+#include <nopayloadclient/payloadiov.hpp>
 
 
 namespace nopayloadclient {
@@ -27,6 +28,7 @@ public:
     void uploadFile(const Payload& pl);
     string getFirstGoodUrl(const Payload& pl);
     string getFirstGoodUrl(const string& remote_url);
+    void decoratePrefixes(json& payload_iovs);
     void checkFileExists(const string& url);
 private:
     string write_dir_;
