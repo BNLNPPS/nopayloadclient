@@ -23,21 +23,10 @@ bool IOV::contains(Moment& mom) {
     return !(mom < start_) && (mom < end_);
 }
 
-bool IOV::dict_has_ending(const json& iov_dict) {
-    if (iov_dict.contains("major_start") && iov_dict.contains("minor_start")) {
-        if (iov_dict.size() == 2) return false;
-        if (iov_dict.contains("major_end") && iov_dict.contains("minor_end")) {
-            if (iov_dict.size() == 4) return true;
-        }
-    }
-    throw IOVException("Invalid IOV dict");
-}
-
 std::ostream& operator<< (std::ostream& os, const IOV& i) {
     os << "IOV(" << std::endl;
     os << "  start = " << i.start_;
     os << "  end = " << i.end_;
-    os << "  is_open = " << i.is_open_ << std::endl;
     os << ")" << std::endl;
     return os;
 };

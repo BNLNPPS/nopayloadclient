@@ -29,16 +29,5 @@ int main()
   std::cout << "iov2.contains(mom2) = " << iov2.contains(mom2) << std::endl;
   std::cout << "iov3.contains(mom1) = " << iov3.contains(mom1) << std::endl;
 
-  std::cout << "testing creation from iov dict..." << std::endl;
-
-  nopayloadclient::IOV iov {{{"major_start", 1}, {"minor_start", 2}, {"major_end", 3}, {"minor_end", 4}}};
-  std::cout << iov << std::endl;
-
-  nopayloadclient::IOV iov_open {{{"major_start", 1}, {"minor_start", 2}}};
-  std::cout << iov_open << std::endl;
-
-  // this should throw an exception
-  // nopayloadclient::IOV iov_failed {{{"major_start", 1}, {"minor_start", 2}, {"major_end", 10}}};
-
   return 0;
 }
