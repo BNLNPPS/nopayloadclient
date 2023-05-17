@@ -54,6 +54,7 @@ json NoPayloadClient::getUrlDict(ll major_iov, ll minor_iov){
 }
 
 json NoPayloadClient::getPayloadIOVs(ll major_iov, ll minor_iov) {
+//    std::cout << "NoPayloadClient::getPayloadIOVs(major=" << major_iov << ", minor=" << minor_iov << ")" << std::endl;
     NOPAYLOADCLIENT_TRY(
         checkGtExists(global_tag_);
         Moment mom {major_iov, minor_iov};
@@ -139,24 +140,27 @@ json NoPayloadClient::createPayloadType(const string& name) {
 }
 
 json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
-                           ll major_iov_start, ll minor_iov_start) {
+                           const json& iov_dict) {
     NOPAYLOADCLIENT_TRY(
         Payload pl {file_url, pl_type};
-        IOV iov {major_iov_start, minor_iov_start};
+        IOV iov {iov_dict};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
     )
 }
 
 json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
+                           ll major_iov_start, ll minor_iov_start) {
+    json iov_dict = {{"major_start", major_iov_start}, {"minor_start", minor_iov_start}};
+    return insertPayload(pl_type, file_url, iov_dict);
+}
+
+json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start,
                            ll major_iov_end, ll minor_iov_end) {
-    NOPAYLOADCLIENT_TRY(
-        Payload pl {file_url, pl_type};
-        IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
-        insertPayload(pl, iov);
-        return makeResp("successfully inserted payload");
-    )
+    json iov_dict = {{"major_start", major_iov_start}, {"minor_start", minor_iov_start},
+                     {"major_start", major_iov_end}, {"minor_start", minor_iov_end}};
+    return insertPayload(pl_type, file_url, iov_dict);
 }
 
 // Helper

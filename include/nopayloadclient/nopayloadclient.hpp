@@ -60,6 +60,8 @@ public:
     virtual json cloneGlobalTag(const string& source, const string& target);
     virtual json cloneGlobalTag(const string& target);
     virtual json insertPayload(const string& pl_type, const string& file_url,
+                       const json& iov_dict);
+    virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start);
     virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start,
