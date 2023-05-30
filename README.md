@@ -11,32 +11,35 @@ This client-side library is meant to communicate with
 NoPayloadDB (https://github.com/bnlnpps/nopayloaddb).
 
 ### Setup
-Define where ```nopayloadclient``` will be installed 
+In the project folder, configure cmake, compile and install ```nopayloadclient```
 ```shell
-source setup_custom_install_path.sh /absolute/install/path
-```
-If this step is omitted, the default install path (```/usr/local/```) will be assumed.
-
-In the project folder, configure cmake and compile
-```shell
-cmake -S . -B build && cmake --build build/
-```
-Install the client
-```shell
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=<install_prefix>
+cmake --build build/
 cmake --install build/
 ```
+Omitting `-DCMAKE_INSTALL_PREFIX=<install_prefix>` will install
+it under the default directory (e.g. `/usr/local/`).
+
+If a custom installation prefix was defined, update the necessary
+environment variables:
+```shell
+export PATH=<install_prefix>/bin:$PATH
+export LD_LIBRARY_PATH=<install_prefix>/lib:$LD_LIBRARY_PATH
+```
+Replace LD_LIBRARY_PATH` by `DYLD_LIBRARY_PATH` on MacOS.
+
 Configure the client by specifying the config file in
 an env variable
-```
+```shell
 export NOPAYLOADCLIENT_CONF=/path/to/config.json
 ```
-If this is not done, the parameters in ```config/default.json``` will
+If this is not done, the parameters in `config/default.json` will
 be assumed.
 
 ### Testing
 The following command activates testing, reconfigures cmake, recompiles the code
-and runs the tests defined in the ```tests/``` directory
-```
+and runs the tests defined in the `tests/` directory
+```shell
 cmake -DBUILD_TESTING=ON -S . -B build && cmake --build build/ && cd build/ && ctest --verbose && cd ..
 ```
 
@@ -74,13 +77,13 @@ Currently, the following response codes are implemented:
 3: error in the database (server-side)
 ```
 An example on how to use this tool in a c++ program can be found in
-```examples/standalone.cpp```. It can be compiled via
-```
+`examples/standalone.cpp`. It can be compiled via
+```shell
 g++ -std=c++14 standalone.cpp -lnopayloadclient -lcurl
 ```
 
 #### Usage through command line interface
-```src/cli.cpp``` is an implementation of a command line interface.
+`src/cli.cpp` is an implementation of a command line interface.
 It is compiled along the rest of the project and can be run via
 ```shell
 cli_npc <command> <parameters>
@@ -101,9 +104,9 @@ cli_npc getSize
 ```
 
 ### Configuration
-Configuration of the client happens via a ```.json``` file.
-Examples can be found in the ```config/``` dir. The default
-parameters are defined in ```config/default.json```:
+Configuration of the client happens via a `.json` file.
+Examples can be found in the `config/` dir. The default
+parameters are defined in `config/default.json`:
 ```json
 {
   "base_url": "localhost:8000",

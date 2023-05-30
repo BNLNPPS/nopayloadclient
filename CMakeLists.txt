@@ -11,13 +11,6 @@ set(CMAKE_DEBUG_POSTFIX "-dbg")
 
 # Set installation destinations typical for *nix systems
 include(GNUInstallDirs)
-message(STATUS "ENV{NPC_INSTALL_DIR}: [$ENV{NPC_INSTALL_DIR}]")
-if (DEFINED ENV{NPC_INSTALL_DIR})
-    message(STATUS "Detected user defined NPC_INSTALL_DIR...")
-    set(CMAKE_INSTALL_PREFIX "$ENV{NPC_INSTALL_DIR}")
-else()
-    message(STATUS "NPC_INSTALL_DIR not set. Using default...")
-endif()
 message(STATUS "CMAKE_INSTALL_PREFIX: [${CMAKE_INSTALL_PREFIX}]")
 
 # Set up external dependencies
