@@ -26,7 +26,7 @@ environment variables:
 export PATH=<install_prefix>/bin:$PATH
 export LD_LIBRARY_PATH=<install_prefix>/lib:$LD_LIBRARY_PATH
 ```
-Replace LD_LIBRARY_PATH` by `DYLD_LIBRARY_PATH` on MacOS.
+Replace `LD_LIBRARY_PATH` by `DYLD_LIBRARY_PATH` on MacOS.
 
 Configure the client by specifying the config file in
 an env variable
