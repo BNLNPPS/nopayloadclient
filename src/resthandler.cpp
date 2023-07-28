@@ -69,17 +69,30 @@ json RESTHandler::get_piov_dict(const json& raw_response) {
     for (const json& el : raw_response) {
         if (el.type()==json::value_t::array) {
             type = el[0];
-            piov_dict[type] = {
-                {"payload_url", el[1]}, {"checksum", el[2]},
-                {"major_iov_start", el[3]}, {"minor_iov_start", el[4]},
-                {"major_iov_end", el[5]}, {"minor_iov_end", el[6]}};
+            if (el.size() == 8) {
+                piov_dict[type] = {
+                    {"payload_url", el[1]}, {"checksum", el[2]}, {"size", el[3]},
+                    {"major_iov_start", el[4]}, {"minor_iov_start", el[5]},
+                    {"major_iov_end", el[6]}, {"minor_iov_end", el[7]}};
+            }
+            else if (el.size() == 7){
+                piov_dict[type] = {
+                    {"payload_url", el[1]}, {"checksum", el[2]},
+                    {"major_iov_start", el[3]}, {"minor_iov_start", el[4]},
+                    {"major_iov_end", el[5]}, {"minor_iov_end", el[6]}};
+            }
+            else {
+                std::string msg = "PayloadIOV response should have 7 or 8 entries (Has " + std::to_string(el.size()) + ")";
+                throw BaseException(msg);
+            }
         }
         else {
             type = el["payload_type"];
             piov_dict[type] = {
                 {"payload_url", el["payload_iov"][0]["payload_url"]}, {"checksum", el["payload_iov"][0]["checksum"]},
                 {"major_iov_start", el["payload_iov"][0]["major_iov"]}, {"minor_iov_start", el["payload_iov"][0]["minor_iov"]},
-                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]}, {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]}};
+                {"major_iov_end", el["payload_iov"][0]["major_iov_end"]}, {"minor_iov_end", el["payload_iov"][0]["minor_iov_end"]},
+                {"size", el["payload_type"].value("size", NULL)}};
         }
     }
     return piov_dict;
