@@ -16,6 +16,7 @@ CLI::CLI() {
     insertCommand("unlockGlobalTag", &CLI::unlockGlobalTag);
     insertCommand("getUrlDict", &CLI::getUrlDict);
     insertCommand("insertPayload", &CLI::insertPayload);
+    insertCommand("deletePayloadIOV", &CLI::deletePayloadIOV);
 }
 
 json CLI::getSize(NoPayloadClient& c) {
@@ -106,16 +107,18 @@ json CLI::deletePayloadIOV(NoPayloadClient& c, int& argc, char* argv[]){
     long long major_iov_start = std::atoi(argv[4]);
     long long minor_iov_start = std::atoi(argv[5]);
     c.setGlobalTag(gt);
-    if (argc == 6) {
-        return c.deletePayloadIOV(pt, major_iov_start, minor_iov_start);
-    }
-    else if (argc == 8) {
-        long long major_iov_end = std::atoi(argv[7]);
-        long long minor_iov_end = std::atoi(argv[8]);
+//    if (argc == 6) {
+//        return c.deletePayloadIOV(pt, major_iov_start, minor_iov_start);
+//    }
+//    else if (argc == 8) {
+    if (argc == 8) {
+        long long major_iov_end = std::atoi(argv[6]);
+        long long minor_iov_end = std::atoi(argv[7]);
         return c.deletePayloadIOV(pt, major_iov_start, minor_iov_start,
                                   major_iov_end, minor_iov_end);
     }
-    std::string t = "deletePayloadIOV takes 4 or 6 arguments (" + std::to_string(argc-2) + " were given).";
+//    std::string t = "deletePayloadIOV takes 4 or 6 arguments (" + std::to_string(argc-2) + " were given).";
+    std::string t = "deletePayloadIOV takes 6 arguments (" + std::to_string(argc-2) + " were given).";
     return BaseException(t).jsonify();
 }
 
@@ -123,7 +126,7 @@ json CLI::deletePayloadIOV(NoPayloadClient& c, int& argc, char* argv[]){
 
 int main(int argc, char *argv[])
 {
-//    std::cout << "CLI::main()" << std::endl;
+//    std::cout << "CLI::main(argc=" << argc << ", argv=" << argv << ")" << std::endl;
     nopayloadclient::CLI cli;
     nopayloadclient::NoPayloadClient client;
     std::cout << cli.callCommand(argv[1], &client, argc, *argv).dump(4) << std::endl;
