@@ -16,7 +16,7 @@ RealWrapper::RealWrapper(const json& config) {
 }
 
 json RealWrapper::del(const string& url){
-    //std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
+//    std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
     CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
     cm.prepareDelete();
     return cm.try_execute();
@@ -97,7 +97,7 @@ json CurlSession::execute(){
     }
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
     curl_easy_cleanup(curl);
-    // printResults();
+//    printResults();
     json response = json::parse(ans.readBuffer);
     if (ans.httpCode!=200){
         std::string msg;

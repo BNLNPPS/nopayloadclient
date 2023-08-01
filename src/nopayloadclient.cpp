@@ -138,6 +138,13 @@ json NoPayloadClient::createPayloadType(const string& name) {
     )
 }
 
+json NoPayloadClient::deletePayloadType(const string& name) {
+    NOPAYLOADCLIENT_TRY(
+        rest_handler_.deletePayloadType(name);
+        return makeResp("successfully deleted payload type");
+    )
+}
+
 json NoPayloadClient::insertPayload(const string& pl_type, const string& file_url,
                            ll major_iov_start, ll minor_iov_start) {
     NOPAYLOADCLIENT_TRY(
@@ -156,6 +163,29 @@ json NoPayloadClient::insertPayload(const string& pl_type, const string& file_ur
         IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
         insertPayload(pl, iov);
         return makeResp("successfully inserted payload");
+    )
+}
+
+json NoPayloadClient::deletePayloadIOV(const string& pl_type,
+                           ll major_iov_start, ll minor_iov_start) {
+    NOPAYLOADCLIENT_TRY(
+        checkGtExists(global_tag_);
+        Moment mom {major_iov_start, minor_iov_start};
+        json payload_iovs = rest_handler_.getPayloadIOVs(global_tag_, mom);
+        IOV iov {major_iov_start, minor_iov_start, payload_iovs[pl_type]["major_iov_end"], payload_iovs[pl_type]["minor_iov_end"]};
+        rest_handler_.deletePayloadIOV(global_tag_, pl_type, iov);
+        return makeResp("successfully deleted payload iov");
+    )
+}
+
+json NoPayloadClient::deletePayloadIOV(const string& pl_type,
+                           ll major_iov_start, ll minor_iov_start,
+                           ll major_iov_end, ll minor_iov_end) {
+    NOPAYLOADCLIENT_TRY(
+        checkGtExists(global_tag_);
+        IOV iov {major_iov_start, minor_iov_start, major_iov_end, minor_iov_end};
+        rest_handler_.deletePayloadIOV(global_tag_, pl_type, iov);
+        return makeResp("successfully deleted payload iov");
     )
 }
 

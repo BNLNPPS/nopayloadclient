@@ -49,6 +49,7 @@ public:
 
     // Writing
     virtual json createPayloadType(const string& pl_type);
+    virtual json deletePayloadType(const string& pl_type);
     virtual json createGlobalTag(const string& name);
     virtual json createGlobalTag();
     virtual json deleteGlobalTag(const string& name);
@@ -64,6 +65,9 @@ public:
     virtual json insertPayload(const string& pl_type, const string& file_url,
                        ll major_iov_start, ll minor_iov_start,
                        ll major_iov_end, ll minor_iov_end);
+    virtual json deletePayloadIOV(const string& pl_type, ll major_iov_start, ll minor_iov_start);
+    virtual json deletePayloadIOV(const string& pl_type, ll major_iov_start, ll minor_iov_start,
+                                                         ll major_iov_end, ll minor_iov_end);
 
     // Helper
     virtual json getSize();

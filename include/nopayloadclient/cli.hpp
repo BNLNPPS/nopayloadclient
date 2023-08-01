@@ -31,12 +31,14 @@ public:
     virtual json getGlobalTags(NoPayloadClient& c);
     virtual json checkConnection(NoPayloadClient& c);
     virtual json createPayloadType(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json deletePayloadType(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json createGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json deleteGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json lockGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json unlockGlobalTag(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json getUrlDict(NoPayloadClient& c, int& argc, char* argv[]);
     virtual json insertPayload(NoPayloadClient& c, int& argc, char* argv[]);
+    virtual json deletePayloadIOV(NoPayloadClient& c, int& argc, char* argv[]);
 
     template<typename T>
     void insertCommand(const string& name, T func){

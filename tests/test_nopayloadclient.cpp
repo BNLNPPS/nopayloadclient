@@ -39,6 +39,7 @@ int main()
 
   std::cout << "initializing helper variables ..." << std::endl;
   char my_local_url[] = "/tmp/file.dat";
+  char my_other_local_url[] = "/tmp/other_file.dat";
   char my_overriden_url[] = "/tmp/overriden_file.dat";
 
   json resp;
@@ -164,6 +165,42 @@ int main()
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 
+  std::cout << "creating a payload type to be deleted..." << std::endl;
+  resp = client.createPayloadType("pt_to_delete");
+  json before_insertion = client.getUrlDict(major_iov, minor_iov);
+  resp = client.insertPayload("pt_to_delete", my_local_url,
+                              major_iov_start, minor_iov_start,
+                              major_iov_end, minor_iov_end);
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+  json after_insertion = client.getUrlDict(major_iov, minor_iov);
+  if (before_insertion == after_insertion) return 1;
+
+  std::cout << "... which should not work when containing IOVs" << std::endl;
+  resp = client.deletePayloadType("pt_to_delete");
+  std::cout << resp << std::endl;
+  if (resp["code"] == 0) return 1;
+
+  std::cout << "should be able to delete iov..." << std::endl;
+  resp = client.deletePayloadIOV("pt_to_delete", major_iov_start, minor_iov_start);
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+
+  std::cout << ".. and receive same resp as before insertion" << std::endl;
+  json after_deletion = client.getUrlDict(major_iov, minor_iov);
+  if (before_insertion != after_deletion) return 1;
+
+  std::cout << "deletion of payload type w/o iovs should work..." << std::endl;
+  resp = client.deletePayloadType("pt_to_delete");
+  std::cout << resp << std::endl;
+  if (resp["code"] == 0) return 1;
+
+  std::cout << "... and pt should not appear in resp afterwards" << std::endl;
+  resp = client.getUrlDict(major_iov, minor_iov);
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
+  if (resp["msg"].contains("pt_to_delete")) return 1;
+
   std::cout << "deletion of unlocked global tag should work" << std::endl;
   resp = client.deleteGlobalTag();
   std::cout << resp << std::endl;
@@ -177,18 +214,18 @@ int main()
   std::cout << "... and inserting to a global tag that does not exist..." << std::endl;
   client.setGlobalTag("non_existing_gt");
   resp = client.insertPayload("my_pt", my_local_url, 0, 0);
-  std::cout<<resp<<std::endl;
+  std::cout << resp << std::endl;
   if (resp["code"]==0) return 1;
   client.setGlobalTag("my_gt");
 
   std::cout << "... same for payload type that does not exist..." << std::endl;
   resp = client.insertPayload("non_existing_type", my_local_url, 0, 0);
-  std::cout<<resp<<std::endl;
+  std::cout << resp << std::endl;
   if (resp["code"]==0) return 1;
 
   std::cout << "... and if the payload file does not exist locally..." << std::endl;
   resp = client.insertPayload("my_pt", "non_existing_file", 0, 0);
-  std::cout<<resp<<std::endl;
+  std::cout << resp << std::endl;
   if (resp["code"]==0) return 1;
 
 

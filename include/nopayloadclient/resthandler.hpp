@@ -39,11 +39,13 @@ public:
     void createGlobalTagStatus(const string& name);
     void createGlobalTagObject(const string& name, const string& status);
     void createPayloadType(const string& name);
+    void deletePayloadType(const string& name);
     void attachPayloadList(const string& global_tag, const string& pl_name);
     void lockGlobalTag(const string& name);
     void unlockGlobalTag(const string& name);
     void deleteGlobalTag(const string& name);
     void cloneGlobalTag(const string& source, const string& target);
+    void deletePayloadIOV(const string& gt_name, const string& pll_name, IOV& iov);
     void attachPayloadIOV(const string& pll_name, long long piov_id);
     string createPayloadList(const string& type);
     long long createPayloadIOV(const Payload& pl, IOV& iov);

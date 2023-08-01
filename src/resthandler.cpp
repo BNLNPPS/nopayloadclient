@@ -169,6 +169,27 @@ void RESTHandler::deleteGlobalTag(const string& name) {
     del("deleteGlobalTag/" + name);
 }
 
+void RESTHandler::deletePayloadType(const string& name) {
+    del("deletePayloadType/" + name);
+}
+
+void RESTHandler::deletePayloadIOV(const string& gt, const string& pl_type, IOV& iov) {
+    std::string url = "deletePayloadIOV/" + gt + "/" + pl_type + "/"
+                      + std::to_string(iov.start_.major_) + "/" + std::to_string(iov.start_.minor_);
+//    url += "/" + std::to_string(iov.start_.major_) + "/" + std::to_string(iov.start_.minor_);
+    if (!iov.is_open_) {
+        url += "/" + std::to_string(iov.end_.major_) + "/" + std::to_string(iov.end_.minor_);
+    }
+    del(url);
+//    if (iov.is_open_) {
+//        url = "deletePayloadIOV/" + gt + "/" + pl_type + "/" + iov.start_.major_ + "/" + iov.start_.minor_;
+//    }
+//    else {
+//        url = "deletePayloadIOV/" + gt + "/" + pl_type + "/" + iov.start_.major_ + "/" + iov.start_.minor_ + "/" + iov.end_.major_ + "/" + iov.end_.minor_;
+//    }
+}
+
+
 // Private
 json RESTHandler::get(const string& url) {
     if (!use_cache_) return curlwrapper_->get(url);

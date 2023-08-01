@@ -5,6 +5,7 @@ namespace nopayloadclient {
 CLI::CLI() {
     insertCommand("getSize", &CLI::getSize);
     insertCommand("createPayloadType", &CLI::createPayloadType);
+    insertCommand("deletePayloadType", &CLI::deletePayloadType);
     insertCommand("getConfDict", &CLI::getConfDict);
     insertCommand("getPayloadTypes", &CLI::getPayloadTypes);
     insertCommand("getGlobalTags", &CLI::getGlobalTags);
@@ -24,6 +25,11 @@ json CLI::getSize(NoPayloadClient& c) {
 json CLI::createPayloadType(NoPayloadClient& c, int& /* argc */, char* argv[]) {
     std::string name = argv[2];
     return c.createPayloadType(name);
+}
+
+json CLI::deletePayloadType(NoPayloadClient& c, int& /* argc */, char* argv[]) {
+    std::string name = argv[2];
+    return c.deletePayloadType(name);
 }
 
 json CLI::getConfDict(NoPayloadClient& c) {
@@ -91,6 +97,25 @@ json CLI::insertPayload(NoPayloadClient& c, int& argc, char* argv[]){
                                major_iov_end, minor_iov_end);
     }
     std::string t = "insertPayload takes 5 or 7 arguments (" + std::to_string(argc-2) + " were given).";
+    return BaseException(t).jsonify();
+}
+
+json CLI::deletePayloadIOV(NoPayloadClient& c, int& argc, char* argv[]){
+    std::string gt = argv[2];
+    std::string pt = argv[3];
+    long long major_iov_start = std::atoi(argv[4]);
+    long long minor_iov_start = std::atoi(argv[5]);
+    c.setGlobalTag(gt);
+    if (argc == 6) {
+        return c.deletePayloadIOV(pt, major_iov_start, minor_iov_start);
+    }
+    else if (argc == 8) {
+        long long major_iov_end = std::atoi(argv[7]);
+        long long minor_iov_end = std::atoi(argv[8]);
+        return c.deletePayloadIOV(pt, major_iov_start, minor_iov_start,
+                                  major_iov_end, minor_iov_end);
+    }
+    std::string t = "deletePayloadIOV takes 4 or 6 arguments (" + std::to_string(argc-2) + " were given).";
     return BaseException(t).jsonify();
 }
 
