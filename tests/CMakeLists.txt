@@ -8,6 +8,8 @@ target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem
 target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/include)
 add_test(NAME test_nopayloadclient COMMAND $<TARGET_FILE:test_nopayloadclient>)
 
+add_test(NAME test_cli COMMAND ${CMAKE_SOURCE_DIR}/tests/test_cli.sh $<TARGET_FILE:cli_npc> ${CMAKE_SOURCE_DIR}/config/default.json)
+
 #add_executable(test_iov test_iov.cpp)
 #target_link_libraries(test_iov nopayloadclient ${_std_cxx_filesystem_lib})
 #target_include_directories(test_iov PRIVATE ${CMAKE_SOURCE_DIR}/include)

@@ -123,7 +123,7 @@ json CLI::deletePayloadIOV(NoPayloadClient& c, int& argc, char* argv[]){
 
 int main(int argc, char *argv[])
 {
-    std::cout << "CLI::main()" << std::endl;
+//    std::cout << "CLI::main()" << std::endl;
     nopayloadclient::CLI cli;
     nopayloadclient::NoPayloadClient client;
     std::cout << cli.callCommand(argv[1], &client, argc, *argv).dump(4) << std::endl;
