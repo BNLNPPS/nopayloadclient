@@ -190,10 +190,10 @@ int main()
   json after_deletion = client.getUrlDict(major_iov, minor_iov);
   if (before_insertion != after_deletion) return 1;
 
-//  std::cout << "deletion of payload type w/o iovs should work..." << std::endl;
-//  resp = client.deletePayloadType("pt_to_delete");
-//  std::cout << resp << std::endl;
-//  if (resp["code"] != 0) return 1;
+  std::cout << "deletion of payload type w/o iovs should work..." << std::endl;
+  resp = client.deletePayloadType("pt_to_delete");
+  std::cout << resp << std::endl;
+  if (resp["code"] != 0) return 1;
 
   std::cout << "... and pt should not appear in resp afterwards" << std::endl;
   resp = client.getUrlDict(major_iov, minor_iov);

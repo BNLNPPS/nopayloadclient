@@ -1,6 +1,7 @@
 #!/bin/bash
 
 run() {
+  echo "running <$1>"
   resp="$($CLI_PATH $1)"
   echo "$resp"
 }
@@ -49,8 +50,8 @@ assert_resp_contains_not '"code": 0'
 run "deletePayloadIOV cli_gt cli_pt 7 0 42 69"
 assert_resp_contains '"code": 0'
 
-#run "deletePayloadType cli_pt"
-#assert_resp_contains '"code": 0'
+run "deletePayloadType cli_pt"
+assert_resp_contains '"code": 0'
 
 run "lockGlobalTag cli_gt"
 assert_resp_contains '"code": 0'

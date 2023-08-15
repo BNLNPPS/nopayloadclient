@@ -173,6 +173,10 @@ void RESTHandler::deletePayloadType(const string& name) {
     del("deletePayloadType/" + name);
 }
 
+void RESTHandler::deletePayloadList(const string& name) {
+    del("deletePayloadList/" + name);
+}
+
 void RESTHandler::deletePayloadIOV(const string& gt, const string& pl_type, IOV& iov) {
     std::string url = "deletePayloadIOV/" + gt + "/" + pl_type + "/"
                       + std::to_string(iov.start_.major_) + "/" + std::to_string(iov.start_.minor_);

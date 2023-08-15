@@ -48,6 +48,7 @@ public:
     void deletePayloadIOV(const string& gt_name, const string& pll_name, IOV& iov);
     void attachPayloadIOV(const string& pll_name, long long piov_id);
     string createPayloadList(const string& type);
+    void deletePayloadList(const string& type);
     long long createPayloadIOV(const Payload& pl, IOV& iov);
 
 private:

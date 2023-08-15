@@ -140,6 +140,14 @@ json NoPayloadClient::createPayloadType(const string& name) {
 
 json NoPayloadClient::deletePayloadType(const string& name) {
     NOPAYLOADCLIENT_TRY(
+        for (auto gt : rest_handler_.getGlobalTags()){
+            json pll_dict = rest_handler_.getPayloadLists(gt["name"]);
+            if (pll_dict.contains(name)) {
+                std::cout << "payload type " << name << " has a payload list attached for gt " << gt["name"] << std::endl;
+                std::cout << "attempting to delete it..." << std::endl;
+                rest_handler_.deletePayloadList(pll_dict[name]);
+            }
+        }
         rest_handler_.deletePayloadType(name);
         return makeResp("successfully deleted payload type");
     )
