@@ -49,11 +49,11 @@ header and the widely-spread nlohmann json header-only lib
 (https://github.com/nlohmann/json)
 ```c
 #include <nlohmann/json.hpp>
-#include <nopayloadclient.hpp>
+#include <nopayloadclient/nopayloadclient.hpp>
 ```
 Firstly, create an instance of the client and configure it for a global tag
 ```c
-nopayloadclient::Client client;
+nopayloadclient::NoPayloadClient client;
 client.setGlobalTag(<gt_name>);
 ```
 Payloads can be inserted via
@@ -116,8 +116,9 @@ parameters are defined in `config/default.json`:
   "n_retries": 5,
   "cache_life_time": 10,
   "cache_max_mb": 1,
-  "print_time_stamps": false,
-  "use_fake_backend": false
+  "use_fake_backend": false,
+  "logger": "terminal",  // choose from ["terminal", "syslog"]
+  "log_level": "INFO"
 }
 ```
 `base_url` and `api_res` together define the url to the rest api
@@ -143,9 +144,6 @@ for infinite lifetime.
 The oldest entry will be removed until the cache is below the limit again. Set to `-1`
 for unlimited size.
 
-`print_time_stamps`: if set to `true`, print a time stamp before and after
-calling curl. Mainly used for performance evaluation.
-
 `use_fake_backend`: if set to `true`, the client will not contact the actual rest api
 but instead simulate its response assuming a single, minimal global tag. This is useful
 when testing the client's interface (e.g. when integrating into an existing software framework)
@@ -153,3 +151,7 @@ in an environment where the backend is not reachable. Allows only read operation
 One global tag `ExampleGT`, two payload lists `ExamplePT1` and `ExamplePT2` with one IOV each that is valid after `major_iov=42`
 and `minor_iov=42`. The inserted payload files where called `example_file.dat` and contained
 the string `data`.
+
+`logger`: choose where the logfiles should be written. options: [`terminal`, `syslog`]. Default is `terminal`.
+
+`log_level`: standard convention of log levels. options: [`DEBUG`, `INFO`, `WARNING`, `ERROR`]. Default is `WARNING`.

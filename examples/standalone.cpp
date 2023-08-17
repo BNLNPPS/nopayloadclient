@@ -9,8 +9,6 @@ int main () {
     // ++++++++++++++++++++++++++++++
     std::cout << "beginning of standalone..." << std::endl;
 
-    WARNING("this is a warning");
-
     // create an instance of the client
     nopayloadclient::NoPayloadClient client("ExampleGT");
 
