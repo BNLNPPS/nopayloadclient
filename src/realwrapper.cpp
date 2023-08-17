@@ -12,47 +12,45 @@ RealWrapper::RealWrapper(const json& config) {
     base_url_ += config["base_url"];
     base_url_ += config["api_res"];
     n_retries_ = config["n_retries"];
-    print_time_stamps_ = config["print_time_stamps"];
 }
 
 json RealWrapper::del(const string& url){
-//    std::cout<<"RealWrapper::del(url="<<url<<")"<<std::endl;
-    CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
+    logging::debug("RealWrapper::del(url=" + url + ")");
+    CurlSession cm = CurlSession(base_url_ + url, n_retries_);
     cm.prepareDelete();
     return cm.try_execute();
 }
 
 json RealWrapper::get(const string& url){
-//    std::cout<<"RealWrapper::get(url="<<url<<")"<<std::endl;
-    CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
+    logging::debug("RealWrapper::get(url=" + url + ")");
+    CurlSession cm = CurlSession(base_url_ + url, n_retries_);
     cm.prepareGet();
     return cm.try_execute();
 }
 
 json RealWrapper::post(const string& url, const json& data){
-//    std::cout<<"RealWrapper::post(url="<<url<<", data="<<data<<")"<<std::endl;
-    CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
+    logging::debug("RealWrapper::post(url=" + url + ", data=" + data.dump() + ")");
+    CurlSession cm = CurlSession(base_url_ + url, n_retries_);
     cm.preparePost(data);
     return cm.try_execute();
 }
 
 json RealWrapper::put(const string& url){
-//    std::cout<<"RealWrapper::put(url="<<url<<")"<<std::endl;
-    CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
+    logging::debug("RealWrapper::put(url=" + url + ")");
+    CurlSession cm = CurlSession(base_url_ + url, n_retries_);
     cm.preparePut();
     return cm.try_execute();
 }
 
 json RealWrapper::put(const string& url, const json& data){
-//    std::cout<<"RealWrapper::put(url="<<url<<", data="<<data<<")"<<std::endl;
-    CurlSession cm = CurlSession(base_url_ + url, n_retries_, print_time_stamps_);
+    logging::debug("RealWrapper::put(url=" + url + ", data=" + data.dump() + ")");
+    CurlSession cm = CurlSession(base_url_ + url, n_retries_);
     cm.preparePut(data);
     return cm.try_execute();
 }
 
-CurlSession::CurlSession(const string& _url, int n_retries, bool print_time_stamps){
+CurlSession::CurlSession(const string& _url, int n_retries){
     n_retries_ = n_retries;
-    print_time_stamps_ = print_time_stamps;
     url = _url;
     curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -60,10 +58,10 @@ CurlSession::CurlSession(const string& _url, int n_retries, bool print_time_stam
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ans.readBuffer);
 }
 
-void CurlSession::printResults(){
-    std::cout<<"res = "<<ans.res<<std::endl;
-    std::cout<<"readBuffer = "<<ans.readBuffer<<std::endl;
-    std::cout<<"httpCode = "<<ans.httpCode<<std::endl;
+void CurlSession::logResults(){
+    logging::debug("res = " + std::to_string(ans.res));
+    logging::debug("readBuffer = " + ans.readBuffer);
+    logging::debug("httpCode = " + std::to_string(ans.httpCode));
 }
 
 json CurlSession::try_execute(){
@@ -71,7 +69,7 @@ json CurlSession::try_execute(){
     for(int i = 0; i<n_retries_; i++){
         try{return execute();}
         catch (std::runtime_error& e){
-            std::cout<<e.what()<<std::endl;
+            logging::warning(e.what());
             std::chrono::seconds(i*i);
         }
     }
@@ -83,28 +81,22 @@ json CurlSession::try_execute(){
 
 json CurlSession::execute(){
     using namespace std::chrono;
-    if (print_time_stamps_) {
-        std::cout << "begin curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
-        ans.res = curl_easy_perform(curl);
-        std::cout << "end curl: " << duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() << '\n';
-    }
-    else {
-        ans.res = curl_easy_perform(curl);
-    }
+    logging::debug("begin curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
+    ans.res = curl_easy_perform(curl);
+    logging::debug("end curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
     if ( ans.res!=0 ){
         std::string const msg = "curl_easy_perform() failed with error code: " + std::to_string(ans.res);
         throw std::runtime_error(msg);
     }
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
     curl_easy_cleanup(curl);
-//    printResults();
+    logResults();
     json response = json::parse(ans.readBuffer);
     if (ans.httpCode!=200){
         std::string msg;
         if (response.contains("name")) msg = response["name"][0];
         else if (response.contains("detail")) msg = response["detail"];
         else msg = response.dump();
-        //std::cout << "msg = " << msg << std::endl;
         throw DataBaseException(msg);
     }
     return response;
@@ -124,7 +116,6 @@ void CurlSession::preparePut(){
 void CurlSession::preparePost(const json& data){
     slist1 = curl_slist_append(slist1, "Content-Type: application/json");
     json_str = data.dump();
-    //std::cout<<"json_str = "<<json_str<<std::endl;
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_str.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
 }

@@ -45,8 +45,8 @@ struct Answer {
 
 class CurlSession{
     public:
-        CurlSession(const string& _url, int n_retries, bool print_time_stamps);
-        void printResults();
+        CurlSession(const string& _url, int n_retries);
+        void logResults();
         json try_execute();
         json execute();
         void prepareGet();
@@ -61,7 +61,6 @@ class CurlSession{
         struct curl_slist *slist1 = NULL;
         string json_str;
         int n_retries_;
-        bool print_time_stamps_;
 };
 
 }

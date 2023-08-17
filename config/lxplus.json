@@ -7,5 +7,7 @@
   "cache_life_time": 10,
   "cache_max_mb": 1,
   "print_time_stamps": false,
-  "use_fake_backend": false
+  "use_fake_backend": false,
+  "logger": "terminal",
+  "log_level": "INFO"
 }

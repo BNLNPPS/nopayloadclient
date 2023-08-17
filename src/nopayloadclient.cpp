@@ -6,6 +6,8 @@ NoPayloadClient::NoPayloadClient() {
     config_ = config::getDict();
     rest_handler_ = RESTHandler(config_);
     pl_handler_ = PLHandler(config_);
+    logging::setLogger(config_["logger"]);
+    logging::setLogLevel(config_["log_level"]);
 }
 
 NoPayloadClient::NoPayloadClient(const string& gt_name) : NoPayloadClient() {
@@ -143,8 +145,8 @@ json NoPayloadClient::deletePayloadType(const string& name) {
         for (auto gt : rest_handler_.getGlobalTags()){
             json pll_dict = rest_handler_.getPayloadLists(gt["name"]);
             if (pll_dict.contains(name)) {
-                std::cout << "payload type " << name << " has a payload list attached for gt " << gt["name"] << std::endl;
-                std::cout << "attempting to delete it..." << std::endl;
+                logging::info("payload type " + name + " has a payload list attached for gt " + gt["name"].get<std::string>());
+                logging::info("attempting to delete it...");
                 rest_handler_.deletePayloadList(pll_dict[name]);
             }
         }
@@ -268,8 +270,8 @@ void NoPayloadClient::prepareInsertIov(Payload &pl) {
     checkGtExists(global_tag_);
     checkPlTypeExists(pl.type);
     if (!gtHasPlType(pl.type)) {
-        std::cout << "gt " << global_tag_ << " has no pl type " << pl.type << std::endl;
-        std::cout << "attempting to attach it..." << std::endl;
+        logging::info("gt " + global_tag_ + " has no pl type " + pl.type);
+        logging::info("attempting to attach it...");
         createNewPll(pl.type);
     }
 }

@@ -4,16 +4,16 @@ namespace nopayloadclient {
 
 
 PayloadIOV::PayloadIOV(const json& resp) {
-    std::cout << "PayloadIOV::PayloadIOV()" << std::endl;
+    logging::debug("PayloadIOV::PayloadIOV()");
     if (resp.type()==json::value_t::array) {
-        std::cout << "PayloadIOV::fromArrayResp()" << std::endl;
+        logging::debug("PayloadIOV::fromArrayResp()");
         payload_.type = resp[0];
         payload_.remote_url = resp[1];
         payload_.check_sum = resp[2];
         iov_ = IOV(resp[3], resp[4], resp[5], resp[6]);
     }
     else {
-        std::cout << "PayloadIOV::fromJsonResp()" << std::endl;
+        logging::debug("PayloadIOV::fromJsonResp()");
         payload_.type = resp["payload_type"];
         payload_.remote_url = resp["payload_iov"][0]["payload_url"];
         payload_.check_sum = resp["payload_iov"][0]["checksum"];

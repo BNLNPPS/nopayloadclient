@@ -9,8 +9,10 @@ int main () {
     // ++++++++++++++++++++++++++++++
     std::cout << "beginning of standalone..." << std::endl;
 
+    WARNING("this is a warning");
+
     // create an instance of the client
-    nopayloadclient::Client client("ExampleGT");
+    nopayloadclient::NoPayloadClient client("ExampleGT");
 
     std::cout << client.createGlobalTag() << std::endl;
     std::cout << client.createPayloadType("ExamplePT") << std::endl;;

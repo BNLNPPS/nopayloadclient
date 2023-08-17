@@ -9,6 +9,7 @@
 
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
+#include <nopayloadclient/logger.hpp>
 
 
 namespace nopayloadclient {

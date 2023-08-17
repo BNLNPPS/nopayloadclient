@@ -9,7 +9,8 @@ void _checkKeys(json j){
   std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
                                    "write_dir", "read_dir_list",
                                    "cache_life_time", "cache_max_mb",
-                                   "print_time_stamps", "use_fake_backend"};
+                                   "print_time_stamps", "use_fake_backend",
+                                   "logger", "log_level"};
   for(auto key : keys){
     if (!j.contains(key)){
         std::cerr<<"config does not contain key <"<<key<<">"<<std::endl;

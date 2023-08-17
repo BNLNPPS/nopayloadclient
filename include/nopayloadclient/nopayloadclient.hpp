@@ -11,6 +11,8 @@
 #include <nopayloadclient/plhandler.hpp>
 #include <nopayloadclient/config.hpp>
 #include <nopayloadclient/exception.hpp>
+#include <syslog.h>
+#include <nopayloadclient/logger.hpp>
 
 #define NOPAYLOADCLIENT_TRY(...) {              \
     try {                       \
