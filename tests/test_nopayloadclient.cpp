@@ -55,6 +55,11 @@ int main()
   nopayloadclient::NoPayloadClient client {"my_gt"};
   json conf_dict = client.getConfDict()["msg"];
 
+  std::cout << "create pl write dir if it does not exist.." << std::endl;
+  if (!fs::is_directory(conf_dict["write_dir"]) || !fs::exists(conf_dict["write_dir"])) {
+      fs::create_directory(conf_dict["write_dir"]);
+  }
+
   int n_pl_0 = getPayloadNumber(conf_dict["write_dir"]);
 
   resp = client.checkConnection();
