@@ -1,7 +1,25 @@
+include(FetchContent)
+FetchContent_Declare(
+    catch
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v2.13.6  # Update this to the version you need
+)
+FetchContent_MakeAvailable(catch)
+message(STATUS "Catch2 downloaded to: ${catch_SOURCE_DIR}")
+
 if ((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "13") OR
     (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.1"))
   set(_std_cxx_filesystem_lib "stdc++fs")
 endif()
+
+#add_executable(tests test_main.cpp)
+#target_include_directories(tests PRIVATE ${catch_SOURCE_DIR}/single_include ${CMAKE_SOURCE_DIR}/include)
+#target_link_libraries(tests Catch2::Catch2 nopayloadclient)
+
+#list(APPEND CMAKE_MODULE_PATH ${catch_SOURCE_DIR}/contrib)
+#include(Catch)
+#catch_discover_tests(tests)
+
 
 add_executable(test_nopayloadclient test_nopayloadclient.cpp)
 target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem_lib})

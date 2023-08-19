@@ -81,7 +81,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const NoPayloadClient& c);
     template<typename T>
     json makeResp(T msg);
-
+    static bool objWithNameExists(const json& j, const string& name);
 
 private:
     json config_;
@@ -108,9 +108,10 @@ private:
     void applyOverriding(json& payload_iovs);
     //virtual json getUrlDict(const std::vector<PayloadIOV>& payload_iovs);
     json getUrlDict(const json& payload_iovs);
-
-    // Helper
-    bool objWithNameExists(const json& j, const string& name);
 };
+
+// helper functions
+bool objWithNameExists(const json& j, const string& name);
+
 
 }

@@ -355,4 +355,11 @@ bool NoPayloadClient::objWithNameExists(const json& j, const string& name) {
     return false;
 }
 
+bool objWithNameExists(const json& j, const string& name) {
+    for (const auto& obj: j){
+        if (obj["name"] == name) return true;
+    }
+    return false;
+}
+
 }
