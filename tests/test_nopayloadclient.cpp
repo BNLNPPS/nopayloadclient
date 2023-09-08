@@ -187,7 +187,7 @@ int main()
   if (resp["code"] == 0) return 1;
 
   std::cout << "should be able to delete iov..." << std::endl;
-  resp = client.deletePayloadIOV("pt_to_delete", major_iov_start, minor_iov_start);
+  resp = client.deletePayloadIOV("pt_to_delete", major_iov_start, minor_iov_start, major_iov_end, minor_iov_end);
   std::cout << resp << std::endl;
   if (resp["code"] != 0) return 1;
 

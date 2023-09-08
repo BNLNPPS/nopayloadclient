@@ -180,9 +180,7 @@ json NoPayloadClient::deletePayloadIOV(const string& pl_type,
                            ll major_iov_start, ll minor_iov_start) {
     NOPAYLOADCLIENT_TRY(
         checkGtExists(global_tag_);
-        Moment mom {major_iov_start, minor_iov_start};
-        json payload_iovs = rest_handler_.getPayloadIOVs(global_tag_, mom);
-        IOV iov {major_iov_start, minor_iov_start, payload_iovs[pl_type]["major_iov_end"], payload_iovs[pl_type]["minor_iov_end"]};
+        IOV iov {major_iov_start, minor_iov_start};
         rest_handler_.deletePayloadIOV(global_tag_, pl_type, iov);
         return makeResp("successfully deleted payload iov");
     )

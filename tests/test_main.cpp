@@ -36,8 +36,6 @@ TEST_CASE_METHOD(ModifyEntryFixture<Client>, "gt creation") {
 }
 
 
-
-
 /*
 
 class GlobalTagFixture {
