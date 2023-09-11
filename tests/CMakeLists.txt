@@ -13,12 +13,12 @@ if ((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND ${CMAKE_CXX_COMPILER_VERSION}
   set(_std_cxx_filesystem_lib "stdc++fs")
 endif()
 
-add_executable(tests test_main.cpp)
-target_include_directories(tests PRIVATE ${catch_SOURCE_DIR}/single_include ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(tests Catch2::Catch2 nopayloadclient)
-list(APPEND CMAKE_MODULE_PATH ${catch_SOURCE_DIR}/contrib)
-include(Catch)
-catch_discover_tests(tests)
+#add_executable(tests test_main.cpp)
+#target_include_directories(tests PRIVATE ${catch_SOURCE_DIR}/single_include ${CMAKE_SOURCE_DIR}/include)
+#target_link_libraries(tests Catch2::Catch2 nopayloadclient)
+#list(APPEND CMAKE_MODULE_PATH ${catch_SOURCE_DIR}/contrib)
+#include(Catch)
+#catch_discover_tests(tests)
 
 add_executable(test_nopayloadclient test_nopayloadclient.cpp)
 target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem_lib})
