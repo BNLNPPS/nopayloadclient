@@ -24,7 +24,7 @@ sudo apt-get install libcurl4-openssl-dev
 
 echo "install nopayloadclient..."
 cd nopayloadclient
-cmake -DBUILD_TESTING=ON -S -DUSE_EXTERNAL_JSON=ON . -B build
+cmake -DBUILD_TESTING=ON -DUSE_EXTERNAL_JSON=ON -S . -B build
 cmake --build build/
 sudo cmake --install build/
 cd ..
