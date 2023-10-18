@@ -13,12 +13,14 @@ NoPayloadDB (https://github.com/bnlnpps/nopayloaddb).
 ### Setup
 In the project folder, configure cmake, compile and install ```nopayloadclient```
 ```shell
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX=<install_prefix>
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=<install_prefix> -DUSE_EXTERNAL_JSON=ON
 cmake --build build/
 cmake --install build/
 ```
 Omitting `-DCMAKE_INSTALL_PREFIX=<install_prefix>` will install
-it under the default directory (e.g. `/usr/local/`).
+it under the default directory (e.g. `/usr/local/`). Omitting
+`-DUSE_EXTERNAL_JSON=ON` will use an existing installation of
+nlohmann-json.
 
 If a custom installation prefix was defined, update the necessary
 environment variables:

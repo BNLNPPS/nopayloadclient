@@ -19,7 +19,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 add_library(nopayloadclient ${source_files})
 
-target_link_libraries(nopayloadclient PUBLIC CURL::libcurl)
+target_link_libraries(nopayloadclient PUBLIC CURL::libcurl nlohmann_json::nlohmann_json)
 
 if (UNIX AND NOT APPLE)
     target_link_libraries(nopayloadclient PUBLIC stdc++fs)
