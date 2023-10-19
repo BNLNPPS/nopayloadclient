@@ -13,22 +13,13 @@ set(CMAKE_DEBUG_POSTFIX "-dbg")
 include(GNUInstallDirs)
 message(STATUS "CMAKE_INSTALL_PREFIX: [${CMAKE_INSTALL_PREFIX}]")
 
-# Install files and export configs
-include(CMakePackageConfigHelpers)
-include(FetchContent)
-
-# Download external nlohmann_json if specified
-option(USE_EXTERNAL_JSON "Use an external JSON library" OFF)
-if(USE_EXTERNAL_JSON)
-    FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
-    FetchContent_MakeAvailable(json)
-endif()
-
 # Set up external dependencies
 find_package(CURL REQUIRED)
-find_package(nlohmann_json REQUIRED)
 
 add_subdirectory(src)
+
+# Install files and export configs
+include(CMakePackageConfigHelpers)
 
 # Set up tests
 option(BUILD_TESTING "" OFF)
@@ -41,4 +32,3 @@ if(BUILD_TESTING)
 #    catch_discover_tests(tests)
 
 endif()
-
