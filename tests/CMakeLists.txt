@@ -14,7 +14,7 @@ if ((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" AND ${CMAKE_CXX_COMPILER_VERSION}
 endif()
 
 #add_executable(tests test_main.cpp)
-#target_include_directories(tests PRIVATE ${catch_SOURCE_DIR}/single_include ${CMAKE_SOURCE_DIR}/include)
+#target_include_directories(tests PRIVATE ${catch_SOURCE_DIR}/single_include ${CMAKE_SOURCE_DIR}/include ${INCLUDE_DIR_NLOHMANN_JSON})
 #target_link_libraries(tests Catch2::Catch2 nopayloadclient)
 #list(APPEND CMAKE_MODULE_PATH ${catch_SOURCE_DIR}/contrib)
 #include(Catch)
@@ -22,7 +22,7 @@ endif()
 
 add_executable(test_nopayloadclient test_nopayloadclient.cpp)
 target_link_libraries(test_nopayloadclient nopayloadclient ${_std_cxx_filesystem_lib})
-target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(test_nopayloadclient PRIVATE ${CMAKE_SOURCE_DIR}/include ${INCLUDE_DIR_NLOHMANN_JSON})
 add_test(NAME test_nopayloadclient COMMAND $<TARGET_FILE:test_nopayloadclient>)
 
 add_test(NAME test_cli COMMAND ${CMAKE_SOURCE_DIR}/tests/test_cli.sh $<TARGET_FILE:cli_npc> ${CMAKE_SOURCE_DIR}/config/default.json)

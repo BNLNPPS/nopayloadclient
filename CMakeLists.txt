@@ -15,18 +15,9 @@ message(STATUS "CMAKE_INSTALL_PREFIX: [${CMAKE_INSTALL_PREFIX}]")
 
 # Install files and export configs
 include(CMakePackageConfigHelpers)
-include(FetchContent)
 
 # Set up external dependencies
 find_package(CURL REQUIRED)
-# Download external nlohmann_json if specified
-option(USE_EXTERNAL_JSON "Use an external JSON library" OFF)
-if(USE_EXTERNAL_JSON)
-    FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
-    FetchContent_MakeAvailable(json)
-else()
-    find_package(nlohmann_json REQUIRED)
-endif()
 
 add_subdirectory(src)
 
