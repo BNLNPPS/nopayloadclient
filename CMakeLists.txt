@@ -13,13 +13,13 @@ set(CMAKE_DEBUG_POSTFIX "-dbg")
 include(GNUInstallDirs)
 message(STATUS "CMAKE_INSTALL_PREFIX: [${CMAKE_INSTALL_PREFIX}]")
 
-# Install files and export configs
-include(CMakePackageConfigHelpers)
-
 # Set up external dependencies
 find_package(CURL REQUIRED)
 
 add_subdirectory(src)
+
+# Install files and export configs
+include(CMakePackageConfigHelpers)
 
 # Set up tests
 option(BUILD_TESTING "" OFF)
@@ -32,4 +32,3 @@ if(BUILD_TESTING)
 #    catch_discover_tests(tests)
 
 endif()
-
