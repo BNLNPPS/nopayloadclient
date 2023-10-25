@@ -25,9 +25,13 @@ if (UNIX AND NOT APPLE)
     target_link_libraries(nopayloadclient PUBLIC stdc++fs)
 endif (UNIX AND NOT APPLE)
 
+set(INCLUDE_DIR_NLOHMANN_JSON "${CMAKE_SOURCE_DIR}/contrib" CACHE STRING "Description of MY_VAR")
+message(STATUS "INCLUDE_DIR_NLOHMANN_JSON: [${INCLUDE_DIR_NLOHMANN_JSON}]")
+
 target_include_directories(nopayloadclient
     PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${INCLUDE_DIR_NLOHMANN_JSON}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -36,7 +40,7 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)
 
 add_executable(cli_npc cli.cpp)
 target_link_libraries(cli_npc nopayloadclient ${_std_cxx_filesystem_lib})
-target_include_directories(cli_npc PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(cli_npc PRIVATE ${CMAKE_SOURCE_DIR}/include ${INCLUDE_DIR_NLOHMANN_JSON})
 install(TARGETS cli_npc DESTINATION bin)
 
 #target_compile_options(nopayloadclient PRIVATE -Wall -Wextra -Wpedantic -Werror)
