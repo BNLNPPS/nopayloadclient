@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.20)
 project(nopayloadclient VERSION 0.0.0 LANGUAGES CXX)
 
 add_compile_definitions(_LIBCPP_NO_EXPERIMENTAL_DEPRECATION_WARNING_FILESYSTEM)
-set(CMAKE_CXX_STANDARD 14)
+if(NOT "${CMAKE_CXX_STANDARD}")
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # Set a debug postfix
