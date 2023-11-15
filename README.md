@@ -81,7 +81,7 @@ Currently, the following response codes are implemented:
 An example on how to use this tool in a c++ program can be found in
 `examples/standalone.cpp`. It can be compiled via
 ```shell
-g++ -std=c++14 standalone.cpp -lnopayloadclient -lcurl
+g++ -std=c++14 standalone.cpp -lnopayloadclient -lcurl -I../contrib/
 ```
 
 #### Usage through command line interface
