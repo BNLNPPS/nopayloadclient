@@ -29,6 +29,7 @@ public:
     void clearCache();
 
     // Reading
+    json provokeTimeOut();
     json getGlobalTags();
     json getGlobalTagStatuses();
     json getPayloadTypes();

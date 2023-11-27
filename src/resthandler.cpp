@@ -20,6 +20,10 @@ void RESTHandler::clearCache() {
 }
 
 // Reading
+json RESTHandler::provokeTimeOut() {
+    return get("timeout");
+}
+
 json RESTHandler::getGlobalTags() {
     return get("globalTags");
 }

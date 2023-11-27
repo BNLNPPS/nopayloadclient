@@ -198,6 +198,12 @@ json NoPayloadClient::deletePayloadIOV(const string& pl_type,
 }
 
 // Helper
+json NoPayloadClient::provokeTimeOut(){
+    NOPAYLOADCLIENT_TRY(
+        return makeResp(rest_handler_.provokeTimeOut());
+    )
+}
+
 json NoPayloadClient::getSize(){
     NOPAYLOADCLIENT_TRY(
         int n_iov_attached = 0;

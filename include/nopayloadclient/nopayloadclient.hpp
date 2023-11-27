@@ -72,6 +72,7 @@ public:
                                                          ll major_iov_end, ll minor_iov_end);
 
     // Helper
+    virtual json provokeTimeOut();
     virtual json getSize();
     virtual json getPayloadTypes();
     virtual json getGlobalTags();
