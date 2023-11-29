@@ -34,12 +34,6 @@ json RealWrapper::put(const string& url, const json& data){
     return executeTemp<PutSession>(url, data);
 }
 
-void CurlSession::logResults(){
-    logging::debug("res = " + std::to_string(ans.res));
-    logging::debug("readBuffer = " + ans.readBuffer);
-    logging::debug("httpCode = " + std::to_string(ans.httpCode));
-}
-
 void CurlSession::executeVoid(){
     using namespace std::chrono;
     logging::debug("begin curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
@@ -50,20 +44,6 @@ void CurlSession::executeVoid(){
     logging::debug("res = " + std::to_string(ans.res));
     logging::debug("readBuffer = " + ans.readBuffer);
     logging::debug("httpCode = " + std::to_string(ans.httpCode));
-}
-
-Answer CurlSession::getAnswer() {
-    Answer _ans;
-    using namespace std::chrono;
-    logging::debug("begin curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
-    _ans.res = curl_easy_perform(curl);
-    logging::debug("end curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &_ans.httpCode);
-    curl_easy_cleanup(curl);
-    logging::debug("res = " + std::to_string(_ans.res));
-    logging::debug("readBuffer = " + _ans.readBuffer);
-    logging::debug("httpCode = " + std::to_string(_ans.httpCode));
-    return _ans;
 }
 
 }

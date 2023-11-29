@@ -39,11 +39,8 @@ class CurlSession{
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ans.readBuffer);
         };
-        void logResults();
-        json execute();
         void executeVoid();
         Answer ans;
-        Answer getAnswer();
 
     protected:
         CURL *curl;
@@ -126,9 +123,7 @@ public:
         return json{};
     }
 
-
 private:
-    json execute(CurlSession& sesh);
     string base_url_;
     int n_retries_;
 };
