@@ -37,13 +37,13 @@ json RealWrapper::put(const string& url, const json& data){
 void CurlSession::executeVoid(){
     using namespace std::chrono;
     logging::debug("begin curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
-    ans.res = curl_easy_perform(curl);
+    ans_.res = curl_easy_perform(curl_);
     logging::debug("end curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &ans.httpCode);
-    curl_easy_cleanup(curl);
-    logging::debug("res = " + std::to_string(ans.res));
-    logging::debug("readBuffer = " + ans.readBuffer);
-    logging::debug("httpCode = " + std::to_string(ans.httpCode));
+    curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &ans_.httpCode);
+    curl_easy_cleanup(curl_);
+    logging::debug("res = " + std::to_string(ans_.res));
+    logging::debug("readBuffer = " + ans_.readBuffer);
+    logging::debug("httpCode = " + std::to_string(ans_.httpCode));
 }
 
 }
