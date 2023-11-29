@@ -20,7 +20,7 @@ using std::string;
 class CurlWrapper {
 public:
     CurlWrapper() {};
-  CurlWrapper(const json& /* config */) {};
+    CurlWrapper(const json& /* config */) {};
     virtual ~CurlWrapper() = default;
 
     // Reading

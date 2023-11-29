@@ -9,32 +9,38 @@ RealWrapper::RealWrapper(const json& config) {
     n_retries_ = config["n_retries"];
 }
 
+void RealWrapper::sleep(int retry_number) {
+    int n_sleep = int(std::exp(retry_number));
+    logging::debug("sleeping for " + std::to_string(n_sleep) + " seconds before retrying...");
+    std::this_thread::sleep_for(std::chrono::seconds(n_sleep));
+}
+
 json RealWrapper::del(const string& url){
     logging::debug("RealWrapper::del(url=" + url + ")");
-    return executeTemp<DeleteSession>(url);
+    return getResponse<DeleteRequest>(url);
 }
 
 json RealWrapper::get(const string& url){
     logging::debug("RealWrapper::get(url=" + url + ")");
-    return executeTemp<GetSession>(url);
+    return getResponse<GetRequest>(url);
 }
 
 json RealWrapper::post(const string& url, const json& data){
     logging::debug("RealWrapper::post(url=" + url + ", data=" + data.dump() + ")");
-    return executeTemp<PostSession>(url, data);
+    return getResponse<PostRequest>(url, data);
 }
 
 json RealWrapper::put(const string& url){
     logging::debug("RealWrapper::put(url=" + url + ")");
-    return executeTemp<PutSession>(url);
+    return getResponse<PutRequest>(url);
 }
 
 json RealWrapper::put(const string& url, const json& data){
     logging::debug("RealWrapper::put(url=" + url + ", data=" + data.dump() + ")");
-    return executeTemp<PutSession>(url, data);
+    return getResponse<PutRequest>(url, data);
 }
 
-void CurlSession::executeVoid(){
+int CurlRequest::execute(){
     using namespace std::chrono;
     logging::debug("begin curl: " + std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()));
     ans_.res = curl_easy_perform(curl_);
@@ -44,6 +50,23 @@ void CurlSession::executeVoid(){
     logging::debug("res = " + std::to_string(ans_.res));
     logging::debug("readBuffer = " + ans_.readBuffer);
     logging::debug("httpCode = " + std::to_string(ans_.httpCode));
+    if (ans_.httpCode == 504){
+        logging::debug("connection timed-out.");
+        return 1;
+    }
+    return 0;
+}
+
+json CurlRequest::parseResponse() {
+    json response = json::parse(ans_.readBuffer);
+    if (ans_.httpCode!=200){
+        std::string msg;
+        if (response.contains("name")) msg = response["name"][0];
+        else if (response.contains("detail")) msg = response["detail"];
+        else msg = response.dump();
+        throw DataBaseException(msg);
+    }
+    return response;
 }
 
 }

@@ -30,9 +30,9 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-class CurlSession{
+class CurlRequest{
     public:
-        CurlSession(const string& url, const json& data = json{}) {
+        CurlRequest(const string& url, const json& data = json{}) {
             url_ = url;
             json_str_ = data.dump();
             curl_ = curl_easy_init();
@@ -40,7 +40,8 @@ class CurlSession{
             curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &ans_.readBuffer);
         };
-        void executeVoid();
+        json parseResponse();
+        int execute();
         Answer ans_;
 
     protected:
@@ -49,22 +50,22 @@ class CurlSession{
         string json_str_;
 };
 
-class GetSession: public CurlSession {
+class GetRequest: public CurlRequest {
     public:
-        GetSession(const string& url, const json& data = json{}) : CurlSession(url, data) {
+        GetRequest(const string& url, const json& data = json{}) : CurlRequest(url, data) {
         };
 };
 
-class DeleteSession: public CurlSession {
+class DeleteRequest: public CurlRequest {
     public:
-        DeleteSession(const string& url, const json& data = json{}) : CurlSession(url, data) {
+        DeleteRequest(const string& url, const json& data = json{}) : CurlRequest(url, data) {
             curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
         };
 };
 
-class PostSession: public CurlSession {
+class PostRequest: public CurlRequest {
     public:
-        PostSession(const string& _url, const json& data = json{}) : CurlSession(_url, data) {
+        PostRequest(const string& _url, const json& data = json{}) : CurlRequest(_url, data) {
             struct curl_slist *slist = NULL;
             slist = curl_slist_append(slist, "Content-Type: application/json");
             curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, slist);
@@ -72,15 +73,20 @@ class PostSession: public CurlSession {
         };
 };
 
-class PutSession: public PostSession {
+class PutRequest: public PostRequest {
     public:
-        PutSession(const string& url, const json& data = json{}) : PostSession(url, data) {
+        PutRequest(const string& url, const json& data = json{}) : PostRequest(url, data) {
             curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "PUT");
         };
 };
 
 
 class RealWrapper : public CurlWrapper {
+    private:
+        void sleep(int retry_number);
+        string base_url_;
+        int n_retries_;
+
     public:
         RealWrapper() {};
         RealWrapper(const json& config);
@@ -93,35 +99,16 @@ class RealWrapper : public CurlWrapper {
         json put(const string& url, const json& data);
         json post(const string& url, const json& data);
 
-        template <typename T>
-        json executeTemp(const string& url, const json& data = json{}) {
-            for(int i = 0; i < n_retries_; i++){
-                T cm = T(base_url_ + url, data);
-                cm.executeVoid();
-                logging::debug("cm.ans_.httpCode = " + std::to_string(cm.ans_.httpCode));
-                if (cm.ans_.httpCode == 504){
-                    int n_sleep = int(std::exp(i));
-                    logging::debug("connection timed-out. counter: " + std::to_string(i+1));
-                    logging::debug("sleeping for " + std::to_string(n_sleep) + " before retrying...");
-                    std::this_thread::sleep_for(std::chrono::seconds(n_sleep));
-                    continue;
-                }
-                json response = json::parse(cm.ans_.readBuffer);
-                if (cm.ans_.httpCode!=200){
-                    std::string msg;
-                    if (response.contains("name")) msg = response["name"][0];
-                    else if (response.contains("detail")) msg = response["detail"];
-                    else msg = response.dump();
-                    throw DataBaseException(msg);
-                }
-                return response;
+        template <typename Request>
+        json getResponse(const string& url, const json& data = json{}) {
+            for(int i=0; i<n_retries_; i++) {
+                Request req = Request(base_url_ + url, data);
+                if (req.execute() == 0) return req.parseResponse();
+                sleep(i);
             }
-            return json{};
+            throw DataBaseException("Request failed after " + std::to_string(n_retries_) + " tries");
         }
 
-    private:
-        string base_url_;
-        int n_retries_;
 };
 
 
