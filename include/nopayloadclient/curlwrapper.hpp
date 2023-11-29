@@ -30,6 +30,7 @@ public:
     virtual json put(const string& url) = 0;
     virtual json put(const string& url, const json& data) = 0;
     virtual json post(const string& url, const json& data) = 0;
+
 };
 
 }
