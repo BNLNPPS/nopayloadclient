@@ -1,5 +1,7 @@
 #include <nopayloadclient/realwrapper.hpp>
 
+#include <cstdlib>
+
 namespace nopayloadclient {
 
 RealWrapper::RealWrapper(const json& config) {
@@ -10,7 +12,8 @@ RealWrapper::RealWrapper(const json& config) {
 }
 
 void RealWrapper::sleep(int retry_number) {
-    int n_sleep = int(std::exp(retry_number));
+    srand(time(0));
+    int n_sleep = rand()%100+1; // add random sleep 1-100 secs
     logging::debug("sleeping for " + std::to_string(n_sleep) + " seconds before retrying...");
     std::this_thread::sleep_for(std::chrono::seconds(n_sleep));
 }
