@@ -266,8 +266,8 @@ json NoPayloadClient::makeResp(T msg) {
 void NoPayloadClient::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
-    insertIov(pl, iov);
     pl_handler_.uploadFile(pl);
+    insertIov(pl, iov);
 }
 
 void NoPayloadClient::prepareInsertIov(Payload &pl) {
