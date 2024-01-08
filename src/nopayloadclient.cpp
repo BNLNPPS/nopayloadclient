@@ -262,6 +262,8 @@ json NoPayloadClient::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
+template json NoPayloadClient::makeResp(json);
+
 // Private
 void NoPayloadClient::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
