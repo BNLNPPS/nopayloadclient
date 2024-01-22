@@ -1,5 +1,7 @@
 #include <nopayloadclient/realwrapper.hpp>
 
+#include <cstdlib>
+
 namespace nopayloadclient {
 
 RealWrapper::RealWrapper(const json& config) {
