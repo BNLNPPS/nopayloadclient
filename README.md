@@ -116,6 +116,7 @@ parameters are defined in `config/default.json`:
   "write_dir": "/tmp/remote_pl_store/",
   "read_dir_list": ["/tmp/remote_pl_store/", "/cvmfs/place/holder/"],
   "n_retries": 5,
+  "retry_sleep_mean": 30,
   "cache_life_time": 10,
   "cache_max_mb": 1,
   "use_fake_backend": false,
@@ -138,6 +139,10 @@ In the simplest case, `write_dir` would be the only entry in `read_dir_list`.
 
 `n_retries` specifies the number of retries to contact the rest api before
 throwing an error. The waiting time before each retry grows exponentially.
+
+`retry_sleep_mean` determines the mean sleep time after a request failed
+with a connection time out. The actual sleep time follows a uniform random
+distribution.
 
 `cache_life_time` is the lifetime of each entry in the cache. Set to `-1`
 for infinite lifetime.

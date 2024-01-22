@@ -86,6 +86,7 @@ class RealWrapper : public CurlWrapper {
         void sleep(int retry_number);
         string base_url_;
         int n_retries_;
+        int retry_sleep_mean_;
 
     public:
         RealWrapper() {};

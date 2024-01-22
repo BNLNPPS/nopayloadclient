@@ -9,11 +9,12 @@ RealWrapper::RealWrapper(const json& config) {
     base_url_ += config["base_url"];
     base_url_ += config["api_res"];
     n_retries_ = config["n_retries"];
+    retry_sleep_mean_ = config["retry_sleep_mean"];
 }
 
 void RealWrapper::sleep(int retry_number) {
     srand(time(0));
-    int n_sleep = rand()%100+1; // add random sleep 1-100 secs
+    int n_sleep = rand()%(retry_sleep_mean_*2)+1; // add random sleep
     logging::debug("sleeping for " + std::to_string(n_sleep) + " seconds before retrying...");
     std::this_thread::sleep_for(std::chrono::seconds(n_sleep));
 }
