@@ -6,7 +6,7 @@ namespace nopayloadclient {
 namespace config {
 
 void _checkKeys(json j){
-  std::vector<std::string> keys = {"base_url", "api_res", "n_retries",
+  std::vector<std::string> keys = {"base_url", "api_res", "n_retries", "retry_sleep_mean",
                                    "write_dir", "read_dir_list",
                                    "cache_life_time", "cache_max_mb",
                                    "print_time_stamps", "use_fake_backend",
