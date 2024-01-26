@@ -4,6 +4,7 @@
   "write_dir": "/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/",
   "read_dir_list": ["/lbne/u/lgerlach1/Projects/nopayloadclient/data/remote/"],
   "n_retries": 5,
+  "retry_sleep_mean": 30,
   "cache_life_time": 10,
   "cache_max_mb": 1,
   "print_time_stamps": false,
