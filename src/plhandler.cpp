@@ -73,7 +73,12 @@ void PLHandler::checkRemoteDirExists() {
 
 void PLHandler::createDirectory(const string& path){
     if (!fs::is_directory(path) || !fs::exists(path)) {
-        fs::create_directories(path);
+      try{
+          fs::create_directories(path);
+      }
+      catch(...){
+        throw BaseException("remote payload directory "+path+" could not be created");
+      }
     }
 }
 
@@ -85,7 +90,10 @@ void PLHandler::prepareUploadFile(const Payload& pl) {
 
 void PLHandler::copyFile(const string& local_url, const string& remote_url) {
     if (!fs::exists(remote_url)) {
-        fs::copy_file(local_url, remote_url);
+      if (! fs::copy_file(local_url, remote_url))
+      {
+        throw BaseException("could not copy "+local_url+" to "+remote_url);
+      }
     }
 }
 
