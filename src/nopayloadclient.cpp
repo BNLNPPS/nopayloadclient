@@ -262,12 +262,14 @@ json NoPayloadClient::makeResp(T msg) {
     return {{"code", 0}, {"msg", msg}};
 }
 
+template json NoPayloadClient::makeResp(json);
+
 // Private
 void NoPayloadClient::insertPayload(Payload &pl, IOV &iov) {
     prepareInsertIov(pl);
     pl_handler_.prepareUploadFile(pl);
-    insertIov(pl, iov);
     pl_handler_.uploadFile(pl);
+    insertIov(pl, iov);
 }
 
 void NoPayloadClient::prepareInsertIov(Payload &pl) {
