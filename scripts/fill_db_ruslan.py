@@ -24,6 +24,17 @@ GT_NAME = "sPHENIX_ExampleGT_1"
 
 base_url = "http://127.0.0.1:8000/api/cdb_rest"
 
+# Create a global tag status object - this should be a VERY rare occurence
+print("Create Global Tag Status")
+gtstatus = {'name':'locked'} # id should be autoincr, name should be unique
+url = base_url + '/gtstatus'
+r = requests.post(url = url, headers=headers, json=gtstatus)
+print(r.json())
+gtstatus = {'name':'unlocked'} # id should be autoincr, name should be unique
+url = base_url + '/gtstatus'
+r = requests.post(url = url, headers=headers, json=gtstatus)
+print(r.json())
+
 # Create a global tag object - this should be QUITE rare
 print("Create Global Tag Object")
 gt = {
