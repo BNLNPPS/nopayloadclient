@@ -56,15 +56,36 @@ int CurlRequest::execute(){
     logging::debug("res = " + std::to_string(ans_.res));
     logging::debug("readBuffer = " + ans_.readBuffer);
     logging::debug("httpCode = " + std::to_string(ans_.httpCode));
-    if (ans_.httpCode == 504){
-        logging::debug("connection timed-out.");
+    if (ans_.res != CURLE_OK){
+        logging::warning("request to " + url_ + " failed at transport level: "
+                         + string(curl_easy_strerror(ans_.res)) + " (curl code "
+                         + std::to_string(ans_.res) + "), will retry.");
+        return 1;
+    }
+    if (ans_.httpCode >= 500){
+        logging::warning("request to " + url_ + " failed with http code "
+                         + std::to_string(ans_.httpCode) + ", will retry. Response begins with: "
+                         + ans_.readBuffer.substr(0, 200));
         return 1;
     }
     return 0;
 }
 
+string CurlRequest::errorSummary(){
+    if (ans_.res != CURLE_OK) return "curl error: " + string(curl_easy_strerror(ans_.res));
+    return "http code " + std::to_string(ans_.httpCode) + ", response: " + ans_.readBuffer.substr(0, 200);
+}
+
 json CurlRequest::parseResponse() {
-    json response = json::parse(ans_.readBuffer);
+    json response = json::parse(ans_.readBuffer, nullptr, false);
+    if (response.is_discarded()){
+        logging::error("server at " + url_ + " returned a non-JSON response (http code "
+                       + std::to_string(ans_.httpCode) + "). Response begins with: "
+                       + ans_.readBuffer.substr(0, 200));
+        throw DataBaseException("server returned a non-JSON response (http code "
+                                + std::to_string(ans_.httpCode) + "): "
+                                + ans_.readBuffer.substr(0, 200));
+    }
     if (ans_.httpCode!=200){
         std::string msg;
         if (response.contains("name")) msg = response["name"][0];

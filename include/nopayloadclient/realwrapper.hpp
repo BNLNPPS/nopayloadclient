@@ -39,9 +39,12 @@ class CurlRequest{
             curl_easy_setopt(curl_, CURLOPT_URL, url_.c_str());
             curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, WriteCallback);
             curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &ans_.readBuffer);
+            curl_easy_setopt(curl_, CURLOPT_CONNECTTIMEOUT, 300L);
+            curl_easy_setopt(curl_, CURLOPT_TIMEOUT, 1800L);
         };
         json parseResponse();
         int execute();
+        string errorSummary();
         Answer ans_;
 
     protected:
@@ -102,12 +105,17 @@ class RealWrapper : public CurlWrapper {
 
         template <typename Request>
         json getResponse(const string& url, const json& data = json{}) {
+            string last_error;
             for(int i=0; i<n_retries_; i++) {
                 Request req = Request(base_url_ + url, data);
                 if (req.execute() == 0) return req.parseResponse();
-                sleep(i);
+                last_error = req.errorSummary();
+                logging::warning("attempt " + std::to_string(i+1) + "/" + std::to_string(n_retries_)
+                                 + " failed (" + last_error + ")");
+                if (i < n_retries_ - 1) sleep(i);
             }
-            throw DataBaseException("Request failed after " + std::to_string(n_retries_) + " tries");
+            throw DataBaseException("Request to " + url + " failed after " + std::to_string(n_retries_)
+                                    + " tries. Last error: " + last_error);
         }
 
 };
