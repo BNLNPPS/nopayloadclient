@@ -2,13 +2,13 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <time.h>
-#include <experimental/filesystem>
+#include <filesystem>
 
 #include <nopayloadclient/nopayloadclient.hpp>
 
 using json = nlohmann::json;
 
-namespace fs = std::experimental::filesystem::v1;
+namespace fs = std::filesystem;
 
 int getPayloadNumber(fs::path pl_path) {
   fs::recursive_directory_iterator pl_iterator{pl_path};

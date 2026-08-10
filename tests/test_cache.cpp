@@ -2,14 +2,14 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <time.h>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <unistd.h>
 #include <thread>
 
 #include <nopayloadclient/nopayloadclient.hpp>
 #include <nopayloadclient/cache.hpp>
 
-namespace fs = std::experimental::filesystem::v1;
+namespace fs = std::filesystem;
 
 
 int createRandomPayload(char filename[]) {
