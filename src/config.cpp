@@ -26,11 +26,20 @@ bool fileExists(const std::string& url) {
 
 std::string getFilePath() {
     char* env_char = std::getenv("NOPAYLOADCLIENT_CONF");
-    if (env_char==NULL){
-        std::cout << "variable NOPAYLOADCLIENT_CONF not set. Using default..." << std::endl;
-        return std::string(PROJECT_CONFIG_SEARCH_PATHS) + "default.json";
+    if (env_char!=NULL){
+        return std::string( env_char );
     }
-    return std::string( env_char );
+    std::cout << "variable NOPAYLOADCLIENT_CONF not set. Using default..." << std::endl;
+    std::string search_paths = PROJECT_CONFIG_SEARCH_PATHS;
+    std::stringstream stream(search_paths);
+    std::string dir;
+    while (std::getline(stream, dir, ':')) {
+        if (dir.empty()) continue;
+        std::string candidate = dir + "/default.json";
+        if (fileExists(candidate)) return candidate;
+    }
+    std::cerr << "no default.json found in search paths: " << search_paths << std::endl;
+    exit(1);
 }
 
 json getDict(){

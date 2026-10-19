@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <sys/stat.h>

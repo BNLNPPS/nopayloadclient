@@ -37,6 +37,7 @@ target_include_directories(nopayloadclient
 
 install(TARGETS nopayloadclient DESTINATION lib)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)
+install(FILES ${CMAKE_SOURCE_DIR}/config/default.json DESTINATION share/nopayloadclient)
 
 add_executable(cli_npc cli.cpp)
 target_link_libraries(cli_npc nopayloadclient ${_std_cxx_filesystem_lib})
