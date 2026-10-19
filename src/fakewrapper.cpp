@@ -7,7 +7,7 @@ json FakeWrapper::get(const string& url) {
     if (end_point == "globalTags") {
         return FAKE_DATABASE["globalTags"];
     }
-    if (end_point == "payloadiovs") {
+    if (end_point == "payload-iovs") {
         long long major_iov = std::stoi(splitString(splitString(url, '=')[2], '?')[0]);
         long long minor_iov = std::stoi(splitString(url, '=')[3]);
         Moment req_mom {major_iov, minor_iov};

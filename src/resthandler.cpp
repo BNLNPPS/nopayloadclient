@@ -29,19 +29,19 @@ json RESTHandler::getGlobalTags() {
 }
 
 json RESTHandler::getGlobalTagStatuses() {
-    return get("gtstatus");
+    return get("global-tags/statuses");
 }
 
 json RESTHandler::getPayloadTypes() {
-    return get("pt");
+    return get("payload-types");
 }
 
 json RESTHandler::getPayloadLists(const string& global_tag) {
-    return get("gtPayloadLists/" + global_tag);
+    return get("global-tags/" + global_tag + "/payload-lists");
 }
 
 json RESTHandler::getPayloadIOVs(const string& global_tag, Moment& mom){
-    json raw_response = get("payloadiovs/?gtName=" + global_tag + "&majorIOV=" +
+    json raw_response = get("payload-iovs/query/?gtName=" + global_tag + "&majorIOV=" +
                std::to_string(mom.major_) + "&minorIOV=" + std::to_string(mom.minor_));
     return get_piov_dict(raw_response);
 }
@@ -100,7 +100,7 @@ json RESTHandler::get_piov_dict(const json& raw_response) {
 
 // Writing
 void RESTHandler::createGlobalTagStatus(const string& name){
-    post("gtstatus", {{"name", name}});
+    post("global-tags/statuses", {{"name", name}});
 }
 
 void RESTHandler::createGlobalTagObject(const string& name, const string& status) {
@@ -113,11 +113,11 @@ void RESTHandler::createGlobalTagObject(const string& name, const string& status
 }
 
 void RESTHandler::createPayloadType(const string& name){
-    post("pt", {{"name", name}});
+    post("payload-types", {{"name", name}});
 }
 
 string RESTHandler::createPayloadList(const string& type) {
-    json res = post("pl", {{"payload_type", type}});
+    json res = post("payload-lists", {{"payload_type", type}});
     return res["name"];
 }
 
@@ -126,19 +126,19 @@ void RESTHandler::attachPayloadList(const string& global_tag, const string& pl_n
         {"payload_list", pl_name},
         {"global_tag", global_tag}
     };
-    put("pl_attach", j);
+    put("payload-lists/attach", j);
 }
 
 void RESTHandler::lockGlobalTag(const string& name) {
-    put("gt_change_status/" + name + "/locked");
+    put("global-tags/" + name + "/change-status/locked");
 }
 
 void RESTHandler::unlockGlobalTag(const string& name){
-    put("gt_change_status/" + name + "/unlocked");
+    put("global-tags/" + name + "/change-status/unlocked");
 }
 
 void RESTHandler::cloneGlobalTag(const string& source, const string& target) {
-    string url = "cloneGlobalTag/" + source + "/" + target;
+    string url = "global-tags/" + source + "/clone/" + target;
     post(url, {});
 }
 
@@ -153,7 +153,7 @@ ll RESTHandler::createPayloadIOV(const Payload& pl, IOV& iov){
         j["major_iov_end"] = iov.end_.major_;
         j["minor_iov_end"] = iov.end_.minor_;
     }
-    json res = post("piov", j);
+    json res = post("payload-iovs", j);
     return res["id"];
 }
 
@@ -162,27 +162,28 @@ void RESTHandler::attachPayloadIOV(const string& pll_name, ll piov_id){
         {"payload_list", pll_name},
         {"piov_id", piov_id}
     };
-    put("piov_attach", j);
+    put("payload-iovs/attach", j);
 }
 
 void RESTHandler::deleteGlobalTag(const string& name) {
-    del("deleteGlobalTag/" + name);
+    del("global-tags/" + name + "/delete");
 }
 
 void RESTHandler::deletePayloadType(const string& name) {
-    del("deletePayloadType/" + name);
+    del("payload-types/" + name + "/delete");
 }
 
 void RESTHandler::deletePayloadList(const string& name) {
-    del("deletePayloadList/" + name);
+    del("payload-lists/" + name + "/delete");
 }
 
 void RESTHandler::deletePayloadIOV(const string& gt, const string& pl_type, IOV& iov) {
-    std::string url = "deletePayloadIOV/" + gt + "/" + pl_type + "/"
+    std::string url = "payload-iovs/" + gt + "/" + pl_type + "/"
                       + std::to_string(iov.start_.major_) + "/" + std::to_string(iov.start_.minor_);
     if (!iov.is_open_) {
         url += "/" + std::to_string(iov.end_.major_) + "/" + std::to_string(iov.end_.minor_);
     }
+    url += "/delete";
     del(url);
 }
 
