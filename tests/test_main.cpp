@@ -1,11 +1,11 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch2 to provide a main()
 #include "catch2/catch.hpp"
 #include <nlohmann/json.hpp>
-#include <experimental/filesystem>
+#include <filesystem>
 
 #include <nopayloadclient/nopayloadclient.hpp>
 
-namespace fs = std::experimental::filesystem::v1;
+namespace fs = std::filesystem;
 using Client = nopayloadclient::NoPayloadClient;
 
 template <typename ClientType>
